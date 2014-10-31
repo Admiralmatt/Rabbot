@@ -21,13 +21,20 @@ If you want to contact me about Rabbot (bug reports, feedback, or if you want it
 * **!(STAT) remove** Removes 1 from (STAT) counter.
 * **!(STAT) count** Posts the current (STAT) count for current game. Auto called after stat update.
 
-   **Mod-only command**
+   **Mod-only commands**
 * **!(STAT) add #** Adds # amount to (STAT)
 * **!(STAT) new** Creates a new (STAT) counter if it has not been used in any game so far.
 * **!(STAT) set #** Sets (STAT) to #
 
 ##Misc
 * **!help** Posts a link to this page.
+
+   **Mod-only commands**
+* **!modcheck** Updates the mod list if a mod has been added or removed
+
+   **Others**
 * **!(Depends)** Posts a static response to a command. Or random response from list.
 All commands and responces are listed in data file.
 Each command can have different access levels.
+
+ Contact me to add a cammand to this list
