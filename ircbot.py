@@ -117,15 +117,6 @@ class ircbot():
       else:
          return storage.findgame(twitch.get_live_game(nick))
 
-   def modcheck(self, msg):
-      if msg[0] == '+o':
-         if msg[1] not in self.modlist:
-            self.modlist.append(msg[1])
-         
-      if msg[0] == '-o':
-         if msg[1] in self.modlist:
-            self.modlist.remove(msg[1])
-
    # Search for correct command to use
    def is_command(self, nick, msg):
       data = storage.data
@@ -158,8 +149,9 @@ class ircbot():
       if message.find(':!') != -1:
          self.is_command(nick, message.split(':!')[-1].split())
 
-      elif message.find(':jtv!jtv@jtv.tmi.twitch.tv PRIVMSG rab_bot :The moderators of this room are:') != -1:
-         storage.modlist(message.split('are: ')[-1].split(', '))
+      elif message.find(':jtv!jtv@jtv.tmi.twitch.tv privmsg rab_bot :the moderators of this room are:') != -1:
+         self.modlist['mods'] = (message.strip('\r\n').split('are: ')[-1].split(', '))
+         storage.modupdate(self.modlist)
 
 
       
