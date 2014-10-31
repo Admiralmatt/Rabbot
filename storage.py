@@ -10,13 +10,16 @@ def load(): #Load Data From File
     with open('data.json', 'r') as fp:
         data = json.load(fp)
 
-
 #returns (path) that navagates to games portion of records
 def getgamepath():
     from ircbot import bot
     path = data.setdefault('shows', {}).setdefault(bot.show, {"name": bot.show}).setdefault('games', {})
-    #p = data['shows'][bot.show]['games']
     return path
+
+def getmodlist():
+    from ircbot import bot
+    modlist = data.setdefault('shows', {}).setdefault(bot.show, {"name": bot.show}).setdefault('mods', [])
+    return modlist
 
 #Search records to see if game allready exists.
 #if not, will add new game to records

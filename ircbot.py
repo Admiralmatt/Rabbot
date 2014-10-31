@@ -69,6 +69,9 @@ class ircbot():
             if ircmsg.find('PING :') != -1: # Responds to server ping
                self.ircsock.send('PONG :pingis\n')
 
+            elif ircmsg.find(':jtv MODE ' + self.channel) != -1:
+               self.modcheck(ircmsg.split(self.channel + ' ')[-1].split(' '))
+
          #To end thread without error
          except Exception as e:
             if self.threadquit == True:
@@ -109,6 +112,14 @@ class ircbot():
          return storage.findgame(game_obj)
       else:
          return storage.findgame(twitch.get_live_game(nick))
+
+   def modcheck(self, msg):
+      modlist = storage.getmodlist()
+      if msg[0] == '+o'
+         if msg[1] is not in data
+         
+      elif msg[0] == '-o'
+         commands.removemod(msg)
 
    # Search for correct command to use
    def is_command(self, nick, msg):
