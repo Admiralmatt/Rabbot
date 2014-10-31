@@ -86,7 +86,7 @@ def send_response(nick, msg, data):
       Each command can have different access levels.
    """
    
-   if data['access'] != 'any' and nick not in mods:
+   if data['access'] != 'any' and nick not in ircbot.bot.modlist:
       return
    else:
       response = data['response']

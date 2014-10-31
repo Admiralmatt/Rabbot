@@ -28,7 +28,7 @@ class ircbot():
       self.botnick = botnick
       self.show = str(channel)
       self.modlist = None
-      
+
       self.makesock()
       self.connect()
       self.startthread()
@@ -73,7 +73,7 @@ class ircbot():
 
             elif ircmsg.find(':jtv MODE ' + self.channel) != -1:
                self.modcheck(ircmsg.split(self.channel + ' ')[-1].split(' '))
-               
+
 
          #To end thread without error
          except Exception as e:
@@ -151,10 +151,11 @@ class ircbot():
       elif message.find(':jtv!jtv@jtv.tmi.twitch.tv privmsg rab_bot :the moderators of this room are:') != -1:
          modlist = storage.getmodlist()
          self.modlist = (message.strip('\r\n').split('are: ')[-1].split(', '))
-         modlist['mods'] = self.modlist         
+         modlist['mods'] = self.modlist
+         self.sendmsg('Mod list updated')
          storage.save()
 
-      
+
 
 
 bot = ircbot()
