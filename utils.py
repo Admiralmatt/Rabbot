@@ -68,7 +68,7 @@ def mod_only(func):
     """Prevent an event-handler function from being called by non-moderators
     Usage:
     @mod_only
-    def on_event(self, conn, event, ...):
+    def func(nick):
     ...
     """
 
@@ -87,3 +87,28 @@ def mod_only(func):
             response(nick)
             return
     return wrapper
+
+def admin_only(func):
+    """Prevent an event-handler function from being called by anyone other then the streamer or admin.
+    Usage:
+    @admin_only
+    def func(nick):
+    ...
+    """
+
+    # Only complain about non-mods with throttle
+    # but allow the command itself to be run without throttling
+    @throttle()
+    def response(nick):
+        ircbot.bot.sendmsg('That is an admin-only command', nick)
+            
+    # Only complain about non-mods with throttle
+    # but allow the command itself to be run without throttling
+    def wrapper(nick, *args, **kwargs):
+        if nick in (ircbot.bot.show, 'admiralmatt'):
+            return func(nick, *args, **kwargs)
+        else:
+            response(nick)
+            return
+    return wrapper
+

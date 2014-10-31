@@ -5,7 +5,7 @@ from sendemail import send_email
 import utils
 import twitch
 
-@utils.mod_only
+@utils.admin_only
 def bot_close(nick): #Disconnect from server
    """
       <Mod only command>
@@ -86,7 +86,9 @@ def send_response(nick, msg, data):
       Each command can have different access levels.
    """
    
-   if data['access'] != 'any' and nick not in ircbot.bot.modlist:
+   if data['access'] == 'admin' and nick not in (ircbot.bot.show, 'admiralmatt'):
+      return
+   elif data['access'] == 'mod' and nick not in (ircbot.bot.modlist, ircbot.bot.show):
       return
    else:
       response = data['response']
