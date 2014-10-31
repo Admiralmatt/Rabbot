@@ -139,22 +139,7 @@ class ircbot():
 
    # Decide if a command has been entered
    def command(self, nick, channel, message):
-
-      if message.find(':!help\r\n')!= -1:
-         commands.help_comm(nick)
-
-      elif message.find(':!hello\r\n') != -1:
-         commands.hello_comm(nick)
-
-      elif message.find(':!test\r\n') != -1:
-         commands.test_comm(nick)
-
-      elif message.find(':!try\r\n') != -1:
-         commands.test_comm(nick)
-
-         #ALL ABOVE ARE TEST COMMANDS (WILL BE REMOVED LATER)
-
-      elif message.find(':!') != -1:
+      if message.find(':!') != -1:
          self.is_command(nick, message.split(':!')[-1].split())
 
 
