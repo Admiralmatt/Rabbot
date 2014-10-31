@@ -36,8 +36,8 @@ If you want to contact me about Rabbot (bug reports, feedback, or if you want it
 * **!(Depends)** Posts a static response to a command. Or random response from list.
 All commands and responces are listed in data file.
 Each command can have different access levels.
-* Admin = Only useable by streamer or bot admin.
-* Mod = Only usable by mods on stream.
-* All = Useable by anyone.
+* **Admin** = Only useable by streamer or bot admin.
+* **Mod** = Only usable by mods on stream.
+* **All** = Useable by anyone.
 
  Contact me to add a command to this list
