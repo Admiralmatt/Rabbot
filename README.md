@@ -1,0 +1,4 @@
+Rabbot
+======
+
+Irc chatbot
