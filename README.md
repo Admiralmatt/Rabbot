@@ -37,4 +37,4 @@ If you want to contact me about Rabbot (bug reports, feedback, or if you want it
 All commands and responces are listed in data file.
 Each command can have different access levels.
 
- Contact me to add a cammand to this list
+ Contact me to add a command to this list
