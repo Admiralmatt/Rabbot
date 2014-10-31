@@ -6,17 +6,6 @@ import utils
 import twitch
 
 @utils.mod_only
-def hello_comm(nick):
-   ircbot.bot.sendmsg('Hello!')
-
-@utils.throttle(60)
-def help_comm(nick = None):
-   ircbot.bot.sendmsg('My other command is !test and !hello.', nick)
-
-def test_comm(nick = None):
-   ircbot.bot.sendmsg('test', nick)
-
-@utils.mod_only
 def bot_close(nick): #Disconnect from server
    """
       <Mod only command>

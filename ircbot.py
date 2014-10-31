@@ -73,8 +73,7 @@ class ircbot():
             elif ircmsg.find(':jtv MODE ' + self.channel) != -1:
                self.modcheck(ircmsg.split(self.channel + ' ')[-1].split(' '))
 
-               #>>> bot.sendmsg('/mods')
-               #>>> :jtv!jtv@jtv.tmi.twitch.tv PRIVMSG rab_bot :The moderators of this room are: admiralmatt, rab_bot
+         #>>> bot.sendmsg('/mods')
                
 
          #To end thread without error
@@ -158,6 +157,14 @@ class ircbot():
    def command(self, nick, channel, message):
       if message.find(':!') != -1:
          self.is_command(nick, message.split(':!')[-1].split())
+
+      elif message.find(':jtv!jtv@jtv.tmi.twitch.tv PRIVMSG rab_bot :The moderators of this room are:') != -1:
+         storage.modlist(message.split('are: ')[-1].split(', '))
+
+
+      
+#:jtv!jtv@jtv.tmi.twitch.tv PRIVMSG rab_bot :The moderators of this room are: admiralmatt, rab_bot
+
 
 
 bot = ircbot()
