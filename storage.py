@@ -18,7 +18,7 @@ def getgamepath():
 
 def getmodlist():
     from ircbot import bot
-    modlist = data.setdefault('shows', {}).setdefault(bot.show, {"name": bot.show}).setdefault('mods')
+    modlist = data.setdefault('shows', {}).setdefault(bot.show, {"name": bot.show})
     return modlist
 
 #Search records to see if game allready exists.
@@ -72,10 +72,6 @@ def findgame(game = None):
     path[str(game['_id'])] = gamedata
     save()
     return gamedata
-
-def modupdate(modlist):
-    pass
-    
 
 load()
 
