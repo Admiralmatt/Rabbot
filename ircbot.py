@@ -115,11 +115,13 @@ class ircbot():
 
    def modcheck(self, msg):
       modlist = storage.getmodlist()
-      if msg[0] == '+o'
-         if msg[1] is not in data
+      if msg[0] == '+o':
+         if msg[1] not in modlist:
+            modlist.append(msg[1])
          
-      elif msg[0] == '-o'
-         commands.removemod(msg)
+      if msg[0] == '-o':
+         if msg[1] in modlist:
+            modlist.remove(msg[1])
 
    # Search for correct command to use
    def is_command(self, nick, msg):
