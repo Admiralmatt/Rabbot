@@ -2,7 +2,6 @@ import time
 import ircbot
 import storage
 
-mods = storage.data['mods']
 
 DEFAULT_THROTTLE = 15
 
@@ -82,7 +81,7 @@ def mod_only(func):
     # Only complain about non-mods with throttle
     # but allow the command itself to be run without throttling
     def wrapper(nick, *args, **kwargs):
-        if nick in mods:
+        if nick in ircbot.bot.modlist:
             return func(nick, *args, **kwargs)
         else:
             response(nick)

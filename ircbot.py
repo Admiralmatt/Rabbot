@@ -27,6 +27,7 @@ class ircbot():
       self.server = server
       self.botnick = botnick
       self.show = str(channel)
+      self.modlist = storage.getmodlist()
       
       self.makesock()
       self.connect()
@@ -72,6 +73,10 @@ class ircbot():
             elif ircmsg.find(':jtv MODE ' + self.channel) != -1:
                self.modcheck(ircmsg.split(self.channel + ' ')[-1].split(' '))
 
+               #>>> bot.sendmsg('/mods')
+               #>>> :jtv!jtv@jtv.tmi.twitch.tv PRIVMSG rab_bot :The moderators of this room are: admiralmatt, rab_bot
+               
+
          #To end thread without error
          except Exception as e:
             if self.threadquit == True:
@@ -114,14 +119,13 @@ class ircbot():
          return storage.findgame(twitch.get_live_game(nick))
 
    def modcheck(self, msg):
-      modlist = storage.getmodlist()
       if msg[0] == '+o':
-         if msg[1] not in modlist:
-            modlist.append(msg[1])
+         if msg[1] not in self.modlist:
+            self.modlist.append(msg[1])
          
       if msg[0] == '-o':
-         if msg[1] in modlist:
-            modlist.remove(msg[1])
+         if msg[1] in self.modlist:
+            self.modlist.remove(msg[1])
 
    # Search for correct command to use
    def is_command(self, nick, msg):
