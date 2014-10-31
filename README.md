@@ -3,7 +3,7 @@ Rabbot
 
 Rabbot is a twitch chat bot
 
-* Rabbot keeps track of any stats (like **!death** or **!tilt**) that the streamer wants kept track of.
+* Rabbot keeps track of any stats (like **!death**) that the streamer wants kept track of.
 
 If you want to contact me about Rabbot (bug reports, feedback, or if you want it in your channel) send me an email <admiralmatt107@gmail.com>.
 
