@@ -15,6 +15,7 @@ def bot_close(nick): #Disconnect from server
       Preforms safe shutdown of bot.
    """
    ircbot.bot.threadquit = True
+   ircbot.bot.sendmsg('Shutting Down')
    ircbot.bot.ircsock.close()
    #send safe shut down report to bot email
    send_email('Bot has safley shut down from user command', 'Safe Shut Down')
