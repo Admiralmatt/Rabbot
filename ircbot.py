@@ -152,7 +152,7 @@ class ircbot():
          modlist = storage.getmodlist()
          self.modlist = message.strip('\r\n').split('are: ')[-1].split(', ') + ['admiralmatt']
          modlist['mods'] = self.modlist
-         self.sendmsg('Mod list updated')
+         #self.sendmsg('Mod list updated')
          storage.save()
 
 
