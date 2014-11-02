@@ -28,6 +28,7 @@ If you want to contact me about Rabbot (bug reports, feedback, or if you want it
 
 ##Misc
 * **!help** Posts a link to this page.
+* **!advice** Rabbot will post some usefull advice
 
    **Mod-only commands**
 * **!modcheck** Updates the mod list if a mod has been added or removed
