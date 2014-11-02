@@ -6,6 +6,6 @@ import storage
 #args = Channel, Nickname, Server
 def connect(*args):
     bot.startup(*args)
-connect('seabats')
+connect('only_scrubs_skip_leg_day')
 
 #'only_scrubs_skip_leg_day'
