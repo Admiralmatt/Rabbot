@@ -41,4 +41,4 @@ Each command can have different access levels.
 * **Mod** = Only usable by mods on stream.
 * **All** = Useable by anyone.
 
- Contact me to add a command to this list
+ Feel free to contact me to add a command to this list
