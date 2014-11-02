@@ -101,6 +101,10 @@ def stat_print(nick, stat):
     if count > 1:
         stat += '\'s'
     ircbot.bot.sendmsg('%d %s for %s' % (count, stat, game['name']))
+
+def statcheck(nick):
+    msg = ', '.join(storage.data['allstats'])
+    ircbot.bot.sendmsg('Stats currently being tracked are: ' + msg)
     
 
 def change(nick, stat, command = None, amt = None):

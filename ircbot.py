@@ -142,7 +142,11 @@ class ircbot():
       elif msg[0] in data['responses']:
          commands.send_response(nick, msg[0], data['responses'][msg[0]])
 
+      elif msg[0] == 'statcheck':
+         stats.statcheck(nick)
 
+
+         
    # Decide if a command has been entered
    def command(self, nick, channel, message):
       if message.find(':!') != -1:
