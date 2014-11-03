@@ -21,8 +21,7 @@ If you want to contact me about Rabbot (bug reports, feedback, or if you want it
 * **!(STAT) remove** Removes 1 from (STAT) counter.
 * **!(STAT) count** Posts the current (STAT) count for current game. Auto called after stat update.
 * **!stats** Posts all stats that are currently set up to be tracked.
-
- To add to this list the **!(STAT) new** command must be used.
+		To add to this list, the **!(STAT) new** command must be used.
 
    **Mod-only commands**
 * **!(STAT) add #** Adds # amount to (STAT)
