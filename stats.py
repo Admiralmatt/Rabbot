@@ -55,6 +55,21 @@ def remove(nick, stat, n = None):
         return
     
 @utils.mod_only
+def multiremove(nick, stat, n = None):
+    """
+        <Mod only command>
+        
+        Command: !<STAT> remove #
+        
+        Removes # from <STAT> counter.
+    """
+    n = -1 if n is None else int(-n)
+    game = stat_update(nick, stat, n)
+    if game is None:
+        ircbot.bot.sendmsg("Not currently playing any game")
+        return
+    
+@utils.mod_only
 def newstat(nick, stat, amt = 1):
     """
         <Mod only command>
@@ -119,8 +134,11 @@ def change(nick, stat, command = None, amt = None):
     elif command == 'new': #mod only
         newstat(nick, stat)
             
-    elif command == 'remove': 
-        remove(nick, stat, amt)
+    elif command == 'remove' and amt != 1: 
+        multiremove(nick, stat, amt)
+
+    elif command == 'remove':
+        remove(nick, stat)
         
     elif command == 'set': #mod only
         setstat(nick, stat, amt)

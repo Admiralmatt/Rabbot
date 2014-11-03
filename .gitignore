@@ -1,4 +1,5 @@
 *.json
 *.docx
 *.pyc
+*.log
 sendemail.py

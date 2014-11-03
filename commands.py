@@ -39,10 +39,10 @@ def game_anounce(nick):
 
 
 #assume msg[0] = 'game'
-def gamecheck(nick, msg):
+def gamecheck(nick, msg, msgcap):
    try:
       if msg[1] == 'override':
-         msg[2] = ' '.join(msg[2:])
+         msg[2] = ' '.join(msgcap[2:])
          game_override(nick, msg[2])
 
       elif msg[1] == 'refresh':

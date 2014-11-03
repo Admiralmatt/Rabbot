@@ -62,11 +62,14 @@ class ircbot():
       while 1: # Stay connected to the server and find commands
          try:
             ircmsg = self.ircsock.recv(4096) # Receive data from the server
+            if len(ircmsg) == 0:
+               print 'HELPPPPPP'
+               send_email('No Data') #send error report to bot email
             print(ircmsg) # Print what's coming from the server
             if ircmsg.find(' PRIVMSG ') != -1:
                nick = ircmsg.split('!')[0][1:]
                channel = ircmsg.split(' PRIVMSG ')[-1].split(' :')[0]
-               self.command(nick, channel, ircmsg.lower()) #ircmsg.lower = makes all commands lowercase
+               self.command(nick, channel, ircmsg.lower(), ircmsg) #ircmsg.lower = makes all commands lowercase
 
             if ircmsg.find('PING :') != -1: # Responds to server ping
                self.ircsock.send('PONG :pingis\n')
@@ -137,7 +140,7 @@ class ircbot():
          stats.change(nick, msg[0], msg[1], msg[2])
 
       elif msg[0] == 'game':
-         commands.gamecheck(nick, msg)
+         commands.gamecheck(nick, msg, msgcap.split(':!')[-1].split())
 
       elif msg[0] in data['responses']:
          commands.send_response(nick, msg[0], data['responses'][msg[0]])
@@ -148,9 +151,9 @@ class ircbot():
 
          
    # Decide if a command has been entered
-   def command(self, nick, channel, message):
+   def command(self, nick, channel, message, msgcap):
       if message.find(':!') != -1:
-         self.is_command(nick, message.split(':!')[-1].split())
+         self.is_command(nick, message.split(':!')[-1].split(), msgcap)
 
       #get a list of current mods on the stream
       elif message.find(':jtv!jtv@jtv.tmi.twitch.tv privmsg rab_bot :the moderators of this room are:') != -1:
@@ -162,12 +165,6 @@ class ircbot():
 
 
 
-
 bot = ircbot()
-
-
-
-
-
 
 
