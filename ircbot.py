@@ -142,7 +142,7 @@ class ircbot():
       elif msg[0] in data['responses']:
          commands.send_response(nick, msg[0], data['responses'][msg[0]])
 
-      elif msg[0] == 'statcheck':
+      elif msg[0] == 'stats':
          stats.statcheck(nick)
 
 
@@ -152,6 +152,7 @@ class ircbot():
       if message.find(':!') != -1:
          self.is_command(nick, message.split(':!')[-1].split())
 
+      #get a list of current mods on the stream
       elif message.find(':jtv!jtv@jtv.tmi.twitch.tv privmsg rab_bot :the moderators of this room are:') != -1:
          modlist = storage.getmodlist()
          self.modlist = message.strip('\r\n').split('are: ')[-1].split(', ') + ['admiralmatt']
