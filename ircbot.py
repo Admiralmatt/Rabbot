@@ -120,7 +120,7 @@ class ircbot():
          return storage.findgame(twitch.get_live_game(nick))
 
    # Search for correct command to use
-   def is_command(self, nick, msg):
+   def is_command(self, nick, msg, msgcap):
       data = storage.data
 
       if msg[0] == 'bot_close':
