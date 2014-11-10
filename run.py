@@ -6,5 +6,6 @@ import storage
 #args = Channel, Nickname, Server
 def connect(*args):
     bot.startup(*args)
+connect()
 
-#Default connection is #admiralmatt
+#'only_scrubs_skip_leg_day'
