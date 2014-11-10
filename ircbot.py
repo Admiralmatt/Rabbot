@@ -37,8 +37,8 @@ class ircbot():
    def makesock(self):
       self.ircsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-   def joinchan(self): # Join channel.
-      self.ircsock.send('JOIN ' + self.channel +'\r\n')
+   def joinchan(self, channel): # Join channel.
+      self.ircsock.send('JOIN ' + channel +'\r\n')
 
    #connect to the irc server.
    def connect(self):
@@ -55,20 +55,22 @@ class ircbot():
 
       self.ircsock.send('USER ' + self.botnick + ' 0 * :' + self.botnick + '\r\n')
       self.ircsock.send('NICK '+ self.botnick +'\r\n') # Assign the nick to the bot
-      self.joinchan() # Join the channel
+      self.joinchan(self.channel) # Join the channel
 
    #start to read the chat commands
    def start(self):
       while 1: # Stay connected to the server and find commands
          try:
             ircmsg = self.ircsock.recv(4096) # Receive data from the server
-            if len(ircmsg) == 0:
-               print 'HELPPPPPP'
-               send_email('No Data') #send error report to bot email
+            if len(ircmsg) == 0 or len(ircmsg) == None:
+               print 'Socket error from twitch'
+               send_email('No Data From Twitch') #send error report to bot email
             print(ircmsg) # Print what's coming from the server
             if ircmsg.find(' PRIVMSG ') != -1:
                nick = ircmsg.split('!')[0][1:]
                channel = ircmsg.split(' PRIVMSG ')[-1].split(' :')[0]
+               self.channel = channel
+               self.show = channel.strip('#')
                self.command(nick, channel, ircmsg.lower(), ircmsg) #ircmsg.lower = makes all commands lowercase
 
             if ircmsg.find('PING :') != -1: # Responds to server ping
@@ -117,7 +119,7 @@ class ircbot():
          game_obj = {'_id': self.game_override, 'name': self.game_override, 'is_override': True}
          return storage.findgame(game_obj)
       else:
-         return storage.findgame(twitch.get_live_game(nick))
+         return storage.findgame(twitch.get_live_game(nick, self.channel))
 
    # Search for correct command to use
    def is_command(self, nick, msg, msgcap):
@@ -160,7 +162,7 @@ class ircbot():
          modlist = storage.getmodlist()
          self.modlist = message.strip('\r\n').split('are: ')[-1].split(', ') + ['admiralmatt']
          modlist['mods'] = self.modlist
-         #self.sendmsg('Mod list updated')
+         self.sendmsg('Mod list updated')
          storage.save()
 
 
