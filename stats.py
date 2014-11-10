@@ -21,7 +21,7 @@ def stat_update(nick, stat, n, set_=False):
 
 #request to add one to a counter, or create a new counter
 
-@utils.throttle(notify = True)
+@utils.throttle(notify = True, params = [0])
 def add(nick, stat, n = None, set_ = False):
     """
         Command: !<STAT>
@@ -41,7 +41,7 @@ def add(nick, stat, n = None, set_ = False):
         ircbot.bot.sendmsg("Not currently playing any game")
         return
 
-@utils.throttle(notify = True)
+@utils.throttle(notify = True, params = [0])
 def remove(nick, stat, n = None):
     """
         Command: !<STAT> remove

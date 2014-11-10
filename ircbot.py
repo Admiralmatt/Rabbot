@@ -160,7 +160,7 @@ class ircbot():
       #get a list of current mods on the stream
       elif message.find(':jtv!jtv@jtv.tmi.twitch.tv privmsg rab_bot :the moderators of this room are:') != -1:
          modlist = storage.getmodlist()
-         self.modlist = message.strip('\r\n').split('are: ')[-1].split(', ') + ['admiralmatt']
+         self.modlist = message.strip('\r\n').split('are: ')[-1].split(', ') + ['admiralmatt',self.show]
          modlist['mods'] = self.modlist
          self.sendmsg('Mod list updated')
          storage.save()

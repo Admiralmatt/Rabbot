@@ -41,8 +41,8 @@ class throttle(object):
                 param = kwargs[i]
                 if isinstance(param, str):
                     param = param.lower()
-                params.append(param)
-            return tuple(params)
+            params.append(param)
+        return tuple(params)
                         
     def __call__(self, func):
         def wrapper(nick, *args, **kwargs):
