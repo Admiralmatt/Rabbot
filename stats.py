@@ -77,9 +77,10 @@ def newstat(nick, stat, amt = 1):
         Command: !<STAT> new
         
         Creates a new <STAT> counter that has not been used in any game so far.
-    """    
-    if stat not in storage.data['allstats']:
-        storage.data['allstats'].append(stat)
+    """
+    channeldata = storage.getchanneldata()
+    if stat not in channeldata['showstats']:
+        channeldata['showstats'].append(stat)
     add(nick, stat, amt)
 
 @utils.mod_only
@@ -114,11 +115,11 @@ def stat_print(nick, stat):
         return
     count = game['stats'][stat]
     if count > 1:
-        stat += '\'s'
+        stat += 's'
     ircbot.bot.sendmsg('%d %s for %s' % (count, stat, game['name']))
 
-def statcheck(nick):
-    msg = ', '.join(storage.data['allstats'])
+def statcheck(nick, channeldata):
+    msg = ', '.join(channeldata['showstats'])
     ircbot.bot.sendmsg('Stats currently being tracked are: ' + msg)
     
 

@@ -21,6 +21,13 @@ def getmodlist():
     modlist = data.setdefault('shows', {}).setdefault(bot.show, {"name": bot.show})
     return modlist
 
+def getchanneldata():
+    from ircbot import bot
+    channeldata = data['shows'][bot.show]
+    channeldata.setdefault("showstats", ["death"])
+    channeldata.setdefault("showresponse", {})
+    return channeldata
+
 #Search records to see if game allready exists.
 #if not, will add new game to records
 def findgame(game = None):

@@ -75,21 +75,16 @@ class ircbot():
 
             if ircmsg.find('PING :') != -1: # Responds to server ping
                self.ircsock.send('PONG :pingis\n')
-
-            elif ircmsg.find(':jtv MODE ' + self.channel) != -1:
-               self.modcheck(ircmsg.split(self.channel + ' ')[-1].split(' '))
-
+               
 
          #To end thread without error
          except Exception as e:
             if self.threadquit == True:
                break
-            '''
             print 'Out Of Loop' #in case of error
             print e
             send_email(str(e)) #send error report to bot email
-            break
-            '''
+            
 
 #MUST CATCH USERNAME TAKEN ERROR
 
@@ -124,18 +119,20 @@ class ircbot():
    # Search for correct command to use
    def is_command(self, nick, msg, msgcap):
       data = storage.data
-
+      channeldata = storage.getchanneldata()
+      
       if msg[0] == 'bot_close':
          commands.bot_close(nick)
+         
       try:
-         if msg[1] == 'new' and msg[0] not in data['allstats']:
+         if msg[1] == 'new' and msg[0] not in channeldata['showstats']:
             print 'New Stat'
             stats.change(nick, msg[0], msg[1])
             return
       except IndexError:
          pass
 
-      if msg[0] in data['allstats']:
+      if msg[0] in channeldata['showstats']:
          if len(msg) is not 3:
             msg.extend([None] * 3)
          print 'Change Stats %s' % msg
@@ -144,11 +141,15 @@ class ircbot():
       elif msg[0] == 'game':
          commands.gamecheck(nick, msg, msgcap.split(':!')[-1].split())
 
+      elif msg[0] in channeldata['showresponse']:
+         commands.send_response(nick, msg[0], channeldata['showresponse'][msg[0]])
+      
       elif msg[0] in data['responses']:
          commands.send_response(nick, msg[0], data['responses'][msg[0]])
 
       elif msg[0] == 'stats':
-         stats.statcheck(nick)
+         print 'f'
+         stats.statcheck(nick, channeldata)
 
 
          
@@ -162,7 +163,7 @@ class ircbot():
          modlist = storage.getmodlist()
          self.modlist = message.strip('\r\n').split('are: ')[-1].split(', ') + ['admiralmatt',self.show]
          modlist['mods'] = self.modlist
-         self.sendmsg('Mod list updated')
+         print 'Mod list updated'
          storage.save()
 
 
