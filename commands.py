@@ -108,7 +108,23 @@ def refresh(nick):
 
 @utils.mod_only
 def lockdown(nick, msg):
+   """
+      Command: !lockdown
+      Command: !lockdown off
+      
+      Prevent anyone other then mods to use bot
+   """
    if msg[1] == 'off':
-      bot.lockdown = False
+      ircbot.bot.lockdown = False
    else:
-      bot.lockdown = True
+      ircbot.bot.lockdown = True
+
+
+
+
+
+
+
+
+
+
