@@ -117,6 +117,7 @@ class ircbot():
       else:
          return storage.findgame(twitch.get_live_game(nick, self.channel))
 
+   # Only mods can use bot
    @utils.mod_only
    def lockdown_mode(self, nick, msg, msgcap):
       self.is_command(nick, msg, msgcap)
