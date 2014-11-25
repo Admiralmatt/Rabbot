@@ -105,3 +105,10 @@ def refresh(nick):
    """
    twitch.get_live_game.reset_throttle()
    game_anounce(nick)
+
+@utils.mod_only
+def lockdown(nick, msg):
+   if msg[1] == 'off':
+      bot.lockdown = False
+   else:
+      bot.lockdown = True

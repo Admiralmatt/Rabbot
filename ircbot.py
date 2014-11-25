@@ -21,6 +21,7 @@ class ircbot():
       self.currentgame = None
       self.game_override = None
       self.show_override = None
+      self.lockdown = False
 
    def startup(self, channel='admiralmatt',botnick='Rab_bot',server='irc.twitch.tv'):
       self.channel = '#' + str(channel)
@@ -28,7 +29,7 @@ class ircbot():
       self.botnick = botnick
       self.show = str(channel)
       self.modlist = None
-
+      
       self.makesock()
       self.connect()
       self.startthread()
@@ -116,6 +117,10 @@ class ircbot():
       else:
          return storage.findgame(twitch.get_live_game(nick, self.channel))
 
+   @utils.mod_only
+   def lockdown_mode(self, nick, msg, msgcap):
+      self.is_command(nick, msg, msgcap)
+
    # Search for correct command to use
    def is_command(self, nick, msg, msgcap):
       data = storage.data
@@ -148,15 +153,21 @@ class ircbot():
          commands.send_response(nick, msg[0], data['responses'][msg[0]])
 
       elif msg[0] == 'stats':
-         print 'f'
          stats.statcheck(nick, channeldata)
 
+      elif msg[0] == 'lockdown':
+         commands.lockdown(nick, msg)
 
          
    # Decide if a command has been entered
    def command(self, nick, channel, message, msgcap):
-      if message.find(':!') != -1:
+      
+      if message.find(':!') != -1 and self.lockdown == False:
          self.is_command(nick, message.split(':!')[-1].split(), msgcap)
+
+      elif message.find(':!') != -1 and self.lockdown == True:
+         self.lockdown_mode(nick, message.split(':!')[-1].split(), msgcap)
+
 
       #get a list of current mods on the stream
       elif message.find(':jtv!jtv@jtv.tmi.twitch.tv privmsg rab_bot :the moderators of this room are:') != -1:
