@@ -76,7 +76,9 @@ def mod_only(func):
     # but allow the command itself to be run without throttling
     @throttle()
     def response(nick):
-        ircbot.bot.sendmsg('That is a mod-only command', nick)
+        #Will not send message if in lockdown
+        if ircbot.bot.lockdown != True:
+            ircbot.bot.sendmsg('That is a mod-only command', nick)
             
     # Only complain about non-mods with throttle
     # but allow the command itself to be run without throttling
@@ -100,7 +102,8 @@ def admin_only(func):
     # but allow the command itself to be run without throttling
     @throttle()
     def response(nick):
-        ircbot.bot.sendmsg('That is an admin-only command', nick)
+        if ircbot.bot.lockdown != True:
+            ircbot.bot.sendmsg('That is an admin-only command', nick)
             
     # Only complain about non-mods with throttle
     # but allow the command itself to be run without throttling

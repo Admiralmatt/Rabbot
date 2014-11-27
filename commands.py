@@ -114,17 +114,17 @@ def lockdown(nick, msg):
       
       Prevent anyone other then mods to use bot
    """
+   msg.extend([None])
+
    if msg[1] == 'off':
       ircbot.bot.lockdown = False
+      print "Mod Only Mode Over"
    else:
       ircbot.bot.lockdown = True
+      print "Mod Only Mode"
 
 
-
-
-
-
-
-
-
-
+# Only mods can use bot
+@utils.mod_only
+def lockdown_mode(nick, msg, msgcap):
+   ircbot.bot.is_command(nick, msg, msgcap)
