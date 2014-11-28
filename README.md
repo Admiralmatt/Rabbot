@@ -10,6 +10,8 @@ If you want to contact me about Rabbot (bug reports, feedback, or if you want it
 
 ##Game
 * **!game** Post the game currently being played.
+* **!game good/bad** Vote whether you believe this game is entertaining to watch on-stream.
+					 Voting a second time replaces your existing vote.
  
    **Mod-only commands**
 * **!game override (NAME)** Force Rabbot to use (NAME) as the current game.
@@ -43,4 +45,4 @@ Each command can have different access levels.
 * **Mod** = Only usable by mods on stream.
 * **All** = Useable by anyone.
 
- Feel free to contact me to add a command to this list
+ Feel free to contact me to add a command to this list.

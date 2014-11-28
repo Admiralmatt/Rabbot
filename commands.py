@@ -18,7 +18,7 @@ def bot_close(nick): #Disconnect from server
    ircbot.bot.threadquit = True
    ircbot.bot.sendmsg('Shutting Down')
    ircbot.bot.ircsock.close()
-   #send safe shut down report to bot email
+   # Send safe shut down report to bot email
    send_email('Bot has safley shut down from user command', 'Safe Shut Down')
 
 
@@ -33,6 +33,7 @@ def game_anounce(nick):
       msg = 'Not currently playing any game'
    else:
       msg = 'Currently playing: %s' % game['name']
+      # If there are any ratings for the game it will be displayed
       if game.get('rating'):
          good = sum(game['rating'].values())
          msg += " (rating %.0f%%)" % (100*good/len(game['rating']))
@@ -140,13 +141,18 @@ def lockdown_mode(nick, msg, msgcap):
 
 
 def rategame(nick, msg):
-   
+   """
+      Command: !game good
+      Command: !game bad
+      
+      Declare whether you believe this game is entertaining to watch on-stream.
+      Voting a second time replaces your existing vote.
+   """
    game = ircbot.bot.get_current_game(nick)
-   print 'here'
    if game is None:
       msg = 'Not currently playing any game'
       return
-      
+   
    game.setdefault("rating", {})
 
    if msg in ('good'):
