@@ -76,17 +76,17 @@ class ircbot():
 
             if ircmsg.find('PING :') != -1: # Responds to server ping
                self.ircsock.send('PONG :pingis\n')
-               
 
          #To end thread without error
+               
          except Exception as e:
             if self.threadquit == True:
                break
             print 'Out Of Loop' #in case of error
             print e
             send_email(str(e)) #send error report to bot email
-            
 
+            
 #MUST CATCH USERNAME TAKEN ERROR
 
 

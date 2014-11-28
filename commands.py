@@ -4,6 +4,7 @@ import ircbot
 from sendemail import send_email
 import utils
 import twitch
+from storage import save
 
 @utils.admin_only
 def bot_close(nick): #Disconnect from server
@@ -32,9 +33,13 @@ def game_anounce(nick):
       msg = 'Not currently playing any game'
    else:
       msg = 'Currently playing: %s' % game['name']
-      print 'got game'
+      if game.get('rating'):
+         good = sum(game['rating'].values())
+         msg += " (rating %.0f%%)" % (100*good/len(game['rating']))
+
    if ircbot.bot.game_override is not None:
       msg += ' (Overridden)'
+
    ircbot.bot.sendmsg(msg)
 
 
@@ -47,6 +52,10 @@ def gamecheck(nick, msg, msgcap):
 
       elif msg[1] == 'refresh':
          refresh(nick)
+
+      elif msg[1] in ('good', 'bad'):
+         rategame(nick, msg[1])
+
    except IndexError:
       pass
       game_anounce(nick)
@@ -128,3 +137,31 @@ def lockdown(nick, msg):
 @utils.mod_only
 def lockdown_mode(nick, msg, msgcap):
    ircbot.bot.is_command(nick, msg, msgcap)
+
+
+def rategame(nick, msg):
+   
+   game = ircbot.bot.get_current_game(nick)
+   print 'here'
+   if game is None:
+      msg = 'Not currently playing any game'
+      return
+      
+   game.setdefault("rating", {})
+
+   if msg in ('good'):
+      game['rating'][nick] = True
+      save()
+      rate_respond(nick, game)
+
+   elif msg in ('bad'):
+      game['rating'][nick] = False
+      save()
+      rate_respond(nick, game)
+
+@utils.throttle(10)
+def rate_respond(nick, game):
+   if game and game.get('rating'):
+      good = sum(game['rating'].values())
+      count = len(game['rating'])
+      ircbot.bot.sendmsg ('Rating for %s is now %.0f%% (%d/%d)' % (game['name'], 100*good/count, good, count))

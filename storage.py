@@ -10,17 +10,19 @@ def load(): #Load Data From File
     with open('data.json', 'r') as fp:
         data = json.load(fp)
 
-#returns (path) that navagates to games portion of records
+#returns (path) that navigates to games portion of records
 def getgamepath():
     from ircbot import bot
     path = data.setdefault('shows', {}).setdefault(bot.show, {"name": bot.show}).setdefault('games', {})
     return path
 
+#returns (path) that navigates to list of mods for channel
 def getmodlist():
     from ircbot import bot
     modlist = data.setdefault('shows', {}).setdefault(bot.show, {"name": bot.show})
     return modlist
 
+#returns (path) that navigates to games portion of records
 def getchanneldata():
     from ircbot import bot
     channeldata = data['shows'][bot.show]
@@ -81,19 +83,6 @@ def findgame(game = None):
     return gamedata
 
 load()
-
-'''
-# This is a new game
-gamedata = {
-'id': str(game['_id']),
-'name': game['name'],
-'stats': {},
-}
-if not readonly:
-games[str(game['_id'])] = gamedata
-save()
-return maybe_immutable(gamedata)
-'''
 
         
 '''
