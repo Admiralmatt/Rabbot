@@ -1,9 +1,12 @@
 import json
 
+import drive
+
 def save(): #Save Data to File
     print 'Saving'
     with open('data.json', 'w') as fp:
         json.dump(data, fp, indent=2, sort_keys=True)
+    drive.drivesave()
 
 def load(): #Load Data From File
     global data
@@ -82,6 +85,7 @@ def findgame(game = None):
     save()
     return gamedata
 
+drive.driveload()
 load()
 
         
