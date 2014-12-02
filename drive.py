@@ -22,10 +22,15 @@ drive = GoogleDrive(gauth)
 def driveload():
     # Create GoogleDriveFile instance
     file1 = drive.CreateFile({'id': '0B-KACwkTF1mEdHZaTlZIX3kzd1k'})
-    file1.GetContentFile('test.json')
+    file1.GetContentFile('data.json')
     
 
 def drivesave():
     file1 = drive.CreateFile({'id': '0B-KACwkTF1mEdHZaTlZIX3kzd1k'})
-    file1.SetContentFile('test.json')
+    file1.SetContentFile('data.json')
     file1.Upload()
+
+def drivelogin():
+    # Create GoogleDriveFile instance
+    file2 = drive.CreateFile({'id': '0B-KACwkTF1mERkhIR1k0Y0Z3R0E'})
+    return file2.GetContentString()

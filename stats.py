@@ -113,10 +113,13 @@ def stat_print(nick, stat):
     if game is None:
         ircbot.bot.sendmsg("Not currently playing any game")
         return
-    count = game['stats'][stat]
-    if count > 1:
-        stat += 's'
-    ircbot.bot.sendmsg('%d %s for %s' % (count, stat, game['name']))
+    try:
+        count = game['stats'][stat]
+        if count > 1:
+            stat += 's'
+        ircbot.bot.sendmsg('%d %s for %s' % (count, stat, game['name']))
+    except KeyError:
+        pass
 
 def statcheck(nick, channeldata):
     msg = ', '.join(channeldata['showstats'])

@@ -1,7 +1,8 @@
+import storage
 from ircbot import bot
 from sendemail import send_email
 import commands
-import storage
+
 
 #args = Channel, Nickname, Server
 def connect(*args):
