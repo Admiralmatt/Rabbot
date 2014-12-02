@@ -21,7 +21,10 @@ class ircbot():
       self.currentgame = None
       self.game_override = None
       self.show_override = None
+      self.pollchoices = None
       self.lockdown = False
+      self.voting = False
+
 
    def startup(self, channel='admiralmatt',botnick='Rab_bot',server='irc.twitch.tv'):
       self.channel = '#' + str(channel)
@@ -151,6 +154,9 @@ class ircbot():
 
       elif msg[0] == 'stats':
          stats.statcheck(nick, channeldata)
+
+      elif msg[0] == 'vote':
+         commands.vote(nick, msg, msgcap.split(':!')[-1].split())
 
       elif msg[0] == 'lockdown':
          commands.lockdown(nick, msg)
