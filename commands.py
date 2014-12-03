@@ -175,20 +175,31 @@ def rate_respond(nick, game):
 
 def vote(nick, msg, msgcap):
    try:
-      if msg[1] == 'open':
+      # New Poll  MOD_ONLY
+      if msg[1] == 'new':
          msg[2] = ' '.join(msgcap[2:])
-         ircbot.bot.voting = True
          vote.newpoll(nick, msg[2])
-
-      elif msg[1] == 'close':
-         vot.voteclose(nick)
-
-        
-
-      elif msg[1] in (range(len(ircbot.bot.pollchoices))):
-         vote.vote(nick, msg[1])
          
+      # Close Poll  MOD_ONLY
+      elif msg[1] == 'close':
+         vote.voteclose(nick)
 
+      # What are we voting on again?
+      elif msg[1] == 'remind':
+         vote.reminer(nick)
+
+      # Who is Winning/Won?
+      elif msg[1] == 'results':
+         vote.results(nick)
+
+      # Vote On Poll
+      try:
+         if msg[1] in (range(len(a))):
+            vote.vote(nick, msg[1])
+            
+      except TypeError:
+         ircbot.bot.sendmsg('No Poll Currently Open')
+      
    except IndexError:
       pass
 
@@ -206,6 +217,8 @@ def vote(nick, msg, msgcap):
 
 
 
+
+   
 
 
 
