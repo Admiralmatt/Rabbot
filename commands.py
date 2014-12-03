@@ -198,8 +198,8 @@ def vote(nick, msg, msgcap):
             vote.vote(nick, msg[1])
             
       except TypeError:
-         ircbot.bot.sendmsg('No Poll Currently Open')
-      
+         vote.novote(nick)
+         
    except IndexError:
       pass
 

@@ -28,8 +28,7 @@ def reminder(nick):
 
         ircbot.bot.sendmsg('Use !vote # to cast your vote')
 
-    elif ircbot.bot.voting == False:
-        ircbot.bot.sendmsg('No Poll Currently Open')
+    elif ircbot.bot.voting == False: novote(nick)
         
 @utils.mod_only
 def voteclose(nick):
@@ -41,8 +40,7 @@ def voteclose(nick):
 
 # Regester votes
 def vote(nick, msg):
-    if ircbot.bot.voting == False:
-        ircbot.bot.sendmsg('No Poll Currently Open')
+    if ircbot.bot.voting == False: novote(nick)
     else:
         poll[nick] = msg
 
@@ -66,7 +64,9 @@ def results(nick):
     ircbot.bot.sendmsg(question)
     ircbot.bot.sendmsg(response)
 
-
+@utils.throttle()
+def novote(nick):
+    ircbot.bot.sendmsg('No Poll Currently Open')
 
 
 
