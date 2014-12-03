@@ -51,18 +51,18 @@ def vote(nick, msg):
 def results(nick):
     count = Counter(poll.values())
     total = sum(count.values())
-    winner = dict(count.mostcommon(1))
+    winner = dict(count.most_common(1))
     winchoice = winner.keys()
     winamt = winner.get(winchoice[0])
     question = ircbot.bot.pollchoices[0]
     # winmsg EX. = 2) Go Left (75%)
-    winmsg = '%d) %s (%.0f%%)' %(winchoice[0], ircbot.bot.pollchoices[winchoice[0]], 100*winamt/total)
+    winmsg = '%d) %s (%.0f%%)' %(int(winchoice[0]), ircbot.bot.pollchoices[int(winchoice[0])], 100*winamt/total)
 
     # Set up Response for winner or currently winning
     if ircbot.bot.voting == True:
         response = 'Current Leader is %s' % (winmsg)
     elif ircbot.bot.voting == False:
-        response = 'Winner Is: %s' % (winmsg)
+        response = 'Winner is: %s' % (winmsg)
 
     ircbot.bot.sendmsg(question)
     ircbot.bot.sendmsg(response)

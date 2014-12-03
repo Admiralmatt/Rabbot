@@ -185,24 +185,23 @@ def comm_vote(nick, msg, msgcap):
          vote.voteclose(nick)
 
       # What are we voting on again?
-      elif msg[1] == 'remind':
+      elif msg[1] == 'view':
          vote.reminer(nick)
-
-# list or details
-# or view
-
 
       # Who is Winning/Won?
       elif msg[1] == 'results':
          vote.results(nick)
 
       # Vote On Poll
-      #print 'here out'
-      elif ircbot.bot.pollchoices != None and msg[1] in (range(1,len(ircbot.bot.pollchoices))):
-         print 'here in'
-         vote.vote(nick, msg[1])
-      else:
+      try:
+         if int(msg[1]) in (range(1,len(ircbot.bot.pollchoices))):
+            vote.vote(nick, msg[1])
+            
+      except TypeError:
          vote.novote(nick)
+
+      except ValueError:
+         pass
          
    except IndexError:
       pass
