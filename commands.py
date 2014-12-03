@@ -181,7 +181,9 @@ def vote(nick, msg, msgcap):
          vote.newpoll(nick, msg[2])
 
       elif msg[1] == 'close':
-         ircbot.bot.voting = False
+         vot.voteclose(nick)
+
+        
 
       elif msg[1] in (range(len(ircbot.bot.pollchoices))):
          vote.vote(nick, msg[1])
