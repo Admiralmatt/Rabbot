@@ -29,7 +29,11 @@ def vote(nick, msg):
 
 def results(nick, msg):
     count = Counter(poll.values())
-    total = count[]
+    total = sum(count.values())
+
+    winner = dict(count.mostcommon(1))
+    winchoice = winner.keys()
+    winamt = winner.get(winchoice[0])
     
     pass
 
