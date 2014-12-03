@@ -156,7 +156,7 @@ class ircbot():
          stats.statcheck(nick, channeldata)
 
       elif msg[0] == 'vote':
-         commands.vote(nick, msg, msgcap.split(':!')[-1].split())
+         commands.comm_vote(nick, msg, msgcap.split(':!')[-1].split())
 
       elif msg[0] == 'lockdown':
          commands.lockdown(nick, msg)

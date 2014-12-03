@@ -23,8 +23,10 @@ def newpoll(nick, msg):
 def reminder(nick):
     if ircbot.bot.voting == True:
         msg = ircbot.bot.pollchoices
+        ircbot.bot.sendmsg(msg[0])
+        msg.remove(msg[0])
         for x in range(len(msg)):
-            ircbot.bot.sendmsg('%d) %s' % (x, msg[x]))
+            ircbot.bot.sendmsg('%d) %s' % (x+1, msg[x]))
 
         ircbot.bot.sendmsg('Use !vote # to cast your vote')
 
@@ -43,6 +45,7 @@ def vote(nick, msg):
     if ircbot.bot.voting == False: novote(nick)
     else:
         poll[nick] = msg
+        print 'Vote Registered'
 
 @utils.throttle()
 def results(nick):

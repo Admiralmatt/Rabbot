@@ -173,10 +173,10 @@ def rate_respond(nick, game):
       count = len(game['rating'])
       ircbot.bot.sendmsg ('Rating for %s is now %.0f%% (%d/%d)' % (game['name'], 100*good/count, good, count))
 
-def vote(nick, msg, msgcap):
+def comm_vote(nick, msg, msgcap):
    try:
       # New Poll  MOD_ONLY
-      if msg[1] == 'new':
+      if msg[1] == 'open':
          msg[2] = ' '.join(msgcap[2:])
          vote.newpoll(nick, msg[2])
          
@@ -188,16 +188,20 @@ def vote(nick, msg, msgcap):
       elif msg[1] == 'remind':
          vote.reminer(nick)
 
+# list or details
+# or view
+
+
       # Who is Winning/Won?
       elif msg[1] == 'results':
          vote.results(nick)
 
       # Vote On Poll
-      try:
-         if msg[1] in (range(len(a))):
-            vote.vote(nick, msg[1])
-            
-      except TypeError:
+      #print 'here out'
+      elif ircbot.bot.pollchoices != None and msg[1] in (range(1,len(ircbot.bot.pollchoices))):
+         print 'here in'
+         vote.vote(nick, msg[1])
+      else:
          vote.novote(nick)
          
    except IndexError:
