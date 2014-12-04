@@ -22,7 +22,7 @@ def newpoll(nick, msg):
 @utils.throttle()
 def reminder(nick):
     if ircbot.bot.voting == True:
-        msg = ircbot.bot.pollchoices
+        msg = ircbot.bot.pollchoices[:]
         ircbot.bot.sendmsg(msg[0])
         msg.remove(msg[0])
         for x in range(len(msg)):
@@ -38,7 +38,7 @@ def voteclose(nick):
     print 'Poll Closed'
     ircbot.bot.voting = False
     ircbot.bot.sendmsg('Polls Are Closed!')
-    pass
+    results(nick)
 
 # Regester votes
 def vote(nick, msg):
@@ -47,7 +47,7 @@ def vote(nick, msg):
         poll[nick] = msg
         print 'Vote Registered'
 
-@utils.throttle()
+@utils.throttle(5)
 def results(nick):
     count = Counter(poll.values())
     total = sum(count.values())
@@ -55,12 +55,13 @@ def results(nick):
     winchoice = winner.keys()
     winamt = winner.get(winchoice[0])
     question = ircbot.bot.pollchoices[0]
-    # winmsg EX. = 2) Go Left (75%)
-    winmsg = '%d) %s (%.0f%%)' %(int(winchoice[0]), ircbot.bot.pollchoices[int(winchoice[0])], 100*winamt/total)
+    # winmsg EX. = 2) Go Left (75%, 3/4 Votes)
+    winmsg = '%d) %s (%.0f%%, %d/%d Votes)' %(int(winchoice[0]), ircbot.bot.pollchoices[int(winchoice[0])], 100*winamt/total, winamt, total)
+    
 
     # Set up Response for winner or currently winning
     if ircbot.bot.voting == True:
-        response = 'Current Leader is %s' % (winmsg)
+        response = 'Current Leader is: %s' % (winmsg)
     elif ircbot.bot.voting == False:
         response = 'Winner is: %s' % (winmsg)
 

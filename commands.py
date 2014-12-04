@@ -186,7 +186,7 @@ def comm_vote(nick, msg, msgcap):
 
       # What are we voting on again?
       elif msg[1] == 'view':
-         vote.reminer(nick)
+         vote.reminder(nick)
 
       # Who is Winning/Won?
       elif msg[1] == 'results':
@@ -198,6 +198,7 @@ def comm_vote(nick, msg, msgcap):
             vote.vote(nick, msg[1])
             
       except TypeError:
+         print 'Type Error On Vote'
          vote.novote(nick)
 
       except ValueError:
