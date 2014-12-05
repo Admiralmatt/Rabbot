@@ -6,7 +6,7 @@ Rabbot is a twitch chat bot
 * Rabbot keeps track of any stats (like **!death**) that the streamer wants kept track of.
 * Rabbot can also create a poll to ask the chat a question and have them vote on the answer.
 
-If you want to contact me about Rabbot (bug reports, feedback, or if you want it in your channel) send me an email <matthewreed@mail.adelphi.edu>.
+If you want to contact me about Rabbot (bug reports, feedback, or if you want it in your channel) send me an email at <matthewreed@mail.adelphi.edu>.
 
 
 ##Game
