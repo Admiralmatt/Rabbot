@@ -4,7 +4,7 @@ import ircbot
 from sendemail import send_email
 import utils
 import twitch
-from storage import save
+import storage
 
 @utils.admin_only
 def bot_close(nick): #Disconnect from server
@@ -157,12 +157,12 @@ def rategame(nick, msg):
 
    if msg in ('good'):
       game['rating'][nick] = True
-      save()
+      storage.save()
       rate_respond(nick, game)
 
    elif msg in ('bad'):
       game['rating'][nick] = False
-      save()
+      storage.save()
       rate_respond(nick, game)
 
 @utils.throttle(10)
