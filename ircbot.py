@@ -27,6 +27,8 @@ class ircbot():
 
 
    def startup(self, channel='admiralmatt',botnick='Rab_bot',server='irc.twitch.tv'):
+      storage.load()
+      
       self.channel = '#' + str(channel)
       self.server = server
       self.botnick = botnick

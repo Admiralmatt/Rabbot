@@ -1,6 +1,7 @@
 import ircbot
 import utils
 
+import time
 from collections import Counter
 
 @utils.mod_only
@@ -16,20 +17,23 @@ def newpoll(nick, msg):
     ircbot.bot.pollchoices = msg
     print 'Open poll'
     ircbot.bot.sendmsg('Poll Open!')
+    time.sleep(2)
     reminder(nick)
 
 # Post question, options and instructions in chat one after the other
-@utils.throttle()
+@utils.throttle(30)
 def reminder(nick):
     if ircbot.bot.voting == True:
         msg = ircbot.bot.pollchoices[:]
         ircbot.bot.sendmsg(msg[0])
         msg.remove(msg[0])
         for x in range(len(msg)):
+            time.sleep(2)
             ircbot.bot.sendmsg('%d) %s' % (x+1, msg[x]))
 
+        time.sleep(2)
         ircbot.bot.sendmsg('Use !vote # to cast your vote')
-
+        
     elif ircbot.bot.voting == False: novote(nick)
         
 @utils.mod_only
@@ -44,10 +48,10 @@ def voteclose(nick):
 def vote(nick, msg):
     if ircbot.bot.voting == False: novote(nick)
     else:
-        poll[nick] = msg
+        poll[nick] = int(msg)
         print 'Vote Registered'
 
-@utils.throttle(5)
+@utils.throttle(10)
 def results(nick):
     count = Counter(poll.values())
     total = sum(count.values())
@@ -65,7 +69,9 @@ def results(nick):
     elif ircbot.bot.voting == False:
         response = 'Winner is: %s' % (winmsg)
 
+    time.sleep(2)
     ircbot.bot.sendmsg(question)
+    time.sleep(2)
     ircbot.bot.sendmsg(response)
 
 @utils.throttle()

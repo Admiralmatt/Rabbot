@@ -28,7 +28,7 @@ def getmodlist():
 #returns (path) that navigates to games portion of records
 def getchanneldata():
     from ircbot import bot
-    channeldata = data['shows'][bot.show]
+    channeldata = data.setdefault('shows', {}).setdefault(bot.show, {"name": bot.show})
     channeldata.setdefault("showstats", ["death"])
     channeldata.setdefault("showresponse", {})
     return channeldata
