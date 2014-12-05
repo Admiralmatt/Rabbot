@@ -77,12 +77,3 @@ def results(nick):
 @utils.throttle()
 def novote(nick):
     ircbot.bot.sendmsg('No Poll Currently Open')
-
-
-
-
-
-
-
-
-    

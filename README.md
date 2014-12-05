@@ -1,6 +1,6 @@
 Rabbot
 ======
- 
+
 Rabbot is a twitch chat bot
 
 * Rabbot keeps track of any stats (like **!death**) that the streamer wants kept track of.

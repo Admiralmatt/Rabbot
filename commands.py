@@ -5,7 +5,7 @@ from sendemail import send_email
 import utils
 import twitch
 import vote
-from storage import save
+import storage
 
 @utils.admin_only
 def bot_close(nick): #Disconnect from server
@@ -158,12 +158,12 @@ def rategame(nick, msg):
 
    if msg in ('good'):
       game['rating'][nick] = True
-      save()
+      storage.save()
       rate_respond(nick, game)
 
    elif msg in ('bad'):
       game['rating'][nick] = False
-      save()
+      storage.save()
       rate_respond(nick, game)
 
 @utils.throttle(10)
@@ -172,7 +172,7 @@ def rate_respond(nick, game):
       good = sum(game['rating'].values())
       count = len(game['rating'])
       ircbot.bot.sendmsg ('Rating for %s is now %.0f%% (%d/%d)' % (game['name'], 100*good/count, good, count))
-
+	  
 def comm_vote(nick, msg, msgcap):
    try:
       # New Poll  MOD_ONLY
@@ -212,17 +212,6 @@ def comm_vote(nick, msg, msgcap):
 
 
 
-
-
-
-
-
-
-
-
-
-
-   
 
 
 
