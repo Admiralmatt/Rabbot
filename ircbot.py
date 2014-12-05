@@ -21,7 +21,9 @@ class ircbot():
       self.currentgame = None
       self.game_override = None
       self.show_override = None
+      self.pollchoices = None
       self.lockdown = False
+      self.voting = False
       self.norespond = False
 
    def startup(self, channel='admiralmatt',botnick='Rab_bot',server='irc.twitch.tv'):
@@ -87,7 +89,6 @@ class ircbot():
             print e
             send_email(str(e)) #send error report to bot email
 
-
    def startthread(self):
       try:
          global thread
@@ -150,6 +151,9 @@ class ircbot():
       elif msg[0] == 'stats':
          stats.statcheck(nick, channeldata)
 
+      elif msg[0] == 'vote':
+         commands.comm_vote(nick, msg, msgcap.split(':!')[-1].split())
+
       elif msg[0] == 'lockdown':
          commands.lockdown(nick, msg)
 
@@ -159,7 +163,8 @@ class ircbot():
                self.norespond = False
          except IndexError:
             self.norespond = True
-            
+
+         
    # Decide if a command has been entered
    def command(self, nick, channel, message, msgcap):
       

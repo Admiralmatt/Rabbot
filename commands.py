@@ -4,6 +4,7 @@ import ircbot
 from sendemail import send_email
 import utils
 import twitch
+import vote
 import storage
 
 @utils.admin_only
@@ -171,3 +172,46 @@ def rate_respond(nick, game):
       good = sum(game['rating'].values())
       count = len(game['rating'])
       ircbot.bot.sendmsg ('Rating for %s is now %.0f%% (%d/%d)' % (game['name'], 100*good/count, good, count))
+	  
+def comm_vote(nick, msg, msgcap):
+   try:
+      # New Poll  MOD_ONLY
+      if msg[1] == 'open':
+         msg[2] = ' '.join(msgcap[2:])
+         vote.newpoll(nick, msg[2])
+         
+      # Close Poll  MOD_ONLY
+      elif msg[1] == 'close':
+         vote.voteclose(nick)
+
+      # What are we voting on again?
+      elif msg[1] == 'view':
+         vote.reminder(nick)
+
+      # Who is Winning/Won?
+      elif msg[1] == 'results':
+         vote.results(nick)
+
+      # Vote On Poll
+      try:
+         if int(msg[1]) in (range(1,len(ircbot.bot.pollchoices))):
+            vote.vote(nick, msg[1])
+            
+      except TypeError:
+         print 'Type Error On Vote'
+         vote.novote(nick)
+
+      except ValueError:
+         pass
+         
+   except IndexError:
+      pass
+
+
+
+
+
+
+
+
+
