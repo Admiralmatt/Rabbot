@@ -4,8 +4,9 @@ Rabbot
 Rabbot is a twitch chat bot
 
 * Rabbot keeps track of any stats (like **!death**) that the streamer wants kept track of.
+* Rabbot can also create a poll to ask the chat a question and have them vote on the answer.
 
-If you want to contact me about Rabbot (bug reports, feedback, or if you want it in your channel) send me an email <admiralmatt107@gmail.com>.
+If you want to contact me about Rabbot (bug reports, feedback, or if you want it in your channel) send me an email at <matthewreed@mail.adelphi.edu>.
 
 
 ##Game
@@ -30,13 +31,25 @@ If you want to contact me about Rabbot (bug reports, feedback, or if you want it
 * **!(STAT) remove #** Removes # from (STAT) counter.
 * **!(STAT) new** Creates a new (STAT) counter if it has not been used in any game so far.
 * **!(STAT) set #** Sets (STAT) to #
+ 
+
+##Vote
+* **!vote #** Vote on choice #. Each person can change their vote as many times while the poll is open, but they will only be counted once. 
+* **!vote result** Check what choice is currently winning in an opoen poll, **OR** What choice won in the last open poll.
+* **!vote view** Post the question and choices of the current open poll.
+
+
+   **Mod-only commands**
+* **!vote close** Close the current open poll.
+* **!vote open (QUESTION;CHOICE1;CHOICE2;...)** Open a new poll. Question and all choices must be seporated by **;**
 
 ##Misc
 * **!help** Posts a link to this page.
-* **!advice** Rabbot will post some useful advice
+* **!help (COMMAND)** Posts a link to this page and scroll to section for (COMMAND).
+* **!advice** Rabbot will post some useful advice.
 
-   **Mod-only commands**
-* **!modcheck** Updates the mod list if a mod has been added or removed
+ **Mod-only commands**
+* **!modcheck** Updates the mod list if a mod has been added or removed.
 
    **Others**
 * **!(Depends)** Posts a static response to a command. Or random response from list.
