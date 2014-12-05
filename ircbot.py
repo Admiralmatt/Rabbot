@@ -24,11 +24,9 @@ class ircbot():
       self.pollchoices = None
       self.lockdown = False
       self.voting = False
-
+      self.norespond = False
 
    def startup(self, channel='admiralmatt',botnick='Rab_bot',server='irc.twitch.tv'):
-      storage.load()
-      
       self.channel = '#' + str(channel)
       self.server = server
       self.botnick = botnick
@@ -91,10 +89,6 @@ class ircbot():
             print e
             send_email(str(e)) #send error report to bot email
 
-            
-#MUST CATCH USERNAME TAKEN ERROR
-
-
    def startthread(self):
       try:
          global thread
@@ -106,11 +100,11 @@ class ircbot():
             print e
 
    def sendmsg(self, msg, nick = None): # Send messages to the channel.
-      if nick is None:
-         self.ircsock.send('PRIVMSG '+ self.channel +' :' + msg +'\n')
-      else:
-         self.ircsock.send('PRIVMSG '+ self.channel +' :' + nick + ': ' + msg +'\n')
-
+      if self.norespond != True:
+         if nick is None:
+            self.ircsock.send('PRIVMSG '+ self.channel +' :' + msg +'\n')
+         else:
+            self.ircsock.send('PRIVMSG '+ self.channel +' :' + nick + ': ' + msg +'\n')
 
    def get_current_game(self, nick):
       #Returns the game currently being played, with caching to avoid hammering the Twitch server
@@ -162,6 +156,13 @@ class ircbot():
 
       elif msg[0] == 'lockdown':
          commands.lockdown(nick, msg)
+
+      elif msg[0] == 'norespond':
+         try:
+            if msg[1] == 'off':
+               self.norespond = False
+         except IndexError:
+            self.norespond = True
 
          
    # Decide if a command has been entered
