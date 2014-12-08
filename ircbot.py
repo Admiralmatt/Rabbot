@@ -1,6 +1,7 @@
 # Import some necessary libraries.
 import socket
 import threading
+import re
 
 import stats
 import storage
@@ -25,6 +26,9 @@ class ircbot():
       self.lockdown = False
       self.voting = False
       self.norespond = False
+
+      self.spam_rules = [(re.compile(i['re']), i['message']) for i in storage.data['spam_rules']]
+      self.spammers = {}
 
    def startup(self, channel='admiralmatt',botnick='Rab_bot',server='irc.twitch.tv'):
       self.channel = '#' + str(channel)
@@ -181,6 +185,9 @@ class ircbot():
          modlist['mods'] = self.modlist
          print 'Mod list updated'
          storage.save()
+
+      elif self.check_spam(nick, message[0]):
+         return
 
 
 
