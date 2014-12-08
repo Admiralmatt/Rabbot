@@ -32,7 +32,7 @@ class ircbot():
       self.botnick = botnick
       self.show = str(channel)
       self.modlist = None
-      
+
       self.makesock()
       self.connect()
       self.startthread()
@@ -74,7 +74,6 @@ class ircbot():
                nick = ircmsg.split('!')[0][1:]
                channel = ircmsg.split(' PRIVMSG ')[-1].split(' :')[0]
                self.channel = channel
-               self.show = channel.strip('#')
                self.command(nick, channel, ircmsg.lower(), ircmsg) #ircmsg.lower = makes all commands lowercase
 
             if ircmsg.find('PING :') != -1: # Responds to server ping

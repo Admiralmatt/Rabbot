@@ -7,5 +7,5 @@ import commands
 #args = Channel, Nickname, Server
 def connect(*args):
     bot.startup(*args)
-#connect()
+connect('loadingreadyrun')
 #Default connection is #admiralmatt
