@@ -188,14 +188,14 @@ class ircbot():
          print 'Mod list updated'
          storage.save()
 
-      elif self.spam_check(nick, message[0]):
-         return
+      elif self.spam_check(nick, msgcap):
+         pass
 
    def spam_check(self, nick, msg):
-      pass
       for re, desc in self.spam_rules:
          matches = re.search(msg)
          if matches:
+            print 'Spam Found'
             groups = {str(i+1):v for i,v in enumerate(matches.groups())}
             desc = desc % groups
             self.spammers.setdefault(nick, 0)
@@ -206,12 +206,12 @@ class ircbot():
                self.sendmsg('%s: Message deleted (first warning) for auto-detected spam (%s). Please contact Admiralmatt if this is incorrect.' % (nick, desc))
             elif level <= 2:
                self.sendmsg('/timeout %s' % nick)
-               self.sendmsg( '%s: Timeout (second warning) for auto-detected spam (%s). Please contact Admiralmatt if this is incorrect.' % (nick, desc))
+               self.sendmsg('%s: Timeout (second warning) for auto-detected spam (%s). Please contact Admiralmatt if this is incorrect.' % (nick, desc))
             else:
                self.sendmsg('/ban %s' % nick)
                self.sendmsg('%s: Banned for persistent spam (%s). Please contact Admiralmatt if this is incorrect.' % (nick, desc))
                level = 3
-               return True
+            return True
 
 
             
