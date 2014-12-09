@@ -26,11 +26,13 @@ class ircbot():
       self.lockdown = False
       self.voting = False
       self.norespond = False
-
-      self.spam_rules = [(re.compile(i['re']), i['message']) for i in storage.data['spam_rules']]
+      self.spam_rules = []
       self.spammers = {}
 
    def startup(self, channel='admiralmatt',botnick='Rab_bot',server='irc.twitch.tv'):
+      #can't be done in __init__ so compiled here
+      self.spam_rules = [(re.compile(i['re']), i['message']) for i in storage.data['spam_rules']]
+      
       self.channel = '#' + str(channel)
       self.server = server
       self.botnick = botnick
@@ -95,11 +97,11 @@ class ircbot():
    def startthread(self):
       try:
          global thread
-         thread = threading.Thread(target=self.start, name="chatlog")
+         thread = threading.Thread(target=self.start, name='chatlog')
          thread.daemon = True
          thread.start()
       except Exception as e:
-            print "Error: unable to start thread"
+            print 'Error: unable to start thread'
             print e
 
    def sendmsg(self, msg, nick = None): # Send messages to the channel.
@@ -186,11 +188,33 @@ class ircbot():
          print 'Mod list updated'
          storage.save()
 
-      elif self.check_spam(nick, message[0]):
+      elif self.spam_check(nick, message[0]):
          return
 
+   def spam_check(self, nick, msg):
+      pass
+      for re, desc in self.spam_rules:
+         matches = re.search(msg)
+         if matches:
+            groups = {str(i+1):v for i,v in enumerate(matches.groups())}
+            desc = desc % groups
+            self.spammers.setdefault(nick, 0)
+            self.spammers[nick] += 1
+            level = self.spammers[nick]
+            if level <= 1:
+               self.sendmsg('/timeout %s 1' % nick)
+               self.sendmsg('%s: Message deleted (first warning) for auto-detected spam (%s). Please contact Admiralmatt if this is incorrect.' % (nick, desc))
+            elif level <= 2:
+               self.sendmsg('/timeout %s' % nick)
+               self.sendmsg( '%s: Timeout (second warning) for auto-detected spam (%s). Please contact Admiralmatt if this is incorrect.' % (nick, desc))
+            else:
+               self.sendmsg('/ban %s' % nick)
+               self.sendmsg('%s: Banned for persistent spam (%s). Please contact Admiralmatt if this is incorrect.' % (nick, desc))
+               level = 3
+               return True
 
 
+            
 bot = ircbot()
 
 
