@@ -16,12 +16,11 @@ def bot_close(nick): #Disconnect from server
 
       Preforms safe shutdown of bot.
    """
-   ircbot.bot.threadquit = True
    ircbot.bot.sendmsg('Shutting Down')
-   ircbot.bot.ircsock.close()
    # Send safe shut down report to bot email
    send_email('Bot has safley shut down from user command', 'Safe Shut Down')
-
+   ircbot.bot.ircsock.close()
+   quit()
 
 def game_anounce(nick):
    """
@@ -68,7 +67,7 @@ def gamecheck(nick, msg, msgcap):
 
 @utils.mod_only
 def game_override(nick, msg):
-   '''
+   """
       <Mod only command>
       
       Command: !game override <NAME>
@@ -82,7 +81,7 @@ def game_override(nick, msg):
       Command: !game override off
 
       Disable override, go back to getting current game from Twitch stream settings.
-   '''
+   """
    if msg == 'off':
       twitch.get_live_game.reset_throttle()
       ircbot.bot.game_override = None
@@ -138,12 +137,10 @@ def lockdown(nick, msg):
       ircbot.bot.lockdown = True
       print "Mod Only Mode"
 
-
 # Only mods can use bot
 @utils.mod_only
 def lockdown_mode(nick, msg, msgcap):
    ircbot.bot.is_command(nick, msg, msgcap)
-
 
 def rategame(nick, msg):
    """

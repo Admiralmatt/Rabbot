@@ -17,8 +17,6 @@ class ircbot():
       # Some basic variables used to configure the bot
       self.password = load('twitch')
 
-      self.threadquit = False
-
       self.currentgame = None
       self.game_override = None
       self.show_override = None
@@ -29,6 +27,7 @@ class ircbot():
       self.startupcheck = True
       self.spam_rules = []
       self.spammers = {}
+      self.ismod = False
 
    def startup(self, channel='admiralmatt',botnick='Rab_bot',server='irc.twitch.tv'):
       #can't be done in __init__ so compiled here
@@ -91,8 +90,6 @@ class ircbot():
          #To end thread without error
                
          except Exception as e:
-            if self.threadquit == True:
-               break
             print 'Out Of Loop' #in case of error
             print e
             send_email(str(e)) #send error report to bot email
@@ -189,9 +186,11 @@ class ircbot():
          self.modlist = message.strip('\r\n').split('are: ')[-1].split(', ') + ['admiralmatt',self.show]
          modlist['mods'] = self.modlist
          print 'Mod list updated'
+         if self.botnick.lower() in self.modlist:
+            self.ismod = True
          storage.save()
 
-      elif self.botnick.lower() in self.modlist:
+      elif self.ismod == True:
          self.spam_check(nick, msgcap)
          
    def spam_check(self, nick, msg):
@@ -215,9 +214,5 @@ class ircbot():
                self.sendmsg('%s: Banned for persistent spam (%s). Please contact Admiralmatt if this is incorrect.' % (nick, desc))
                level = 3
             return True
-
-
             
 bot = ircbot()
-
-
