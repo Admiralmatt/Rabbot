@@ -14,7 +14,7 @@ def bot_close(nick): #Disconnect from server
 
       Command: !bot_close
 
-      Preforms safe shutdown of bot.
+      Preforms safe shut-down of bot.
    """
    ircbot.bot.sendmsg('Shutting Down')
    # Send safe shut down report to bot email
@@ -29,8 +29,8 @@ def game_anounce(nick):
       Post the game currently being played.
    """
    game = ircbot.bot.get_current_game(nick)
-   # Check what game is being played on startup
-   # but dont post result to chat
+   # Check what game is being played on start up
+   # but don't post result to chat
    if ircbot.bot.startupcheck: return
    
    if game is None:
@@ -96,7 +96,7 @@ def send_response(nick, msg, data):
       Command: !<Depends>
 
       Posts a static response to a command. Or random response from list
-      All commands and responces are listed in data file
+      All commands and responses are listed in data file
 
       Each command can have different access levels.
    """

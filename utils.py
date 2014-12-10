@@ -17,8 +17,8 @@ class throttle(object):
             ...
 
     When called within the throttle period, the last return value is returned,
-    for memoisation. period can be set to None to never expire, allowing this to
-    be used as a basic memoisation decorator.
+    for memoization. period can be set to None to never expire, allowing this to
+    be used as a basic memoization decorator.
     
     params is a list of parameters to consider as distinct, so calls where the
     watched parameters are the same are throttled together, but calls where they

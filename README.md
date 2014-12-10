@@ -35,13 +35,13 @@ If you want to contact me about Rabbot (bug reports, feedback, or if you want it
 
 ##Vote
 * **!vote #** Vote on choice #. Each person can change their vote as many times while the poll is open, but they will only be counted once. 
-* **!vote result** Check what choice is currently winning in an opoen poll, **OR** What choice won in the last open poll.
+* **!vote result** Check what choice is currently winning in an open poll, **OR** What choice won in the last open poll.
 * **!vote view** Post the question and choices of the current open poll.
 
 
    **Mod-only commands**
 * **!vote close** Close the current open poll.
-* **!vote open (QUESTION;CHOICE1;CHOICE2;...)** Open a new poll. Question and all choices must be seporated by **;**
+* **!vote open (QUESTION;CHOICE1;CHOICE2;...)** Open a new poll. Question and all choices must be separated by **;**
 
 ##Misc
 * **!help** Posts a link to this page.
@@ -54,8 +54,8 @@ If you want to contact me about Rabbot (bug reports, feedback, or if you want it
    **Others**
 * **!(Depends)** Posts a static response to a command. Or random response from list.
 Each command can have different access levels.
-* **Admin** = Only useable by streamer or bot admin.
+* **Admin** = Only usable by streamer or bot admin.
 * **Mod** = Only usable by mods on stream.
-* **All** = Useable by anyone.
+* **All** = Usable by anyone.
 
  Feel free to contact me to add a command to this list.

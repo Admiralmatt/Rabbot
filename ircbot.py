@@ -82,7 +82,7 @@ class ircbot():
                nick = ircmsg.split('!')[0][1:]
                channel = ircmsg.split(' PRIVMSG ')[-1].split(' :')[0]
                self.channel = channel
-               self.command(nick, channel, ircmsg.lower(), ircmsg) #ircmsg.lower = makes all commands lowercase
+               self.command(nick, channel, ircmsg.lower(), ircmsg) #ircmsg.lower = makes all commands lower-case
 
             if ircmsg.find('PING :') != -1: # Responds to server ping
                self.ircsock.send('PONG :pingis\n')

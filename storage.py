@@ -31,7 +31,7 @@ def getchanneldata():
     channeldata.setdefault("showresponse", {})
     return channeldata
 
-#Search records to see if game allready exists.
+#Search records to see if game already exists.
 #if not, will add new game to records
 def findgame(game = None):
     if game is None:
@@ -65,7 +65,7 @@ def findgame(game = None):
                 gamedata['id'] = gameid
             return (gamedata)
         
-            # Look up the game by display name as a fallback
+            # Look up the game by display name as a fall-back
             for gamedata in path.items():
                 if 'display' in gamedata and gamedata['display'] == game['name']:
                     # Don't try to keep things aligned here...

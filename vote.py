@@ -11,7 +11,7 @@ def newpoll(nick, msg):
  
        Command: !vote open <QUESTION;CHOICE1;CHOICE2;...>
  
-       Open a new poll. Question and all choices must be seporated by ;
+       Open a new poll. Question and all choices must be separated by ;
     """
     ircbot.bot.voting = True
     # Create new poll. Will erase old one
@@ -65,7 +65,7 @@ def voteclose(nick):
     ircbot.bot.sendmsg('Polls Are Closed!')
     results(nick)
 
-# Regester votes
+# Register votes
 def vote(nick, msg):
     """
        Command: !vote <#>
@@ -82,7 +82,7 @@ def results(nick):
     """
        Command: !vote result
  
-       Check what choice is currently winning in an opoen poll or what choice won in the last open poll.
+       Check what choice is currently winning in an open poll or what choice won in the last open poll.
     """
     count = Counter(poll.values())
     total = sum(count.values())
