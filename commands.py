@@ -30,6 +30,10 @@ def game_anounce(nick):
       Post the game currently being played.
    """
    game = ircbot.bot.get_current_game(nick)
+   # Check what game is being played on startup
+   # but dont post result to chat
+   if ircbot.bot.startupcheck: return
+   
    if game is None:
       msg = 'Not currently playing any game'
    else:
@@ -206,12 +210,4 @@ def comm_vote(nick, msg, msgcap):
          
    except IndexError:
       pass
-
-
-
-
-
-
-
-
 

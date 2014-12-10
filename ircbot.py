@@ -26,6 +26,7 @@ class ircbot():
       self.lockdown = False
       self.voting = False
       self.norespond = False
+      self.startupcheck = True
       self.spam_rules = []
       self.spammers = {}
 
@@ -37,12 +38,14 @@ class ircbot():
       self.server = server
       self.botnick = botnick
       self.show = str(channel)
-      self.modlist = None
+      self.modlist = ['admiralmatt']
 
       self.makesock()
       self.connect()
       self.startthread()
       self.sendmsg('/mods')
+      commands.game_anounce(botnick)
+      self.startupcheck = False
 
    def makesock(self):
       self.ircsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -188,9 +191,9 @@ class ircbot():
          print 'Mod list updated'
          storage.save()
 
-      elif self.spam_check(nick, msgcap):
-         pass
-
+      elif self.botnick.lower() in self.modlist:
+         self.spam_check(nick, msgcap)
+         
    def spam_check(self, nick, msg):
       for re, desc in self.spam_rules:
          matches = re.search(msg)
