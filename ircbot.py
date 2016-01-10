@@ -191,7 +191,7 @@ class ircbot():
          storage.save()
 
       elif self.ismod == True:
-         self.spam_check(nick, msgcap)
+         self.spam_check(nick, msg)
          
    def spam_check(self, nick, msg):
       for re, desc in self.spam_rules:

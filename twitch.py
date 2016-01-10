@@ -68,7 +68,7 @@ def get_game_playing(username = None):
     Get the game information for the game the stream is currently playing
     """
     if username is None:
-        username = ircbot.bot.show
+        username = ircbot.bot.channel.strip('#')
 
     
     channel_data = get_info(username, use_fallback=False)
