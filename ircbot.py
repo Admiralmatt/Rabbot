@@ -132,7 +132,7 @@ class ircbot():
    #get a list of current mods on the stream
    def modcheck(self, message):
       if message.find(':The moderators of this room are:') != -1:
-         #modlist = storage.getmodlist()
+         modlist = storage.getmodlist()
          self.modlist = message.strip('\r\n').split('are: ')[-1].split(', ') + ['admiralmatt',self.show]
          modlist['mods'] = self.modlist
          logging.info('Mod list updated')
