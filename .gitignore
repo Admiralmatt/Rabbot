@@ -1,6 +1,6 @@
-
 *.docx
 *.pyc
 *.log
 *.txt
 sendemail.py
+data.json
