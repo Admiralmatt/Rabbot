@@ -4,6 +4,7 @@ import json
 from drive import drivelogin
 import storage
 import logging
+from datetime import datetime
 
 def load(twitch = None):
     drive = drivelogin()
@@ -13,6 +14,7 @@ def load(twitch = None):
     return login
 
 def send_email(msg, sub = None):
+    time=datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     if sub is None:
         sub = 'Bot Error'
     import smtplib
@@ -24,7 +26,7 @@ def send_email(msg, sub = None):
     FROM = gmail_user
     TO = [gmail_user] #Enter destination email
     SUBJECT = sub #Enter text of email
-    TEXT = msg + '\n\n Save Data:\n' + str(savedata)
+    TEXT = msg + time + '\n\n Save Data:\n' + str(savedata)
            # Prepare actual message
     message = """\From: %s\nTo: %s\nSubject: %s\n\n%s""" % (FROM, ", ".join(TO), SUBJECT, TEXT)
     try:
@@ -43,3 +45,6 @@ def send_email(msg, sub = None):
         print e
             
 login = load()
+
+
+
