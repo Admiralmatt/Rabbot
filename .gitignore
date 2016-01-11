@@ -1,6 +1,5 @@
 *.docx
 *.pyc
 *.log
-sendemail.py
 data.json
 mycreds.txt
