@@ -134,11 +134,13 @@ def change(nick, stat, command = None, amt = None):
 
     elif command == 'add': #mod only
         addstat(nick, stat, amt)
+        
     
     elif command == 'new': #mod only
+        logging.info('New Stat %s Created by %s' %stat, nick)
         newstat(nick, stat)
             
-    elif command == 'remove' and amt != 1: 
+    elif command == 'remove' and amt != 1: #mod only
         multiremove(nick, stat, amt)
 
     elif command == 'remove':

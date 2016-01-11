@@ -113,6 +113,8 @@ class ircbot():
             self.ircsock.send('PRIVMSG '+ self.channel +' :' + msg +'\n')
          else:
             self.ircsock.send('PRIVMSG '+ self.channel +' :' + nick + ': ' + msg +'\n')
+      else:
+         logging.info('Message not sent, bot is muted.')
 
    def get_current_game(self, nick):
       #Returns the game currently being played, with caching to avoid hammering the Twitch server
@@ -135,8 +137,6 @@ class ircbot():
          
       try:
          if msg[1] == 'new' and msg[0] not in channeldata['showstats']:
-            logging.info('New Stat Created by %s' %nick)
-            print 'New Stat cri'
             stats.change(nick, msg[0], msg[1])
             return
       except IndexError:
@@ -145,8 +145,6 @@ class ircbot():
       if msg[0] in channeldata['showstats']:
          if len(msg) is not 3:
             msg.extend([None] * 3)
-         
-         print 'Change Stats %s' % msg
          stats.change(nick, msg[0], msg[1], msg[2])
 
       elif msg[0] == 'game':
@@ -167,12 +165,16 @@ class ircbot():
       elif msg[0] == 'lockdown':
          commands.lockdown(nick, msg)
 
+      #Mods only
       elif msg[0] == 'norespond':
-         try:
-            if msg[1] == 'off':
-               self.norespond = False
-         except IndexError:
-            self.norespond = True
+         if nick in self.modlist:
+            try:
+               if msg[1] == 'off':
+                  self.norespond = False
+                  logging.info('Bot unmuted by %s' %nick)
+            except IndexError:
+               self.norespond = True
+               logging.info('Bot muted by %s' %nick)
 
          
    # Decide if a command has been entered
@@ -190,7 +192,7 @@ class ircbot():
          modlist = storage.getmodlist()
          self.modlist = message.strip('\r\n').split('are: ')[-1].split(', ') + ['admiralmatt',self.show]
          modlist['mods'] = self.modlist
-         print 'Mod list updated'
+         logging.info('Mod list updated')
          if self.botnick.lower() in self.modlist:
             self.ismod = True
          storage.save()
@@ -202,7 +204,7 @@ class ircbot():
       for re, desc in self.spam_rules:
          matches = re.search(msg)
          if matches:
-            print 'Spam Found'
+            logging.info('Spam detected, username:%s,Message:%s' %nick, msg)
             groups = {str(i+1):v for i,v in enumerate(matches.groups())}
             desc = desc % groups
             self.spammers.setdefault(nick, 0)
