@@ -10,9 +10,10 @@ import twitch
 import commands
 import utils
 
-
+import logging
+logging.basicConfig(format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %H:%M:%S',
+                    filename='events.log',level=logging.DEBUG)
 class ircbot():
-
    def __init__(self):
       # Some basic variables used to configure the bot
       self.password = load('twitch')
@@ -57,9 +58,9 @@ class ircbot():
       try:
           self.ircsock.connect((self.server, 6667)) # Connect to the server using the port 6667
       except Exception as e:
+          logging.error('Can Not Connect To Server!\n' + e)
           print 'Can Not Connect To Server!'
           print e
-          self.makesock()
 
          #connecting to twitch requires a password
       if self.server == 'irc.twitch.tv':
@@ -75,6 +76,7 @@ class ircbot():
          try:
             ircmsg = self.ircsock.recv(4096) # Receive data from the server
             if len(ircmsg) == 0 or len(ircmsg) == None:
+               logginf.error('Socket error from twitch')
                print 'Socket error from twitch'
                send_email('No Data From Twitch') #send error report to bot email
             print(ircmsg) # Print what's coming from the server
@@ -101,8 +103,9 @@ class ircbot():
          thread.daemon = True
          thread.start()
       except Exception as e:
-            print 'Error: unable to start thread'
-            print e
+         logging.error('Error: unable to start thread\n' + e)
+         print 'Error: unable to start thread'
+         print e
 
    def sendmsg(self, msg, nick = None): # Send messages to the channel.
       if self.norespond != True:
@@ -132,7 +135,8 @@ class ircbot():
          
       try:
          if msg[1] == 'new' and msg[0] not in channeldata['showstats']:
-            print 'New Stat'
+            logging.info('New Stat Created by %s' %nick)
+            print 'New Stat cri'
             stats.change(nick, msg[0], msg[1])
             return
       except IndexError:
@@ -141,6 +145,7 @@ class ircbot():
       if msg[0] in channeldata['showstats']:
          if len(msg) is not 3:
             msg.extend([None] * 3)
+         
          print 'Change Stats %s' % msg
          stats.change(nick, msg[0], msg[1], msg[2])
 
