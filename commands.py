@@ -90,7 +90,7 @@ def game_override(nick, msg):
       logging.info('Game Override disabled Triggered by %s' %nick)
    else:
       ircbot.bot.game_override = msg
-      logging.info('Game Overridden to %s Triggered by %s' %(msg,nick)
+      logging.info('Game Overridden to %s Triggered by %s' %(msg,nick))
    game_anounce(nick)
 
 #checks storage file for correct responses
@@ -136,11 +136,11 @@ def lockdown(nick, msg):
 
    if msg[1] == 'off':
       ircbot.bot.lockdown = False
-      logging.info('Lockdown mode disabled Triggered by %s' %nick
+      logging.info('Lockdown mode disabled Triggered by %s' %nick)
       print "Mod Only Mode Over"
    else:
       ircbot.bot.lockdown = True
-      logging.info('Lockdown mode Triggered by %s' %nick
+      logging.info('Lockdown mode Triggered by %s' %nick)
       print "Mod Only Mode"
 
 # Only mods can use bot

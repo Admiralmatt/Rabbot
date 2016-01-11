@@ -3,6 +3,7 @@ import urllib, urllib2
 
 import ircbot
 import utils
+import logging
 
 GAME_CHECK_INTERVAL = 5*60 # Only check the current game at most once every five minutes
 
@@ -31,7 +32,7 @@ def get_info(username = None, use_fallback = False):
     
     # If that failed, it means the channel is offline
     # Get the channel data from here instead
-    print 'Using Fallback'
+    logging.info('Using Fallback For Offline Channel')
     res = url_open("https://api.twitch.tv/kraken/channels/%s" % username)
     channel_data = json.loads(res)
     channel_data['live'] = False
@@ -83,5 +84,4 @@ def get_game_playing(username = None):
 
 @utils.throttle(GAME_CHECK_INTERVAL)
 def get_live_game(nick, channel):
-    print 'using server'
     return get_game_playing()

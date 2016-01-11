@@ -3,6 +3,7 @@ import json
 
 from drive import drivelogin
 import storage
+import logging
 
 def load(twitch = None):
     drive = drivelogin()

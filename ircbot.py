@@ -51,6 +51,7 @@ class ircbot():
       self.ircsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
    def joinchan(self, channel): # Join channel.
+      self.ircsock.send('CAP REQ :twitch.tv/commands\r\n')
       self.ircsock.send('JOIN ' + channel +'\r\n')
 
    #connect to the irc server.
@@ -88,11 +89,13 @@ class ircbot():
 
             if ircmsg.find('PING :') != -1: # Responds to server ping
                self.ircsock.send('PONG :pingis\n')
-
+            
+            if ircmsg.find(' NOTICE ') != -1: # Responds to server ping
+               self.modcheck(ircmsg)
+         
          #To end thread without error
-               
          except Exception as e:
-            print 'Out Of Loop' #in case of error
+            print 'Thread error' #in case of error
             print e
             send_email(str(e)) #send error report to bot email
 
@@ -125,6 +128,17 @@ class ircbot():
          return storage.findgame(game_obj)
       else:
          return storage.findgame(twitch.get_live_game(nick, self.channel))
+
+   #get a list of current mods on the stream
+   def modcheck(self, message):
+      if message.find(':The moderators of this room are:') != -1:
+         #modlist = storage.getmodlist()
+         self.modlist = message.strip('\r\n').split('are: ')[-1].split(', ') + ['admiralmatt',self.show]
+         modlist['mods'] = self.modlist
+         logging.info('Mod list updated')
+         if self.botnick.lower() in self.modlist:
+            self.ismod = True
+         storage.save()
 
 
    # Search for correct command to use
@@ -179,23 +193,11 @@ class ircbot():
          
    # Decide if a command has been entered
    def command(self, nick, channel, message, msgcap):
-      
       if message.find(':!') != -1 and self.lockdown == False:
          self.is_command(nick, message.split(':!')[-1].split(), msgcap)
 
       elif message.find(':!') != -1 and self.lockdown == True:
          commands.lockdown_mode(nick, message.split(':!')[-1].split(), msgcap)
-
-
-      #get a list of current mods on the stream
-      elif message.find(':jtv!jtv@jtv.tmi.twitch.tv privmsg rab_bot :the moderators of this room are:') != -1:
-         modlist = storage.getmodlist()
-         self.modlist = message.strip('\r\n').split('are: ')[-1].split(', ') + ['admiralmatt',self.show]
-         modlist['mods'] = self.modlist
-         logging.info('Mod list updated')
-         if self.botnick.lower() in self.modlist:
-            self.ismod = True
-         storage.save()
 
       elif self.ismod == True:
          self.spam_check(nick, msg)
@@ -204,7 +206,7 @@ class ircbot():
       for re, desc in self.spam_rules:
          matches = re.search(msg)
          if matches:
-            logging.info('Spam detected, Username:%s, Message:%s' %(nick, msg))
+            logging.info('Spam detected, username:%s,Message:%s' %nick, msg)
             groups = {str(i+1):v for i,v in enumerate(matches.groups())}
             desc = desc % groups
             self.spammers.setdefault(nick, 0)
