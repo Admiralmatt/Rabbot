@@ -204,7 +204,7 @@ class ircbot():
       for re, desc in self.spam_rules:
          matches = re.search(msg)
          if matches:
-            logging.info('Spam detected, username:%s,Message:%s' %nick, msg)
+            logging.info('Spam detected, Username:%s, Message:%s' %(nick, msg))
             groups = {str(i+1):v for i,v in enumerate(matches.groups())}
             desc = desc % groups
             self.spammers.setdefault(nick, 0)
