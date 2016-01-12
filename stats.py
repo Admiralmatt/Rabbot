@@ -14,7 +14,7 @@ def stat_update(nick, stat, n, set_=False):
     else:
         game["stats"][stat] += n
         
-    logging('Stat %s Updated by %s' %(stat, nick))
+    logging.info('Stat %s Updated by %s' %(stat, nick))
     stat_print(nick, stat)
     storage.save()    
     return game
