@@ -32,6 +32,7 @@ class ircbot():
 
    def startup(self, channel='admiralmatt',botnick='Rab_bot',server='irc.twitch.tv'):
       #can't be done in __init__ so compiled here
+      logging.info('\n\nBot Startup\n')
       self.spam_rules = [(re.compile(i['re']), i['message']) for i in storage.data['spam_rules']]
       
       self.channel = '#' + str(channel)
