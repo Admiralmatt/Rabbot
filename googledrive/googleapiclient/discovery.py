@@ -742,7 +742,7 @@ def createMethod(methodName, methodDesc, rootDesc, schema):
                                      'boundary="%s"') % multipart_boundary
           url = _add_query_parameter(url, 'uploadType', 'multipart')
 
-    logger.info('URL being requested: %s %s' % (httpMethod,url))
+ #   logger.info('URL being requested: %s %s' % (httpMethod,url))
     return self._requestBuilder(self._http,
                                 model.response,
                                 url,
