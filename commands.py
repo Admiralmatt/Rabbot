@@ -213,3 +213,10 @@ def comm_vote(nick, msg, msgcap):
          
    except IndexError:
       pass
+
+#Request a game to be played
+def game_request(nick, msg, msgcap):
+   request=storage.getrequestlist()
+   if msg == 'clear':
+      pass
+      
