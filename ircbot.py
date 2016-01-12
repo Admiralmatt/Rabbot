@@ -177,6 +177,9 @@ class ircbot():
       elif msg[0] == 'vote':
          commands.comm_vote(nick, msg, msgcap.split(':!')[-1].split())
 
+      elif msg[0] == 'request':
+         commands.game_request(nick,' '.join(msg[1:]))
+
       elif msg[0] == 'lockdown':
          commands.lockdown(nick, msg)
 

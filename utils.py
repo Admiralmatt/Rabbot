@@ -65,7 +65,8 @@ class throttle(object):
 
 
 def mod_only(func):
-    """Prevent an event-handler function from being called by non-moderators
+    """
+    Prevent an event-handler function from being called by non-moderators
     Usage:
     @mod_only
     def func(nick):
