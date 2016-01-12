@@ -10,9 +10,10 @@ import twitch
 import commands
 import utils
 
-
+import logging
+logging.basicConfig(format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %H:%M:%S',
+                    filename='events.log',level=logging.DEBUG)
 class ircbot():
-
    def __init__(self):
       # Some basic variables used to configure the bot
       self.password = load('twitch')
@@ -31,6 +32,7 @@ class ircbot():
 
    def startup(self, channel='admiralmatt',botnick='Rab_bot',server='irc.twitch.tv'):
       #can't be done in __init__ so compiled here
+      logging.info('\n\nBot Startup\n')
       self.spam_rules = [(re.compile(i['re']), i['message']) for i in storage.data['spam_rules']]
       
       self.channel = '#' + str(channel)
@@ -50,6 +52,7 @@ class ircbot():
       self.ircsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
    def joinchan(self, channel): # Join channel.
+      self.ircsock.send('CAP REQ :twitch.tv/commands\r\n')
       self.ircsock.send('JOIN ' + channel +'\r\n')
 
    #connect to the irc server.
@@ -57,9 +60,9 @@ class ircbot():
       try:
           self.ircsock.connect((self.server, 6667)) # Connect to the server using the port 6667
       except Exception as e:
+          logging.error('Can Not Connect To Server!\n' + e)
           print 'Can Not Connect To Server!'
           print e
-          self.makesock()
 
          #connecting to twitch requires a password
       if self.server == 'irc.twitch.tv':
@@ -75,6 +78,7 @@ class ircbot():
          try:
             ircmsg = self.ircsock.recv(4096) # Receive data from the server
             if len(ircmsg) == 0 or len(ircmsg) == None:
+               logginf.error('Socket error from twitch')
                print 'Socket error from twitch'
                send_email('No Data From Twitch') #send error report to bot email
             print(ircmsg) # Print what's coming from the server
@@ -86,11 +90,13 @@ class ircbot():
 
             if ircmsg.find('PING :') != -1: # Responds to server ping
                self.ircsock.send('PONG :pingis\n')
-
+            
+            if ircmsg.find(' NOTICE ') != -1: # Responds to server ping
+               self.modcheck(ircmsg)
+         
          #To end thread without error
-               
          except Exception as e:
-            print 'Out Of Loop' #in case of error
+            print 'Thread error' #in case of error
             print e
             send_email(str(e)) #send error report to bot email
 
@@ -101,8 +107,9 @@ class ircbot():
          thread.daemon = True
          thread.start()
       except Exception as e:
-            print 'Error: unable to start thread'
-            print e
+         logging.error('Error: unable to start thread\n' + e)
+         print 'Error: unable to start thread'
+         print e
 
    def sendmsg(self, msg, nick = None): # Send messages to the channel.
       if self.norespond != True:
@@ -110,6 +117,8 @@ class ircbot():
             self.ircsock.send('PRIVMSG '+ self.channel +' :' + msg +'\n')
          else:
             self.ircsock.send('PRIVMSG '+ self.channel +' :' + nick + ': ' + msg +'\n')
+      else:
+         logging.info('Message not sent, bot is muted.')
 
    def get_current_game(self, nick):
       #Returns the game currently being played, with caching to avoid hammering the Twitch server
@@ -120,6 +129,17 @@ class ircbot():
          return storage.findgame(game_obj)
       else:
          return storage.findgame(twitch.get_live_game(nick, self.channel))
+
+   #get a list of current mods on the stream
+   def modcheck(self, message):
+      if message.find(':The moderators of this room are:') != -1:
+         modlist = storage.getmodlist()
+         self.modlist = message.strip('\r\n').split('are: ')[-1].split(', ') + ['admiralmatt',self.show]
+         modlist['mods'] = self.modlist
+         logging.info('Mod list updated')
+         if self.botnick.lower() in self.modlist:
+            self.ismod = True
+         storage.save()
 
 
    # Search for correct command to use
@@ -132,7 +152,6 @@ class ircbot():
          
       try:
          if msg[1] == 'new' and msg[0] not in channeldata['showstats']:
-            print 'New Stat'
             stats.change(nick, msg[0], msg[1])
             return
       except IndexError:
@@ -141,7 +160,6 @@ class ircbot():
       if msg[0] in channeldata['showstats']:
          if len(msg) is not 3:
             msg.extend([None] * 3)
-         print 'Change Stats %s' % msg
          stats.change(nick, msg[0], msg[1], msg[2])
 
       elif msg[0] == 'game':
@@ -162,42 +180,34 @@ class ircbot():
       elif msg[0] == 'lockdown':
          commands.lockdown(nick, msg)
 
+      #Mods only
       elif msg[0] == 'norespond':
-         try:
-            if msg[1] == 'off':
-               self.norespond = False
-         except IndexError:
-            self.norespond = True
+         if nick in self.modlist:
+            try:
+               if msg[1] == 'off':
+                  self.norespond = False
+                  logging.info('Bot unmuted by %s' %nick)
+            except IndexError:
+               self.norespond = True
+               logging.info('Bot muted by %s' %nick)
 
          
    # Decide if a command has been entered
    def command(self, nick, channel, message, msgcap):
-      
       if message.find(':!') != -1 and self.lockdown == False:
          self.is_command(nick, message.split(':!')[-1].split(), msgcap)
 
       elif message.find(':!') != -1 and self.lockdown == True:
          commands.lockdown_mode(nick, message.split(':!')[-1].split(), msgcap)
 
-
-      #get a list of current mods on the stream
-      elif message.find(':jtv!jtv@jtv.tmi.twitch.tv privmsg rab_bot :the moderators of this room are:') != -1:
-         modlist = storage.getmodlist()
-         self.modlist = message.strip('\r\n').split('are: ')[-1].split(', ') + ['admiralmatt',self.show]
-         modlist['mods'] = self.modlist
-         print 'Mod list updated'
-         if self.botnick.lower() in self.modlist:
-            self.ismod = True
-         storage.save()
-
       elif self.ismod == True:
-         self.spam_check(nick, msg)
+         self.spam_check(nick, message)
          
    def spam_check(self, nick, msg):
       for re, desc in self.spam_rules:
          matches = re.search(msg)
          if matches:
-            print 'Spam Found'
+            logging.info('Spam detected, username:%s,Message:%s' %(nick, msg))
             groups = {str(i+1):v for i,v in enumerate(matches.groups())}
             desc = desc % groups
             self.spammers.setdefault(nick, 0)

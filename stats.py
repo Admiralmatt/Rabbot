@@ -1,6 +1,7 @@
 import storage
 import ircbot
 import utils
+import logging
 
 #update stats
 def stat_update(nick, stat, n, set_=False):
@@ -13,7 +14,7 @@ def stat_update(nick, stat, n, set_=False):
     else:
         game["stats"][stat] += n
         
-    print 'Stat Update'
+    logging.info('Stat %s Updated by %s' %(stat, nick))
     stat_print(nick, stat)
     storage.save()    
     return game
@@ -130,21 +131,28 @@ def change(nick, stat, command = None, amt = None):
     amt = 1 if amt is None else int(amt)
 
     if command == None:
+        logging.info('Stat %s increased by %i Triggered by %s' %(stat, amt, nick))
         add(nick, stat)
 
     elif command == 'add': #mod only
+        logging.info('Stat %s increased by %i Triggered by %s' %(stat, amt, nick))
         addstat(nick, stat, amt)
+        
     
     elif command == 'new': #mod only
+        logging.info('New Stat %s Created by %s' %(stat, nick))
         newstat(nick, stat)
             
-    elif command == 'remove' and amt != 1: 
+    elif command == 'remove' and amt != 1: #mod only
+        logging.info('Stat %s reduced by %i Triggered by %s' %(stat, amt, nick))
         multiremove(nick, stat, amt)
 
     elif command == 'remove':
+        logging.info('Stat %s reduced by %i Triggered by %s' %(stat, amt, nick))
         remove(nick, stat)
         
     elif command == 'set': #mod only
+        logging.info('Stat %s set to %i Triggered by %s' %(stat, amt, nick))
         setstat(nick, stat, amt)
 
     elif command == 'count':

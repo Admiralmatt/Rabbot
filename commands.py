@@ -6,6 +6,7 @@ import utils
 import twitch
 import vote
 import storage
+import logging
 
 @utils.admin_only
 def bot_close(nick): #Disconnect from server
@@ -18,6 +19,7 @@ def bot_close(nick): #Disconnect from server
    """
    ircbot.bot.sendmsg('Shutting Down')
    # Send safe shut down report to bot email
+   logging.info('Bot safe shutdown')   
    send_email('Bot has safley shut down from user command', 'Safe Shut Down')
    ircbot.bot.ircsock.close()
    quit()
@@ -85,8 +87,10 @@ def game_override(nick, msg):
    if msg == 'off':
       twitch.get_live_game.reset_throttle()
       ircbot.bot.game_override = None
+      logging.info('Game Override disabled Triggered by %s' %nick)
    else:
       ircbot.bot.game_override = msg
+      logging.info('Game Overridden to %s Triggered by %s' %(msg,nick))
    game_anounce(nick)
 
 #checks storage file for correct responses
@@ -132,9 +136,11 @@ def lockdown(nick, msg):
 
    if msg[1] == 'off':
       ircbot.bot.lockdown = False
+      logging.info('Lockdown mode disabled Triggered by %s' %nick)
       print "Mod Only Mode Over"
    else:
       ircbot.bot.lockdown = True
+      logging.info('Lockdown mode Triggered by %s' %nick)
       print "Mod Only Mode"
 
 # Only mods can use bot
@@ -207,4 +213,3 @@ def comm_vote(nick, msg, msgcap):
          
    except IndexError:
       pass
-

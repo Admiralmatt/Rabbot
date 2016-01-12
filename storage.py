@@ -2,8 +2,10 @@ import json
 
 import drive
 import ircbot
+import logging
 
 def save(): #Save Data to File
+    logging.info('Saved')
     print 'Saving'
     with open('data.json', 'w') as fp:
         json.dump(data, fp, indent=2, sort_keys=True)
