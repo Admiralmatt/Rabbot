@@ -26,7 +26,7 @@ def send_email(msg, sub = None):
     FROM = gmail_user
     TO = [gmail_user] #Enter destination email
     SUBJECT = sub #Enter text of email
-    TEXT = msg + time + '\n\n Save Data:\n' + str(savedata)
+    TEXT = msg + '\n\n' + time + '\n\n Save Data:\n' + str(savedata)
            # Prepare actual message
     message = """\From: %s\nTo: %s\nSubject: %s\n\n%s""" % (FROM, ", ".join(TO), SUBJECT, TEXT)
     try:
