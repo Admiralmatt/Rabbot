@@ -40,6 +40,12 @@ If you want to contact me about Rabbot (bug reports, feedback, or if you want it
 * **!request clear** Will clear the request list
  
 
+##Request
+* ** !request (GAME NAME)** Will register (GAME) to a list of games for the streamer to play.
+* ** !request display** Will display the list of requested games.
+   **Mod-only commands**
+* ** !request clear** Will clear the request list
+ 
 ##Vote
 * **!vote #** Vote on choice #. Each person can change their vote as many times while the poll is open, but they will only be counted once. 
 * **!vote result** Check what choice is currently winning in an open poll, **OR** What choice won in the last open poll.
