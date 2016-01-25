@@ -52,8 +52,8 @@ If you want to contact me about Rabbot (bug reports, feedback, or if you want it
 * **!vote open (QUESTION;CHOICE1;CHOICE2;...)** Open a new poll. Question and all choices must be separated by **;**
 
 ##Response
-* **!response add(command) (admin/mod/all) (Message)** Will add a static response for your channel Triggered by **(command)**.
-* **!response Remove(command)** Will remove **(command)** as a static response on your channel.
+* **!response add (command) (admin/mod/all) (Message)** Will add a static response for your channel Triggered by (command).
+* **!response Remove(command)** Will remove (command) as a static response on your channel.
 
 ##Misc
 * **!help** Posts a link to this page.
