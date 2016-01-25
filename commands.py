@@ -213,3 +213,24 @@ def comm_vote(nick, msg, msgcap):
          
    except IndexError:
       pass
+
+#Request a game to be played
+def game_request(nick, msg):
+   request=storage.getrequestlist()
+   if msg == 'clear':
+      f=utils.mod_only(lambda nick,request: request.clear())
+      f(nick,request)
+      ircbot.bot.sendmsg('Game request list cleared')
+      logging.info('Game request list cleared by %s' %nick)
+   elif msg == 'display':
+      ircbot.bot.sendmsg('Games requested')
+      for game in request:
+         ircbot.bot.sendmsg(game)
+   elif msg in request:
+      request[msg]+=1
+      ircbot.bot.sendmsg('Game request registered')
+      logging.info('Game request for %s registered by %s' %(msg, nick))
+   else:
+      request[msg]=1
+      ircbot.bot.sendmsg('Game request registered')
+      logging.info('Game request for %s registered by %s' %(msg, nick))

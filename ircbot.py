@@ -12,7 +12,7 @@ import utils
 
 import logging
 logging.basicConfig(format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %H:%M:%S',
-                    filename='events.log',level=logging.DEBUG)
+                    filename='botlogs.log',level=logging.DEBUG)
 class ircbot():
    def __init__(self):
       # Some basic variables used to configure the bot
@@ -176,6 +176,9 @@ class ircbot():
 
       elif msg[0] == 'vote':
          commands.comm_vote(nick, msg, msgcap.split(':!')[-1].split())
+
+      elif msg[0] == 'request':
+         commands.game_request(nick,' '.join(msg[1:]))
 
       elif msg[0] == 'lockdown':
          commands.lockdown(nick, msg)

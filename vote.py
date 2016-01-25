@@ -1,6 +1,7 @@
 import ircbot
 import utils
 
+import logging
 import time
 from collections import Counter
 
@@ -22,6 +23,7 @@ def newpoll(nick, msg):
     msg = msg.split(';')
     ircbot.bot.pollchoices = msg
     print 'Open poll'
+    logging.info('Poll Opened by %s' %nick)
     ircbot.bot.sendmsg('Poll Open!')
     if ircbot.bot.ismod == False:
         time.sleep(2)
@@ -62,6 +64,7 @@ def voteclose(nick):
     # Close Poll and post results
     print 'Poll Closed'
     ircbot.bot.voting = False
+    logging.info('Poll Closed by %s' %nick)
     ircbot.bot.sendmsg('Polls Are Closed!')
     results(nick)
 
@@ -76,6 +79,7 @@ def vote(nick, msg):
     else:
         poll[nick] = int(msg)
         print 'Vote Registered'
+        logging.info('Vote registered by %s for %s' %(nick, msg))
 
 @utils.throttle(10)
 def results(nick):

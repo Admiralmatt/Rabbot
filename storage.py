@@ -16,6 +16,10 @@ def load(): #Load Data From File
     with open('data.json', 'r') as fp:
         data = json.load(fp)
 
+def getrequestlist():
+    request = data['shows'][ircbot.bot.show].setdefault('request',{})
+    return request
+
 #returns (path) that navigates to games portion of records
 def getgamepath():
     path = data.setdefault('shows', {}).setdefault(ircbot.bot.show, {"name": ircbot.bot.show}).setdefault('games', {})
@@ -26,7 +30,7 @@ def getmodlist():
     modlist = data.setdefault('shows', {}).setdefault(ircbot.bot.show, {"name": ircbot.bot.show})
     return modlist
 
-#returns (path) that navigates to games portion of records
+#returns (path) that navigates to the channels portion of records
 def getchanneldata():
     channeldata = data['shows'][ircbot.bot.show]
     channeldata.setdefault("showstats", ["death"])

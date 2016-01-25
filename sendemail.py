@@ -40,7 +40,7 @@ def send_email(msg, sub = None):
         logging.info('successfully sent the mail')
         print 'successfully sent the mail'
     except Exception as e:
-        logging('failed to send mail\n' + e)
+        logging.error('failed to send mail')
         print "failed to send mail"
         print e
             
