@@ -268,9 +268,3 @@ def remove_response(nick, command, data):
       logging.info('Command Removed: Command: %s , Access: %s , Response: %s , Triggered by %s' %(command, access, msg, nick))
    except KeyError:
       logging.error('Delete attempt failed: %s command not found. Triggered by %s' %(command, nick))
-      
-
-
-
-
-
