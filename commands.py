@@ -234,3 +234,37 @@ def game_request(nick, msg):
       request[msg]=1
       ircbot.bot.sendmsg('Game request registered')
       logging.info('Game request for %s registered by %s' %(msg, nick))
+
+def edit_response(nick, msg, msgcap, data):
+   if msg[1] == 'add':
+      msg[4] = ' '.join(msgcap[4:])
+      add_response(nick, msg[2], msg[3], msg[4], data)
+   elif msg[1] == 'remove':
+      remove_response(nick, msg[2], data)
+
+@utils.mod_only
+def add_response(nick, command, access, msg, data):
+   try:
+      if access not in ['admin','mod','all']:
+         raise ValueError('Access Syntax Error:')
+      data[command]={'access': access, 'response': msg}
+      storage.save()
+      ircbot.bot.sendmsg('New command added: Command: %s , Response: %s' %(command, msg))
+      logging.info('New command added: Command: %s , Access: %s , Response: %s , Triggered by %s' %(command, access, msg, nick))
+   except ValueError as e:
+      logging.error('%s Access must be either admin, mod, or all' %e)
+      print '%s Access must be either admin, mod, or all' %e
+      ircbot.bot.sendmsg('Syntax Must Be: !response add [command] [admin/mod/all] [Message]')
+
+
+@utils.mod_only
+def remove_response(nick, command, data):
+   try:
+      access = data[command]['access']
+      msg = data[command]['response']
+      del data[command]
+      storage.save()
+      ircbot.bot.sendmsg('Command Removed: Command: %s , Response: %s' %(command, msg))
+      logging.info('Command Removed: Command: %s , Access: %s , Response: %s , Triggered by %s' %(command, access, msg, nick))
+   except KeyError:
+      logging.error('Delete attempt failed: %s command not found. Triggered by %s' %(command, nick))

@@ -7,7 +7,7 @@ Rabbot is a twitch chat bot
 * Rabbot can also create a poll to ask the chat a question and have them vote on the answer.
 * When set as a chat moderator it can perform auto spam detection.
 
-If you want to contact me about Rabbot (bug reports, feedback, or if you want it in your channel) send me an email at <matthewreed@mail.adelphi.edu>.
+If you want to contact me about Rabbot (bug reports, feedback, or if you want it in your channel) send me an email at <rabbotbot@gmail.com>.
 
 
 ##Game
@@ -50,6 +50,10 @@ If you want to contact me about Rabbot (bug reports, feedback, or if you want it
    **Mod-only commands**
 * **!vote close** Close the current open poll.
 * **!vote open (QUESTION;CHOICE1;CHOICE2;...)** Open a new poll. Question and all choices must be separated by **;**
+
+##Response
+* **!response add (command) (admin/mod/all) (Message)** Will add a static response for your channel triggered by (command).
+* **!response Remove(command)** Will remove (command) as a static response on your channel.
 
 ##Misc
 * **!help** Posts a link to this page.

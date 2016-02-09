@@ -180,6 +180,10 @@ class ircbot():
       elif msg[0] == 'request':
          commands.game_request(nick,' '.join(msg[1:]))
 
+      elif msg[0] == 'response':
+         commands.edit_response(nick, msg, msgcap.split(':!')[-1].split(), channeldata['showresponse'])
+
+
       elif msg[0] == 'lockdown':
          commands.lockdown(nick, msg)
 
