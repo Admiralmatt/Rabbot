@@ -58,7 +58,7 @@ If you want to contact me about Rabbot (bug reports, feedback, or if you want it
 ##Misc
 * **!help** Posts a link to this page.
 * **!help (COMMAND)** Posts a link to this page and scroll to section for (COMMAND).
-* **!advice** Rabbot will post some useful advice.
+* **!advice** Rabbot will post some "useful" advice.
 
  **Mod-only commands**
 * **!modcheck** Updates the mod list if a mod has been added or removed.
