@@ -31,10 +31,7 @@ def game_anounce(nick):
       Post the game currently being played.
    """
    game = ircbot.bot.get_current_game(nick)
-   # Check what game is being played on start up
-   # but don't post result to chat
-   if ircbot.bot.startupcheck: return
-   
+  
    if game is None:
       msg = 'Not currently playing any game'
    else:
@@ -165,12 +162,12 @@ def rategame(nick, msg):
 
    if msg in ('good'):
       game['rating'][nick] = True
-      storage.save()
+      storage.save('good rating update')
       rate_respond(nick, game)
 
    elif msg in ('bad'):
       game['rating'][nick] = False
-      storage.save()
+      storage.save('good rating update')
       rate_respond(nick, game)
 
 @utils.throttle(10)
@@ -248,7 +245,7 @@ def add_response(nick, access, command, msg, data):
       if access not in ['admin','mod','all']:
          raise ValueError('Access Syntax Error:')
       data[command]={'access': access, 'response': msg}
-      storage.save()
+      storage.save('Command Added')
       ircbot.bot.sendmsg('New command added: Command: %s , Response: %s' %(command, msg))
       logging.info('New command added: Access: %s, Command: %s, Response: %s , Triggered by %s' %(access, command, msg, nick))
    except ValueError as e:
@@ -263,7 +260,7 @@ def remove_response(nick, command, data):
       access = data[command]['access']
       msg = data[command]['response']
       del data[command]
-      storage.save()
+      storage.save('Command Removed')
       ircbot.bot.sendmsg('Command Removed: Command: %s , Response: %s' %(command, msg))
       logging.info('Command Removed: Access: %s, Command: %s,  Response: %s, Triggered by %s' %(access, command, msg, nick))
    except KeyError:

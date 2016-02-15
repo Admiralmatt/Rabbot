@@ -45,7 +45,7 @@ class ircbot():
       self.connect()
       self.startthread()
       self.sendmsg('/mods')
-      commands.game_anounce(botnick)
+      self.get_current_game(botnick)
       self.startupcheck = False
 
    def makesock(self):
@@ -98,6 +98,7 @@ class ircbot():
          except Exception as e:
             print 'Thread error' #in case of error
             print e
+            logging.error('Thread Error\n%s' %e)
             send_email(str(e)) #send error report to bot email
 
    def startthread(self):
@@ -122,13 +123,15 @@ class ircbot():
 
    def get_current_game(self, nick):
       #Returns the game currently being played, with caching to avoid hammering the Twitch server
-
-      channel = self.show_override or self.show
-      if self.game_override is not None:
-         game_obj = {'_id': self.game_override, 'name': self.game_override, 'is_override': True}
-         return storage.findgame(game_obj)
-      else:
-         return storage.findgame(twitch.get_live_game(nick, self.channel))
+      try:
+         channel = self.show_override or self.show
+         if self.game_override is not None:
+            game_obj = {'_id': self.game_override, 'name': self.game_override, 'is_override': True}
+            return storage.findgame(game_obj)
+         else:
+            return storage.findgame(twitch.get_live_game(nick, self.channel))
+      except UnicodeError as e:
+         logging.error('Unicode error in game title\n%s' %e)
 
    #get a list of current mods on the stream
    def modcheck(self, message):
@@ -139,7 +142,7 @@ class ircbot():
          logging.info('Mod list updated')
          if self.botnick.lower() in self.modlist:
             self.ismod = True
-         storage.save()
+         storage.save('Mod Update')
 
 
    # Search for correct command to use
