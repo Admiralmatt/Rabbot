@@ -243,18 +243,18 @@ def edit_response(nick, msg, msgcap, data):
       remove_response(nick, msg[2], data)
 
 @utils.mod_only
-def add_response(nick, command, access, msg, data):
+def add_response(nick, access, command, msg, data):
    try:
       if access not in ['admin','mod','all']:
          raise ValueError('Access Syntax Error:')
       data[command]={'access': access, 'response': msg}
       storage.save()
       ircbot.bot.sendmsg('New command added: Command: %s , Response: %s' %(command, msg))
-      logging.info('New command added: Command: %s , Access: %s , Response: %s , Triggered by %s' %(command, access, msg, nick))
+      logging.info('New command added: Access: %s, Command: %s, Response: %s , Triggered by %s' %(access, command, msg, nick))
    except ValueError as e:
       logging.error('%s Access must be either admin, mod, or all' %e)
       print '%s Access must be either admin, mod, or all' %e
-      ircbot.bot.sendmsg('Syntax Must Be: !response add [command] [admin/mod/all] [Message]')
+      ircbot.bot.sendmsg('Syntax Must Be: !response add [admin/mod/all] [command] [Message]')
 
 
 @utils.mod_only
@@ -265,6 +265,6 @@ def remove_response(nick, command, data):
       del data[command]
       storage.save()
       ircbot.bot.sendmsg('Command Removed: Command: %s , Response: %s' %(command, msg))
-      logging.info('Command Removed: Command: %s , Access: %s , Response: %s , Triggered by %s' %(command, access, msg, nick))
+      logging.info('Command Removed: Access: %s, Command: %s,  Response: %s, Triggered by %s' %(access, command, msg, nick))
    except KeyError:
       logging.error('Delete attempt failed: %s command not found. Triggered by %s' %(command, nick))
