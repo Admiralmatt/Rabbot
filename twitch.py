@@ -41,7 +41,7 @@ def get_info(username = None, use_fallback = False):
     return channel_data
 
 
-def get_game(name):
+def get_game(name, all = False):
         """
         Get the game information for a particular game.
 
