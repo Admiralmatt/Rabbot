@@ -75,31 +75,33 @@ class ircbot():
    #start to read the chat commands
    def start(self):
       while 1: # Stay connected to the server and find commands
-         try:
-            ircmsg = self.ircsock.recv(4096) # Receive data from the server
-            if len(ircmsg) == 0 or len(ircmsg) == None:
-               logginf.error('Socket error from twitch')
-               print 'Socket error from twitch'
-               send_email('No Data From Twitch') #send error report to bot email
-            print(ircmsg) # Print what's coming from the server
-            if ircmsg.find(' PRIVMSG ') != -1:
-               nick = ircmsg.split('!')[0][1:]
-               channel = ircmsg.split(' PRIVMSG ')[-1].split(' :')[0]
-               self.channel = channel
-               self.command(nick, channel, ircmsg.lower(), ircmsg) #ircmsg.lower = makes all commands lower-case
+      #try:
+         ircmsg = self.ircsock.recv(4096) # Receive data from the server
+         if len(ircmsg) == 0 or len(ircmsg) == None:
+            logginf.error('Socket error from twitch')
+            print 'Socket error from twitch'
+            send_email('No Data From Twitch') #send error report to bot email
+         print(ircmsg) # Print what's coming from the server
+         if ircmsg.find(' PRIVMSG ') != -1:
+            nick = ircmsg.split('!')[0][1:]
+            channel = ircmsg.split(' PRIVMSG ')[-1].split(' :')[0]
+            self.channel = channel
+            self.command(nick, channel, ircmsg.lower(), ircmsg) #ircmsg.lower = makes all commands lower-case
 
-            if ircmsg.find('PING :') != -1: # Responds to server ping
-               self.ircsock.send('PONG :pingis\n')
-            
-            if ircmsg.find(' NOTICE ') != -1: # Responds to server ping
-               self.modcheck(ircmsg)
+         if ircmsg.find('PING :') != -1: # Responds to server ping
+            self.ircsock.send('PONG :pingis\n')
          
+         if ircmsg.find(' NOTICE ') != -1: # Responds to server ping
+            self.modcheck(ircmsg)
+      
          #To end thread without error
+         '''
          except Exception as e:
             print 'Thread error' #in case of error
             print e
             logging.error('Thread Error\n%s' %e)
             send_email(str(e)) #send error report to bot email
+         '''
 
    def startthread(self):
       try:
@@ -149,18 +151,21 @@ class ircbot():
    def is_command(self, nick, msg, msgcap):
       data = storage.data
       channeldata = storage.getchanneldata()
-
-      if nick in data:
-         pass
       
       if msg[0] == 'bot_close':
          commands.bot_close(nick)
          
       try:
+         if nick in channeldata['banlist']:
+            print 'here'
+            return
+
          if msg[1] == 'new' and msg[0] not in channeldata['showstats']:
             stats.change(nick, msg[0], msg[1])
             return
       except IndexError:
+         pass
+      except KeyError:
          pass
 
       if msg[0] in channeldata['showstats']:
