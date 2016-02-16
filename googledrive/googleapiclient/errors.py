@@ -1,3 +1,5 @@
+#!/usr/bin/python2.4
+#
 # Copyright 2014 Google Inc. All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +19,6 @@
 All exceptions defined by the library
 should be defined in this file.
 """
-from __future__ import absolute_import
 
 __author__ = 'jcgregorio@google.com (Joe Gregorio)'
 
@@ -37,8 +38,6 @@ class HttpError(Error):
   @util.positional(3)
   def __init__(self, resp, content, uri=None):
     self.resp = resp
-    if not isinstance(content, bytes):
-        raise TypeError("HTTP content should be bytes")
     self.content = content
     self.uri = uri
 
@@ -46,7 +45,7 @@ class HttpError(Error):
     """Calculate the reason for the error from the response content."""
     reason = self.resp.reason
     try:
-      data = json.loads(self.content.decode('utf-8'))
+      data = json.loads(self.content)
       reason = data['error']['message']
     except (ValueError, KeyError):
       pass

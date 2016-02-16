@@ -43,7 +43,6 @@ def game_anounce(nick):
 
    if ircbot.bot.game_override is not None:
       msg += ' (Overridden)'
-   print msg
    ircbot.bot.sendmsg(msg)
 
 

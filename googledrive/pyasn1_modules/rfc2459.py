@@ -87,8 +87,7 @@ class Attribute(univ.Sequence):
 
 id_at = univ.ObjectIdentifier('2.5.4')
 id_at_name = univ.ObjectIdentifier('2.5.4.41')
-# preserve misspelled variable for compatibility
-id_at_sutname = id_at_surname = univ.ObjectIdentifier('2.5.4.4')
+id_at_sutname = univ.ObjectIdentifier('2.5.4.4')
 id_at_givenName = univ.ObjectIdentifier('2.5.4.42')
 id_at_initials = univ.ObjectIdentifier('2.5.4.43')
 id_at_generationQualifier = univ.ObjectIdentifier('2.5.4.44')
@@ -649,7 +648,7 @@ class CRLNumber(univ.Integer):
 
 class BaseCRLNumber(CRLNumber): pass
 
-id_kp_serverAuth = univ.ObjectIdentifier('1.3.6.1.5.5.7.3.1')
+id_kp_serverAuth = univ.ObjectIdentifier('1.3.6.1.5.5.7.3.1.1')
 id_kp_clientAuth = univ.ObjectIdentifier('1.3.6.1.5.5.7.3.2')
 id_kp_codeSigning = univ.ObjectIdentifier('1.3.6.1.5.5.7.3.3')
 id_kp_emailProtection = univ.ObjectIdentifier('1.3.6.1.5.5.7.3.4')
@@ -693,7 +692,7 @@ id_ce_basicConstraints = univ.ObjectIdentifier('2.5.29.19')
 
 class BasicConstraints(univ.Sequence):
     componentType = namedtype.NamedTypes(
-        namedtype.DefaultedNamedType('cA', univ.Boolean(False)),
+        namedtype.NamedType('cA', univ.Boolean(False)),
         namedtype.OptionalNamedType('pathLenConstraint', univ.Integer().subtype(subtypeSpec=constraint.ValueRangeConstraint(0, MAX)))
     )
 
@@ -762,7 +761,7 @@ class BaseDistance(univ.Integer):
 id_ce_cRLDistributionPoints = univ.ObjectIdentifier('2.5.29.31')
 
 class CRLDistPointsSyntax(univ.SequenceOf):
-    componentType = DistributionPoint()
+    componentType = DistributionPoint
     subtypeSpec = univ.SequenceOf.subtypeSpec + constraint.ValueSizeConstraint(1, MAX)
 id_ce_issuingDistributionPoint = univ.ObjectIdentifier('2.5.29.28')
 
@@ -778,7 +777,7 @@ class IssuingDistributionPoint(univ.Sequence):
 class GeneralSubtree(univ.Sequence):
     componentType = namedtype.NamedTypes(
         namedtype.NamedType('base', GeneralName()),
-        namedtype.DefaultedNamedType('minimum', BaseDistance(0).subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatConstructed, 0))),
+        namedtype.NamedType('minimum', BaseDistance(0).subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatConstructed, 0))),
         namedtype.OptionalNamedType('maximum', BaseDistance().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatConstructed, 1)))
     )
 
@@ -791,7 +790,7 @@ id_ce_nameConstraints = univ.ObjectIdentifier('2.5.29.30')
 class NameConstraints(univ.Sequence):
     componentType = namedtype.NamedTypes(
         namedtype.OptionalNamedType('permittedSubtrees', GeneralSubtrees().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatConstructed, 0))),
-        namedtype.OptionalNamedType('excludedSubtrees', GeneralSubtrees().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatConstructed, 1)))
+        namedtype.OptionalNamedType('excludedSubtrees', GeneralSubtrees().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatConstructed, 0)))
     )
 
 
