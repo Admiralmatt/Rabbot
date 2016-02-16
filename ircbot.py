@@ -149,6 +149,9 @@ class ircbot():
    def is_command(self, nick, msg, msgcap):
       data = storage.data
       channeldata = storage.getchanneldata()
+
+      if nick in data:
+         pass
       
       if msg[0] == 'bot_close':
          commands.bot_close(nick)
