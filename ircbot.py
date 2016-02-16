@@ -11,7 +11,7 @@ import commands
 import utils
 
 import logging
-logging.basicConfig(format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %H:%M:%S',
+logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s', datefmt='%m/%d/%Y %H:%M:%S',
                     filename='botlogs.log',level=logging.DEBUG)
 class ircbot():
    def __init__(self):
