@@ -78,7 +78,7 @@ def vote(nick, msg):
     if ircbot.bot.voting == False: novote(nick)
     else:
         poll[nick] = int(msg)
-        print 'Vote Registered'
+        ircbot.bot.sendmsg('Vote Registered By %s' %nick)
         logging.info('Vote registered by %s for %s' %(nick, msg))
 
 @utils.throttle(10)

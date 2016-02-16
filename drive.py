@@ -23,12 +23,17 @@ def logsave():
     file2 = drive.CreateFile({'id': '0B-KACwkTF1mEaWRRZ1QzNGNIYWM'})
     file2.SetContentFile('botlogs.log')
     file2.Upload()
-    
+
+def logload():
+    # Create GoogleDriveFile instance
+    file2 = drive.CreateFile({'id': '0B-KACwkTF1mEaWRRZ1QzNGNIYWM'})
+    file2.GetContentFile('botlogs.log')  
 
 def driveload():
     # Create GoogleDriveFile instance
     file1 = drive.CreateFile({'id': '0B-KACwkTF1mEdHZaTlZIX3kzd1k'})
     file1.GetContentFile('data.json')
+    logload()
     
 
 def drivesave():

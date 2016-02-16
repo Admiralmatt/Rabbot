@@ -193,7 +193,7 @@ def comm_vote(nick, msg, msgcap):
          vote.reminder(nick)
 
       # Who is Winning/Won?
-      elif msg[1] == 'results':
+      elif msg[1] == 'result':
          vote.results(nick)
 
       # Vote On Poll
