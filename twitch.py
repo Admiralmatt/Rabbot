@@ -9,6 +9,7 @@ GAME_CHECK_INTERVAL = 5*60 # Only check the current game at most once every five
 
 def url_open(url, data = None):
     if isinstance(data, dict):
+        data['query']=data['query'].encode('ascii', 'xmlcharrefreplace')
         data = urllib.urlencode(data)
     url = '%s?%s' % (url, data)
     response = urllib2.urlopen(url)
@@ -55,6 +56,9 @@ def get_game(name, all = False):
         }
         res = url_open("https://api.twitch.tv/kraken/search/games", search_opts)
         res = json.loads(res)
+        print res
+        print 2
+        print name
         if all:
             return res['games']
         else:
