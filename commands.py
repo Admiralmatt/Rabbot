@@ -264,3 +264,19 @@ def remove_response(nick, command, data):
       logging.info('Command Removed: Access: %s, Command: %s,  Response: %s, Triggered by %s' %(access, command, msg, nick))
    except KeyError:
       logging.error('Delete attempt failed: %s command not found. Triggered by %s' %(command, nick))
+
+@utils.mod_only
+def botban(nick, msg, data):
+   if msg[0] == 'ban':
+      data.setdefault('banlist',[])
+      data['banlist'].append(nick)
+   elif msg[0] == 'unban':
+      pass
+
+
+
+   
+
+
+
+
