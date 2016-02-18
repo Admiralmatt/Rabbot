@@ -9,18 +9,18 @@ import storage
 import logging
 
 @utils.admin_only
-def bot_close(nick): #Disconnect from server
+def bot_shutdown(nick): #Disconnect from server
    """
       <Mod only command>
 
-      Command: !bot_close
+      Command: !bot_shutdown
 
       Preforms safe shut-down of bot.
    """
    ircbot.bot.sendmsg('Shutting Down')
    # Send safe shut down report to bot email
-   logging.info('Bot safe shutdown')   
-   send_email('Bot has safley shut down from user command', 'Safe Shut Down')
+   logging.info('Bot safe shutdown by %s' %nick)   
+   send_email('Bot has safley shut down by %s' %nick, 'Safe Shut Down')
    ircbot.bot.ircsock.close()
    quit()
 

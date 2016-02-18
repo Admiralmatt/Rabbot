@@ -6,6 +6,7 @@ import storage
 import logging
 from datetime import datetime
 
+
 def load(twitch = None):
     drive = drivelogin()
     login = json.loads(drive)
@@ -13,10 +14,9 @@ def load(twitch = None):
         return login['twitchlogin']
     return login
 
-def send_email(msg, sub = None):
+def send_email(msg, sub = 'Bot Error'):
+    from ircbot import bot
     time=datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    if sub is None:
-        sub = 'Bot Error'
     import smtplib
     zd_b64d = lambda s: zlib.decompress(base64.decodestring(s))
     gmail_user = zd_b64d(login['email'])#enter email address to send from
@@ -26,7 +26,7 @@ def send_email(msg, sub = None):
     FROM = gmail_user
     TO = [gmail_user] #Enter destination email
     SUBJECT = sub #Enter text of email
-    TEXT = msg + '\n\n' + time + '\n\n Save Data:\n' + str(savedata)
+    TEXT = '%s \n\n %s \n\n Connected to channel %s \n\n Save Data:\n %s' %(msg, time, bot.channel, str(savedata))
            # Prepare actual message
     message = """\From: %s\nTo: %s\nSubject: %s\n\n%s""" % (FROM, ", ".join(TO), SUBJECT, TEXT)
     try:

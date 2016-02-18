@@ -152,8 +152,8 @@ class ircbot():
       data = storage.data
       channeldata = storage.getchanneldata()
       
-      if msg[0] == 'bot_close':
-         commands.bot_close(nick)
+      if msg[0] == 'bot_shutdown':
+         commands.bot_shutdown(nick)
          
       try:
          if nick in channeldata['banlist']:

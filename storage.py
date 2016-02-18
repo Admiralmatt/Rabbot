@@ -54,7 +54,7 @@ def findgame(game = None):
         # Check if the name has changed
         if gamedata['name'] != game['name']:
             gamedata['name'] = game['name']
-            save()
+            save('Game Found With Twitch ID')
         gamedata['id'] = str(game['_id'])
         return (gamedata)
     
@@ -66,7 +66,7 @@ def findgame(game = None):
                 del path[gameid]
                 path[str(game['_id'])] = gamedata
                 gamedata['id'] = str(game['_id'])
-                save()
+                save('Game Found With Name')
             else:
                 gamedata['id'] = gameid
             return (gamedata)
@@ -86,7 +86,7 @@ def findgame(game = None):
         }
     #Add to records
     path[str(game['_id'])] = gamedata
-    save()
+    save('New Game Added')
     return gamedata
 
 drive.driveload()
