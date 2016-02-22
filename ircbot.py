@@ -188,7 +188,7 @@ class ircbot():
          commands.edit_response(nick, msg, msgcap.split(':!')[-1].split(), channeldata['showresponse'])
 
       elif msg[0] in ['ban','unban']:
-         commands.botban(nick, msg)
+         commands.botban(nick, msg, channeldata)
 
       elif msg[0] == 'lockdown':
          commands.lockdown(nick, msg, channeldata)

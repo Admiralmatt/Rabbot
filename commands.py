@@ -269,14 +269,8 @@ def remove_response(nick, command, data):
 def botban(nick, msg, data):
    if msg[0] == 'ban':
       data.setdefault('banlist',[])
-      data['banlist'].append(nick)
+      data['banlist'].append(' '.join(msg[1:]))
+      logging.info('%s Banned from bot usage by %s' %(' '.join(msg[1:]),nick))
    elif msg[0] == 'unban':
-      pass
-
-
-
-   
-
-
-
-
+      data['banlist'].remove(' '.join(msg[1:]))
+      logging.info('%s removed from ban list by %s' %(' '.join(msg[1:]),nick))
