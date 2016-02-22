@@ -203,6 +203,7 @@ class ircbot():
             except IndexError:
                self.norespond = True
                logging.info('Bot muted by %s' %nick)
+               
       elif msg[0] in channeldata['showresponse']:
          commands.send_response(nick, msg[0], channeldata['showresponse'][msg[0]])
       
