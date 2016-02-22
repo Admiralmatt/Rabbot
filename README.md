@@ -62,9 +62,9 @@ If you want to contact me about Rabbot (bug reports, feedback, or if you want it
 
  **Mod-only commands**
 * **!modcheck** Updates the mod list if a mod has been added or removed.
-* **!bot_shutdown** Remotly Shuts down the bot. **(ADMIN ONLY)**
+* **!bot_shutdown** Remotely  Shuts down the bot. **(ADMIN ONLY)**
 * **!ban/unban (USERNAME)** Prevents/Allows USERNAME from using the bot.
-* **!lockdown** Prevents all users other then mods from using the bot.
+* **!lockdown** Prevents all users other than mods from using the bot.
 * **!lockdown off** Deactivates lockdown mode.
 
    **Others**
