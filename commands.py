@@ -271,6 +271,8 @@ def botban(nick, msg, data):
       data.setdefault('banlist',[])
       data['banlist'].append(' '.join(msg[1:]))
       logging.info('%s Banned from bot usage by %s' %(' '.join(msg[1:]),nick))
+      ircbot.bot.sendmsg('%s Banned from bot usage by %s' %(' '.join(msg[1:]),nick))
    elif msg[0] == 'unban':
       data['banlist'].remove(' '.join(msg[1:]))
       logging.info('%s removed from ban list by %s' %(' '.join(msg[1:]),nick))
+      ircbot.bot.sendmsg('%s removed from ban list by %s' %(' '.join(msg[1:]),nick))
