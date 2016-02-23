@@ -13,3 +13,4 @@ def connect(*args):
 #Default connection is #admiralmatt
 
 connect()
+#'Ã©'

@@ -116,7 +116,7 @@ data = {
                         'games': { # Games we have tracked stats for
                                 <id>: { # id is the Twitch game ID, or the game name for non-Twitch override games
                                 'name': '<name>', # Official game name as Twitch recognises it - to aid matching
-                                'display': '<display name>' # Display name, defaults to the same as name. For games with LRL nicknames
+                                'display': '<display name>' # Display name, defaults to the same as name. For games with nicknames
                                 'stats': {
                                         '<stat-name>': <count>,
                                 },
