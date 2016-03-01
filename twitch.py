@@ -58,12 +58,12 @@ def get_game(name, all = False):
         res = url_open("https://api.twitch.tv/kraken/search/games", search_opts)
         res = json.loads(res)
         if all:
-            res['games'][0]['name']= res['games'][0]['name'].encode('ascii', 'xmlcharrefreplace') 
+            res['games'][0]['name']= res['games'][0]['name'].encode('utf8') 
             return res['games']
         else:
             for game in res['games']:
                 if game['name'] == name:
-                    game['name']= game['name'].encode('ascii', 'xmlcharrefreplace')
+                    game['name']= game['name'].encode('utf8')
                     return game
             return None
 

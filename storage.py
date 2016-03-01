@@ -60,7 +60,7 @@ def findgame(game = None):
     
     # Next try to find the game using the name
     for gameid, gamedata in path.items():
-        if gamedata['name'] == game['name']:
+        if gamedata['name'].encode('utf8') == game['name']:
             # If this is from Twitch, fix the ID
             if not game.get('is_override'):
                 del path[gameid]

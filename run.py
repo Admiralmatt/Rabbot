@@ -1,6 +1,7 @@
 #!/usr/bin/env python 2.7
 
 import storage
+from storage import save,load
 from ircbot import bot
 from sendemail import send_email
 import commands
@@ -13,4 +14,4 @@ def connect(*args):
 #Default connection is #admiralmatt
 
 connect()
-#'Ã©'
+#'Ã©'=\xc3\xa9
