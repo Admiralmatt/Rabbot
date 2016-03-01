@@ -74,7 +74,7 @@ class ircbot():
 
    #start to read the chat commands
    def start(self):
-      while 1: # Stay connected to the server and find commands
+      while 1:# Stay connected to the server and find commands
          try:
             ircmsg = self.ircsock.recv(4096) # Receive data from the server
             if len(ircmsg) == 0 or len(ircmsg) == None:
@@ -100,6 +100,7 @@ class ircbot():
             print e
             logging.error('Thread Error\n%s' %e)
             send_email(str(e)) #send error report to bot email
+         
 
    def startthread(self):
       try:
@@ -150,14 +151,19 @@ class ircbot():
       data = storage.data
       channeldata = storage.getchanneldata()
       
-      if msg[0] == 'bot_close':
-         commands.bot_close(nick)
+      if msg[0] == 'bot_shutdown':
+         commands.bot_shutdown(nick)
          
       try:
+         if nick in channeldata['banlist']:
+            return
+
          if msg[1] == 'new' and msg[0] not in channeldata['showstats']:
             stats.change(nick, msg[0], msg[1])
             return
       except IndexError:
+         pass
+      except KeyError:
          pass
 
       if msg[0] in channeldata['showstats']:
@@ -167,13 +173,7 @@ class ircbot():
 
       elif msg[0] == 'game':
          commands.gamecheck(nick, msg, msgcap.split(':!')[-1].split())
-
-      elif msg[0] in channeldata['showresponse']:
-         commands.send_response(nick, msg[0], channeldata['showresponse'][msg[0]])
-      
-      elif msg[0] in data['responses']:
-         commands.send_response(nick, msg[0], data['responses'][msg[0]])
-
+         
       elif msg[0] == 'stats':
          stats.statcheck(nick, channeldata)
 
@@ -186,9 +186,11 @@ class ircbot():
       elif msg[0] == 'response':
          commands.edit_response(nick, msg, msgcap.split(':!')[-1].split(), channeldata['showresponse'])
 
+      elif msg[0] in ['ban','unban']:
+         commands.botban(nick, msg, channeldata)
 
       elif msg[0] == 'lockdown':
-         commands.lockdown(nick, msg)
+         commands.lockdown(nick, msg, channeldata)
 
       #Mods only
       elif msg[0] == 'norespond':
@@ -200,7 +202,12 @@ class ircbot():
             except IndexError:
                self.norespond = True
                logging.info('Bot muted by %s' %nick)
-
+               
+      elif msg[0] in channeldata['showresponse']:
+         commands.send_response(nick, msg[0], channeldata['showresponse'][msg[0]])
+      
+      elif msg[0] in data['responses']:
+         commands.send_response(nick, msg[0], data['responses'][msg[0]])
          
    # Decide if a command has been entered
    def command(self, nick, channel, message, msgcap):

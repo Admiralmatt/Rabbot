@@ -9,18 +9,18 @@ import storage
 import logging
 
 @utils.admin_only
-def bot_close(nick): #Disconnect from server
+def bot_shutdown(nick): #Disconnect from server
    """
       <Mod only command>
 
-      Command: !bot_close
+      Command: !bot_shutdown
 
       Preforms safe shut-down of bot.
    """
    ircbot.bot.sendmsg('Shutting Down')
    # Send safe shut down report to bot email
-   logging.info('Bot safe shutdown')   
-   send_email('Bot has safley shut down from user command', 'Safe Shut Down')
+   logging.info('Bot safe shutdown by %s' %nick)   
+   send_email('Bot has safley shut down by %s' %nick, 'Safe Shut Down')
    ircbot.bot.ircsock.close()
    quit()
 
@@ -43,7 +43,6 @@ def game_anounce(nick):
 
    if ircbot.bot.game_override is not None:
       msg += ' (Overridden)'
-
    ircbot.bot.sendmsg(msg)
 
 
@@ -265,3 +264,15 @@ def remove_response(nick, command, data):
       logging.info('Command Removed: Access: %s, Command: %s,  Response: %s, Triggered by %s' %(access, command, msg, nick))
    except KeyError:
       logging.error('Delete attempt failed: %s command not found. Triggered by %s' %(command, nick))
+
+@utils.mod_only
+def botban(nick, msg, data):
+   if msg[0] == 'ban':
+      data.setdefault('banlist',[])
+      data['banlist'].append(' '.join(msg[1:]))
+      logging.info('%s Banned from bot usage by %s' %(' '.join(msg[1:]),nick))
+      ircbot.bot.sendmsg('%s Banned from bot usage by %s' %(' '.join(msg[1:]),nick))
+   elif msg[0] == 'unban':
+      data['banlist'].remove(' '.join(msg[1:]))
+      logging.info('%s removed from ban list by %s' %(' '.join(msg[1:]),nick))
+      ircbot.bot.sendmsg('%s removed from ban list by %s' %(' '.join(msg[1:]),nick))

@@ -54,19 +54,19 @@ def findgame(game = None):
         # Check if the name has changed
         if gamedata['name'] != game['name']:
             gamedata['name'] = game['name']
-            save()
+            save('Game Found With Twitch ID')
         gamedata['id'] = str(game['_id'])
         return (gamedata)
     
     # Next try to find the game using the name
     for gameid, gamedata in path.items():
-        if gamedata['name'] == game['name']:
+        if gamedata['name'].encode('utf8') == game['name']:
             # If this is from Twitch, fix the ID
             if not game.get('is_override'):
                 del path[gameid]
                 path[str(game['_id'])] = gamedata
                 gamedata['id'] = str(game['_id'])
-                save()
+                save('Game Found With Name')
             else:
                 gamedata['id'] = gameid
             return (gamedata)
@@ -86,7 +86,7 @@ def findgame(game = None):
         }
     #Add to records
     path[str(game['_id'])] = gamedata
-    save()
+    save('New Game Added')
     return gamedata
 
 drive.driveload()
@@ -116,7 +116,7 @@ data = {
                         'games': { # Games we have tracked stats for
                                 <id>: { # id is the Twitch game ID, or the game name for non-Twitch override games
                                 'name': '<name>', # Official game name as Twitch recognises it - to aid matching
-                                'display': '<display name>' # Display name, defaults to the same as name. For games with LRL nicknames
+                                'display': '<display name>' # Display name, defaults to the same as name. For games with nicknames
                                 'stats': {
                                         '<stat-name>': <count>,
                                 },
