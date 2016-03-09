@@ -15,3 +15,7 @@ def connect(*args):
 
 connect()
 #'Ã©'=\xc3\xa9
+
+def update():
+    load()
+    save()
