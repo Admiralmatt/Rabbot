@@ -5,7 +5,7 @@ import ircbot
 import logging
 
 def save(reason='Default'): #Save Data to File
-    logging.info('Saved, Reason:%s'%reason)
+    logging.info('Saved, Reason: %s' %reason)
     print 'Saving, Reason: %s' %reason
     with open('data.json', 'w') as fp:
         json.dump(data, fp, indent=2, sort_keys=True)
@@ -45,7 +45,7 @@ def findgame(game = None):
 
     if isinstance(game, str):
         game = {'_id': game, 'name': game, 'is_override': True}
-        
+
     path = getgamepath()
 
     # First try to find the game using the Twitch ID
@@ -54,19 +54,20 @@ def findgame(game = None):
         # Check if the name has changed
         if gamedata['name'] != game['name']:
             gamedata['name'] = game['name']
-            save('Game Found With Twitch ID')
+            save('Game name Updated')
         gamedata['id'] = str(game['_id'])
+        #gamedata['name']=gamedata['name'].encode('utf8')
         return (gamedata)
     
     # Next try to find the game using the name
     for gameid, gamedata in path.items():
-        if gamedata['name'].encode('utf8') == game['name']:
+        if gamedata['name'] == game['name']:
             # If this is from Twitch, fix the ID
             if not game.get('is_override'):
                 del path[gameid]
                 path[str(game['_id'])] = gamedata
                 gamedata['id'] = str(game['_id'])
-                save('Game Found With Name')
+                save('Twitch ID Updated')
             else:
                 gamedata['id'] = gameid
             return (gamedata)

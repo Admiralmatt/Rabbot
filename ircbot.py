@@ -96,6 +96,7 @@ class ircbot():
                self.modcheck(ircmsg)
          
          #To end thread without error
+         
          except Exception as e:
             print 'Thread error' #in case of error
             print e
