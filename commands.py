@@ -20,7 +20,7 @@ def bot_shutdown(nick): #Disconnect from server
    ircbot.bot.sendmsg('Shutting Down')
    # Send safe shut down report to bot email
    logging.info('Bot safe shutdown by %s' %nick)   
-   send_email('Bot has safley shut down by %s' %nick, 'Safe Shut Down')
+   send_email('Bot has safley shut down by %s' %nick, sub='Safe Shut Down')
    ircbot.bot.ircsock.close()
    quit()
 

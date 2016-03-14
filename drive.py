@@ -47,7 +47,6 @@ def drivesave():
         file1.Upload()
     except Exception as a:
         print a
-
     logsave()
 
 def drivelogin():

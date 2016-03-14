@@ -29,6 +29,7 @@ class ircbot():
       self.spam_rules = []
       self.spammers = {}
       self.ismod = False
+      self.ircmsg=None
 
    def startup(self, channel='admiralmatt',botnick='Rab_bot',server='irc.twitch.tv'):
       #can't be done in __init__ so compiled here
@@ -100,13 +101,14 @@ class ircbot():
          except socket.error as error:
             print error
             self.ircsock.close()
+            storage.save()
             quit()
          except Exception as e:
             print type(e)
             print 'Thread error' #in case of error
             print e
             logging.error('Thread Error\n%s' %e)
-            send_email(str(e)) #send error report to bot email
+            send_email(str(e), ircmsg) #send error report to bot email
          
          
    def startthread(self):

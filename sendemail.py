@@ -14,7 +14,7 @@ def load(twitch = None):
         return login['twitchlogin']
     return login
 
-def send_email(msg, sub = 'Bot Error'):
+def send_email(msg, last= 'No Msg Found', sub= 'Bot Error'):
     from ircbot import bot
     time=datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     import smtplib
@@ -26,7 +26,7 @@ def send_email(msg, sub = 'Bot Error'):
     FROM = gmail_user
     TO = [gmail_user] #Enter destination email
     SUBJECT = sub #Enter text of email
-    TEXT = '%s \n\n %s \n\n Connected to channel %s \n\n Save Data:\n %s' %(msg, time, bot.channel, str(savedata))
+    TEXT = '%s \n\n %s \n\n Connected to channel %s \n\n Last message sent: %s \n\n Save Data:\n %s' %(msg, time, bot.channel, last, str(savedata))
            # Prepare actual message
     message = """\From: %s\nTo: %s\nSubject: %s\n\n%s""" % (FROM, ", ".join(TO), SUBJECT, TEXT)
     try:
