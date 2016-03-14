@@ -37,7 +37,7 @@ class ircbot():
       logging.info('Connecting to channel: %s' %str(channel))
       self.spam_rules = [(re.compile(i['re']), i['message']) for i in storage.data['spam_rules']]
       
-      self.channel = '#' + str(channel)
+      self.channel = '#' + str(channel.lower())
       self.server = server
       self.botnick = botnick
       self.show = str(channel)
