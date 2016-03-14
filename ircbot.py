@@ -96,14 +96,19 @@ class ircbot():
                self.modcheck(ircmsg)
          
          #To end thread without error
-         
+
+         except socket.error as error:
+            print error
+            self.ircsock.close()
+            quit()
          except Exception as e:
+            print type(e)
             print 'Thread error' #in case of error
             print e
             logging.error('Thread Error\n%s' %e)
             send_email(str(e)) #send error report to bot email
          
-
+         
    def startthread(self):
       try:
          global thread
@@ -182,7 +187,7 @@ class ircbot():
       elif msg[0] == 'vote':
          commands.comm_vote(nick, msg, msgcap.split(':!')[-1].split())
 
-      elif msg[0] == 'request':
+      elif msg[0] in ['request','gamerequest']:
          commands.game_request(nick,' '.join(msg[1:]))
 
       elif msg[0] == 'response':

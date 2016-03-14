@@ -218,7 +218,7 @@ def game_request(nick, msg):
       f(nick,request)
       ircbot.bot.sendmsg('Game request list cleared')
       logging.info('Game request list cleared by %s' %nick)
-   elif msg == 'display':
+   elif msg == 'show':
       ircbot.bot.sendmsg('Games requested')
       for game in request:
          ircbot.bot.sendmsg(game)
