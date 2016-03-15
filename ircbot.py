@@ -40,7 +40,7 @@ class ircbot():
       self.channel = '#' + str(channel.lower())
       self.server = server
       self.botnick = botnick
-      self.show = str(channel)
+      self.show = str(channel.lower())
       self.modlist = ['admiralmatt']
 
       self.makesock()

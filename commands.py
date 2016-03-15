@@ -218,19 +218,24 @@ def game_request(nick, msg):
       f(nick,request)
       ircbot.bot.sendmsg('Game request list cleared')
       logging.info('Game request list cleared by %s' %nick)
+      storage.save('Game request cleared')
    elif msg == 'show':
       ircbot.bot.sendmsg('Games requested')
-      for game in request:
-         ircbot.bot.sendmsg(game)
+      game = sorted(request, key=request.get, reverse=True)
+      for q in game:
+         print q
    elif msg in request:
       request[msg]+=1
       ircbot.bot.sendmsg('Game request registered')
       logging.info('Game request for %s registered by %s' %(msg, nick))
+      storage.save('Game request added')
    else:
       request[msg]=1
       ircbot.bot.sendmsg('Game request registered')
       logging.info('Game request for %s registered by %s' %(msg, nick))
+      storage.save('Game request added')
 
+#Called by ircbot
 def edit_response(nick, msg, msgcap, data):
    if msg[1] == 'add':
       msg[4] = ' '.join(msgcap[4:])
@@ -238,6 +243,7 @@ def edit_response(nick, msg, msgcap, data):
    elif msg[1] == 'remove':
       remove_response(nick, msg[2], data)
 
+#Add Static response
 @utils.mod_only
 def add_response(nick, access, command, msg, data):
    try:
@@ -252,7 +258,7 @@ def add_response(nick, access, command, msg, data):
       print '%s Access must be either admin, mod, or all' %e
       ircbot.bot.sendmsg('Syntax Must Be: !response add [admin/mod/all] [command] [Message]')
 
-
+#Remove Static response
 @utils.mod_only
 def remove_response(nick, command, data):
    try:
@@ -265,6 +271,7 @@ def remove_response(nick, command, data):
    except KeyError:
       logging.error('Delete attempt failed: %s command not found. Triggered by %s' %(command, nick))
 
+#Add to ban list
 @utils.mod_only
 def botban(nick, msg, data):
    if msg[0] == 'ban':
