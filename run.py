@@ -13,7 +13,7 @@ def connect(*args):
 
 #Default connection is #admiralmatt
 
-connect('sageofSong')
+connect('sageofsong')
 #'Ã©'=\xc3\xa9
 
 def update():
