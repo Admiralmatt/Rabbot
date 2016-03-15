@@ -222,8 +222,8 @@ def game_request(nick, msg):
    elif msg == 'show':
       ircbot.bot.sendmsg('Games requested')
       game = sorted(request, key=request.get, reverse=True)
-      for q in game:
-         print q
+      for name in game:
+         print name
    elif msg in request:
       request[msg]+=1
       ircbot.bot.sendmsg('Game request registered')
