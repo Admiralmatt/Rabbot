@@ -211,6 +211,7 @@ def comm_vote(nick, msg, msgcap):
       pass
 
 #Request a game to be played
+@utils.throttle(5)
 def game_request(nick, msg):
    request=storage.getrequestlist()
    if msg == 'clear':
