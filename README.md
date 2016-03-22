@@ -35,7 +35,7 @@ If you want to contact me about Rabbot (bug reports, feedback, or if you want it
  
 ##Request
 * **!request (GAME NAME)** Will register (GAME) to a list of games for the streamer to play.
-* **!request display** Will display the list of requested games.
+* **!request show** Will display the list of requested games.
  
 
    **Mod-only commands**

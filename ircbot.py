@@ -29,6 +29,7 @@ class ircbot():
       self.spam_rules = []
       self.spammers = {}
       self.ismod = False
+      self.ircmsg=None
 
    def startup(self, channel='admiralmatt',botnick='Rab_bot',server='irc.twitch.tv'):
       #can't be done in __init__ so compiled here
@@ -36,10 +37,10 @@ class ircbot():
       logging.info('Connecting to channel: %s' %str(channel))
       self.spam_rules = [(re.compile(i['re']), i['message']) for i in storage.data['spam_rules']]
       
-      self.channel = '#' + str(channel)
+      self.channel = '#' + str(channel.lower())
       self.server = server
       self.botnick = botnick
-      self.show = str(channel)
+      self.show = str(channel.lower())
       self.modlist = ['admiralmatt']
 
       self.makesock()
@@ -96,13 +97,20 @@ class ircbot():
                self.modcheck(ircmsg)
          
          #To end thread without error
+
+         except socket.error as error:
+            print error
+            self.ircsock.close()
+            storage.save()
+            quit()
          except Exception as e:
+            print type(e)
             print 'Thread error' #in case of error
             print e
             logging.error('Thread Error\n%s' %e)
-            send_email(str(e)) #send error report to bot email
+            send_email(str(e), ircmsg) #send error report to bot email
          
-
+         
    def startthread(self):
       try:
          global thread
@@ -153,7 +161,7 @@ class ircbot():
       channeldata = storage.getchanneldata()
       
       if msg[0] == 'bot_shutdown':
-         commands.bot_shutdown(nick)
+         commands.bot_shutdown(nick, msg)
          
       try:
          if nick in channeldata['banlist']:
@@ -181,7 +189,7 @@ class ircbot():
       elif msg[0] == 'vote':
          commands.comm_vote(nick, msg, msgcap.split(':!')[-1].split())
 
-      elif msg[0] == 'request':
+      elif msg[0] in ['request','gamerequest']:
          commands.game_request(nick,' '.join(msg[1:]))
 
       elif msg[0] == 'response':

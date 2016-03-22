@@ -20,14 +20,6 @@ gauth.SaveCredentialsFile("mycreds.txt")
 
 drive = GoogleDrive(gauth)
 
-def logsave():
-    file2 = drive.CreateFile({'id': '0B-KACwkTF1mEaWRRZ1QzNGNIYWM'})
-    file2.SetContentFile('botlogs.log')
-    try:
-        file2.Upload()
-    except Exception as a:
-        print a
-
 def logload():
     # Create GoogleDriveFile instance
     file2 = drive.CreateFile({'id': '0B-KACwkTF1mEaWRRZ1QzNGNIYWM'})
@@ -46,9 +38,16 @@ def drivesave():
     try:
         file1.Upload()
     except Exception as a:
-        print a
-
+        pass
     logsave()
+
+def logsave():
+    file2 = drive.CreateFile({'id': '0B-KACwkTF1mEaWRRZ1QzNGNIYWM'})
+    file2.SetContentFile('botlogs.log')
+    try:
+        file2.Upload()
+    except Exception as a:
+        pass
 
 def drivelogin():
     # Create GoogleDriveFile instance
