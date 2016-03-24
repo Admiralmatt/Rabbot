@@ -26,7 +26,7 @@ def send_email(msg, last= 'No Msg Found', sub= 'Bot Error'):
     FROM = gmail_user
     TO = [gmail_user] #Enter destination email
     SUBJECT = sub #Enter text of email
-    TEXT = '%s \n\n %s \n\n Connected to channel %s \n\n Last message sent: %s \n\n Save Data:\n %s' %(msg, time, bot.channel, last, str(savedata))
+    TEXT = 'Bot Version: %s \n\n%s \n\n%s \n\nConnected to channel %s \n\nLast message sent: %s \n\nSave Data:\n%s' %(bot.version, msg, time, bot.channel, last, str(savedata))
            # Prepare actual message
     message = """\From: %s\nTo: %s\nSubject: %s\n\n%s""" % (FROM, ", ".join(TO), SUBJECT, TEXT)
     try:

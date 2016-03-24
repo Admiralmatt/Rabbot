@@ -16,6 +16,7 @@ logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s', datefmt='%m/
 class ircbot():
    def __init__(self):
       # Some basic variables used to configure the bot
+      self.version = 1.0
       self.password = load('twitch')
 
       self.currentgame = None
@@ -33,7 +34,7 @@ class ircbot():
 
    def startup(self, channel='admiralmatt',botnick='Rab_bot',server='irc.twitch.tv'):
       #can't be done in __init__ so compiled here
-      logging.info('\n\nBot Startup\n')
+      logging.info('\n\nBot Startup\nVersion: %s' %self.version)
       logging.info('Connecting to channel: %s' %str(channel))
       self.spam_rules = [(re.compile(i['re']), i['message']) for i in storage.data['spam_rules']]
       
