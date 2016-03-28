@@ -1,10 +1,10 @@
 #!/usr/bin/env python 2.7
-
-import storage
-from storage import save,load
-from ircbot import bot
-from sendemail import send_email
-import commands
+import ircbot
+import ircbot.storage
+from ircbot.storage import save,load
+from ircbot.ircbot import bot
+from ircbot.sendemail import send_email
+import ircbot.commands
 
 
 #args = Channel, Nickname, Server
@@ -18,4 +18,4 @@ connect('sageofsong')
 
 def update():
     load()
-    save()
+    save('Manual Update')
