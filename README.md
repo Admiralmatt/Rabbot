@@ -21,7 +21,7 @@ If you want to contact me about Rabbot (bug reports, feedback, or if you want it
 * **!game refresh** Force a refresh of the current Twitch game. (Normally this is updated at most once every 15 minutes)
 
 ##Stats
-* **!(STAT)** Add 1 to (STAT) counter.
+* **!(STAT)** Add 1 to (STAT) counter. Example: **!death** will add 1 to the death counter.
 * **!(STAT) remove** Removes 1 from (STAT) counter.
 * **!(STAT) count** Posts the current (STAT) count for current game. Auto called after stat update.
 * **!stats** Posts all stats that are currently set up to be tracked.
@@ -53,7 +53,7 @@ If you want to contact me about Rabbot (bug reports, feedback, or if you want it
 
 ##Response
 * **!response add (admin/mod/all) (command) (Message)** Will add a static response for your channel triggered by (command).
-* **!response Remove(command)** Will remove (command) as a static response on your channel.
+* **!response Remove (command)** Will remove (command) as a static response on your channel.
 
 ##Misc
 * **!help** Posts a link to this page.
