@@ -34,11 +34,10 @@ If you want to contact me about Rabbot (bug reports, feedback, or if you want it
 * **!(STAT) set #** Sets (STAT) to #
  
 ##Request
-* **!request (GAME NAME)** Will register (GAME) to a list of games for the streamer to play.
-* **!request show** Will display the list of requested games.
- 
+* **!request (GAME NAME)** Will register (GAME) to a list of games for the streamer to play. 
 
    **Mod-only commands**
+* **!request show** Will display the list of requested games.
 * **!request clear** Will clear the request list.
  
 ##Vote
