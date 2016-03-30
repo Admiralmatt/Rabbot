@@ -16,7 +16,7 @@ logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s', datefmt='%m/
 class ircbot():
    def __init__(self):
       # Some basic variables used to configure the bot
-      self.version = 1.0.1
+      self.version = 1.01
       self.password = load('twitch')
 
       self.currentgame = None
@@ -81,9 +81,10 @@ class ircbot():
          try:
             ircmsg = self.ircsock.recv(4096) # Receive data from the server
             if len(ircmsg) == 0 or len(ircmsg) == None:
-               logginf.error('Socket error from twitch')
+               logging.error('Socket error from twitch')
                print 'Socket error from twitch'
                send_email('No Data From Twitch') #send error report to bot email
+               raise
             print(ircmsg) # Print what's coming from the server
             if ircmsg.find(' PRIVMSG ') != -1:
                nick = ircmsg.split('!')[0][1:]

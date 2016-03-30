@@ -221,7 +221,7 @@ def game_request(nick, msg):
       logging.info('Game request list cleared by %s' %nick)
       storage.save('Game request cleared')
    elif msg == 'show':
-      ircbot.bot.sendmsg('Games requested')
+      print 'Games requested'
       game = sorted(request, key=request.get, reverse=True)
       for name in game:
          print name
