@@ -16,7 +16,7 @@ logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s', datefmt='%m/
 class ircbot():
    def __init__(self):
       # Some basic variables used to configure the bot
-      self.version = 1.10
+      self.version = 1.01
       self.password = load('twitch')
 
       self.currentgame = None
