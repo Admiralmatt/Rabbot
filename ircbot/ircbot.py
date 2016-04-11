@@ -31,6 +31,7 @@ class ircbot():
       self.spammers = {}
       self.ismod = False
       self.ircmsg=None
+      self.channeldata = None
 
    def startup(self, channel='admiralmatt',botnick='Rab_bot',server='irc.twitch.tv'):
       #can't be done in __init__ so compiled here
@@ -46,6 +47,7 @@ class ircbot():
 
       self.makesock()
       self.connect()
+      self.channeldata = storage.getchanneldata()
       self.startthread()
       self.sendmsg('/mods')
       self.get_current_game(botnick)
@@ -160,16 +162,15 @@ class ircbot():
    # Search for correct command to use
    def is_command(self, nick, msg, msgcap):
       data = storage.data
-      channeldata = storage.getchanneldata()
       
       if msg[0] == 'bot_shutdown':
          commands.bot_shutdown(nick, msg)
          
       try:
-         if nick in channeldata['banlist']:
+         if nick in bot.channeldata['banlist']:
             return
 
-         if msg[1] == 'new' and msg[0] not in channeldata['showstats']:
+         if msg[1] == 'new' and msg[0] not in bot.channeldata['showstats']:
             stats.change(nick, msg[0], msg[1])
             return
       except IndexError:
@@ -177,7 +178,7 @@ class ircbot():
       except KeyError:
          pass
 
-      if msg[0] in channeldata['showstats']:
+      if msg[0] in bot.channeldata['showstats']:
          if len(msg) is not 3:
             msg.extend([None] * 3)
          stats.change(nick, msg[0], msg[1], msg[2])
@@ -186,7 +187,7 @@ class ircbot():
          commands.gamecheck(nick, msg, msgcap.split(':!')[-1].split())
          
       elif msg[0] == 'stats':
-         stats.statcheck(nick, channeldata)
+         stats.statcheck(nick, bot.channeldata)
 
       elif msg[0] == 'vote':
          commands.comm_vote(nick, msg, msgcap.split(':!')[-1].split())
@@ -195,13 +196,13 @@ class ircbot():
          commands.game_request(nick,' '.join(msg[1:]))
 
       elif msg[0] == 'response':
-         commands.edit_response(nick, msg, msgcap.split(':!')[-1].split(), channeldata['showresponse'])
+         commands.edit_response(nick, msg, msgcap.split(':!')[-1].split(), bot.channeldata['showresponse'])
 
       elif msg[0] in ['ban','unban']:
-         commands.botban(nick, msg, channeldata)
+         commands.botban(nick, msg, bot.channeldata)
 
       elif msg[0] == 'lockdown':
-         commands.lockdown(nick, msg, channeldata)
+         commands.lockdown(nick, msg, bot.channeldata)
 
       #Mods only
       elif msg[0] == 'norespond':
@@ -214,8 +215,8 @@ class ircbot():
                self.norespond = True
                logging.info('Bot muted by %s' %nick)
                
-      elif msg[0] in channeldata['showresponse']:
-         commands.send_response(nick, msg[0], channeldata['showresponse'][msg[0]])
+      elif msg[0] in bot.channeldata['showresponse']:
+         commands.send_response(nick, msg[0], bot.channeldata['showresponse'][msg[0]])
       
       elif msg[0] in data['responses']:
          commands.send_response(nick, msg[0], data['responses'][msg[0]])

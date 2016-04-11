@@ -16,25 +16,24 @@ def load(): #Load Data From File
     with open('data.json', 'r') as fp:
         data = json.load(fp)
 
-def getrequestlist():
-    request = data['shows'][ircbot.bot.show].setdefault('request',{})
-    return request
-
 #returns (path) that navigates to games portion of records
 def getgamepath():
-    path = data.setdefault('shows', {}).setdefault(ircbot.bot.show, {"name": ircbot.bot.show}).setdefault('games', {})
+    path = data.setdefault('shows', {}).setdefault(ircbot.bot.show, {'name': ircbot.bot.show}).setdefault('games', {})
     return path
 
 #returns (path) that navigates to list of mods for channel
 def getmodlist():
-    modlist = data.setdefault('shows', {}).setdefault(ircbot.bot.show, {"name": ircbot.bot.show})
+    modlist = data.setdefault('shows', {}).setdefault(ircbot.bot.show, {'name': ircbot.bot.show})
     return modlist
 
 #returns (path) that navigates to the channels portion of records
+#set up defaults for channel
 def getchanneldata():
     channeldata = data['shows'][ircbot.bot.show]
-    channeldata.setdefault("showstats", ["death"])
-    channeldata.setdefault("showresponse", {})
+    channeldata.setdefault('showstats', ['death','tilt'])
+    channeldata.setdefault('showresponse', {})
+    channeldata.setdefault('request', {})
+    channeldata.setdefault('quotes', {})
     return channeldata
 
 #Search records to see if game already exists.
@@ -98,7 +97,7 @@ data = {
             'stats':
                     {
                             'stats': {
-                'death': {'plural': "deaths"},
+                'death': {'plural': 'deaths'},
                 },
                             '''
 '''
@@ -134,15 +133,15 @@ data = {
 For example:
 data = {
         'stats': {
-                'death': {'plural': "deaths"},
+                'death': {'plural': 'deaths'},
         },
         'shows': {
                 '': {
-                        'name': "Unknown",
+                        'name': 'Unknown',
                         'games': {
                                 12345: {
-                                        'name': "Example game",
-                                        'display': "Funny name for example game",
+                                        'name': 'Example game',
+                                        'display': 'Funny name for example game',
                                         'stats': {
                                                 'death': 17,
                                         },
@@ -153,7 +152,7 @@ data = {
         'spam_rules': [
                 {
                         're': '^I am a spambot!$',
-                        'message': "claims to be a spambot",
+                        'message': 'claims to be a spambot',
                 },
         ],
 }
