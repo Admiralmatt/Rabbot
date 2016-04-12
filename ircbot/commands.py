@@ -213,7 +213,7 @@ def comm_vote(nick, msg, msgcap):
 #Request a game to be played
 @utils.throttle(5)
 def game_request(nick, msg):
-   request=storage.getrequestlist()
+   request = bot.channeldata['request']
    if msg == 'clear':
       f=utils.mod_only(lambda nick,request: request.clear())
       f(nick,request)
