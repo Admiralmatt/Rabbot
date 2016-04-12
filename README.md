@@ -54,6 +54,14 @@ If you want to contact me about Rabbot (bug reports, feedback, or if you want it
 * **!response add (admin/mod/all) (command) (Message)** Will add a static response for your channel triggered by (command).
 * **!response Remove (command)** Will remove (command) as a static response on your channel.
 
+##Quote
+* **!quote** Posts a random quote.
+* **!quote #** Posts a specific quote.
+* **!quote add QUOTE** Adds a new quote, will display an ID number for the quote
+* **!quote remove #** Removes # quote from the database.
+* **!quote edit # QUOTE** Replaces text of quote # with QUOTE.
+
+
 ##Misc
 * **!help** Posts a link to this page.
 * **!help (COMMAND)** Posts a link to this page and scroll to section for (COMMAND).

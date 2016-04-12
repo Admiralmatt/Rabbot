@@ -191,7 +191,7 @@ class ircbot():
          stats.statcheck(nick, bot.channeldata)
 
       elif msg[0] == 'quote':
-         quote(nick, msgcap.split(':!')[-1].split(), bot.channeldata)
+         quote(nick, msgcap.split(':!')[-1].split(), bot.channeldata['quotes'])
 
       elif msg[0] == 'vote':
          commands.comm_vote(nick, msg, msgcap.split(':!')[-1].split())
