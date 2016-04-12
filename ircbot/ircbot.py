@@ -107,14 +107,14 @@ class ircbot():
             self.ircsock.close()
             storage.save()
             quit()
-         '''
+            
          except Exception as e:
             print type(e)
             print 'Thread error' #in case of error
             print e
             logging.error('Thread Error\n%s' %e)
             send_email(str(e), ircmsg) #send error report to bot email
-         '''
+
          
    def startthread(self):
       try:
