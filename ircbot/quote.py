@@ -1,55 +1,59 @@
-'''
-from ircbot import bot
+import ircbot
+import logging, time, random
 import utils
-import logging
-import time
-from storage import save
-'''
-
-['quote', 'add', 'this', 'is', 'a', 'test']
+import storage
 
 #data=channeldata['quote']
 def quote(nick,msg,data):
     try:
-        if msg[1] == 'add':
+        print len(msg)
+        if len(msg) == 1:
+            id = random.choice(data.keys())
+            choosequote(nick, data[id], id)
+        elif msg[1].lower() == 'add':
             addquote(nick, ' '.join(msg[2:]), data)
-        elif msg[1] == 'edit':
-            editquote(nick, ' '.join(msg[3:]), data[int(msg[2])])
-        elif msg[1] == 'remove':
-            removequote(nick, msg[2], data)
-        elif msg
-            postquote
-            
-            pass
-            
+        elif msg[1].lower() == 'edit':
+            editquote(nick, ' '.join(msg[3:]), data[int(msg[2])], int(msg[2]))
+        elif msg[1].lower() == 'remove':
+            removequote(nick, int(msg[2]), data,)
+        elif int(msg[1]) in data.keys():
+            choosequote(nick, data[int(msg[1])], int(msg[1]))
     except KeyError:
         return
-
-def addquote(nick,msg,data):
+    
+#!quote add text of quote
+def addquote(nick, msg, data):
     data.setdefault('lastid',0)
     data['lastid'] += 1
     id = data['lastid']
     date = time.strftime("%m/%d/%Y")
-    data[id] = {'quote':msg,'time': date}
+    data[id] = {'quote':msg,'date': date}
     action = ' added:'
-    postquote(nick,msg,date,action)
-    
-def editquote(nick,msg,data):
+    postquote(nick, id, msg, date, action)
+
+#!quote edit # new text of quote    
+def editquote(nick, msg, data, id):
     data['quote'] = msg
     action = ' edited:'
-    postquote(nick,msg,data['time'],action)
+    postquote(nick, id, msg, data['date'], action)
 
-def removequote(nick, msg, data):
+#!quote remove #
+def removequote(nick, id, data):
+    msg = data[id]['quote']
+    date = data[id]['date']
     del data[msg]    
     action = ' removed:'
-    postquote(nick,msg,date,action)
+    postquote(nick, id, msg, date, action)
 
-def postquote(nick,msg,date,action):
+#!quote
+#!quote #
+def choosequote(nick, data, id):
+    action = ':'
+    msg = data['quote']
+    date = data['date']
+    postquote(nick, id, msg, date, action)
+
+def postquote(nick, id, msg, date, action):
     logging.info('Quote #%i%s %s -%s by %s' % (id, action, msg, date, nick))
-    bot.sendmsg('Quote #%i%s %s -%s' % (id, action, msg, date))
-    save('Quote %s' % action)
-
-
-
-
-
+    ircbot.bot.sendmsg('Quote #%i%s %s -%s' % (id, action, msg, date))
+    storage.save('Quote %s' % action)

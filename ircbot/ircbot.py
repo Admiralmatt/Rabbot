@@ -1,7 +1,5 @@
 # Import some necessary libraries.
-import socket
-import threading
-import re
+import socket, threading,re
 
 import stats
 import storage
@@ -9,6 +7,8 @@ from sendemail import send_email, load
 import twitch
 import commands
 import utils
+from quote import quote
+
 
 import logging
 logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s', datefmt='%m/%d/%Y %H:%M:%S',
@@ -107,13 +107,14 @@ class ircbot():
             self.ircsock.close()
             storage.save()
             quit()
+         '''
          except Exception as e:
             print type(e)
             print 'Thread error' #in case of error
             print e
             logging.error('Thread Error\n%s' %e)
             send_email(str(e), ircmsg) #send error report to bot email
-         
+         '''
          
    def startthread(self):
       try:
@@ -188,6 +189,9 @@ class ircbot():
          
       elif msg[0] == 'stats':
          stats.statcheck(nick, bot.channeldata)
+
+      elif msg[0] == 'quote':
+         quote(nick, msgcap.split(':!')[-1].split(), bot.channeldata)
 
       elif msg[0] == 'vote':
          commands.comm_vote(nick, msg, msgcap.split(':!')[-1].split())
