@@ -57,6 +57,6 @@ def choosequote(nick, data, id):
     postquote(nick, id, msg, date, action)
 
 def postquote(nick, id, msg, date, action):
-    logging.info('Quote #%s%s %s -%s by %s' % (id, action, msg, date, nick))
-    ircbot.bot.sendmsg('Quote #%s%s %s -%s' % (id, action, msg, date))
+    logging.info('Quote #%s%s "%s" -%s by %s' % (id, action, msg, date, nick))
+    ircbot.bot.sendmsg('Quote #%s%s "%s" -%s' % (id, action, msg, date))
     storage.save('Quote%s' % action)
