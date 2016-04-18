@@ -28,7 +28,7 @@ def addquote(nick, msg, data):
     data.setdefault('lastid',0)
     data['lastid'] += 1
     id = data['lastid']
-    date = time.strftime("%m/%d/%Y")
+    date = time.strftime("%Y/%m/%d")
     data[str(id)] = {'quote':msg,'date': date}
     action = ' added:'
     postquote(nick, id, msg, date, action)
