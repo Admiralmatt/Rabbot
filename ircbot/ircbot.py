@@ -25,7 +25,7 @@ class ircbot():
       self.pollchoices = None
       self.lockdown = False
       self.voting = False
-      self.norespond = False
+      self.norespond = True
       self.startupcheck = True
       self.spam_rules = []
       self.spammers = {}

@@ -29,7 +29,7 @@ def getmodlist():
 #returns (path) that navigates to the channels portion of records
 #set up defaults for channel
 def getchanneldata():
-    channeldata = data['shows'][ircbot.bot.show]
+    channeldata = data.setdefault('shows', {}).setdefault(ircbot.bot.show, {'name': ircbot.bot.show})
     channeldata.setdefault('showstats', ['death','tilt'])
     channeldata.setdefault('showresponse', {})
     channeldata.setdefault('request', {})
