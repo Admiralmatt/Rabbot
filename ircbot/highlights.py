@@ -12,3 +12,12 @@ def get_current_video_id(nick, channel):
 def test():
     # Get time and generate link to VOD
     pass
+#z=datetime.strptime(a, "%Y-%m-%dT%H:%M:%SZ")
+#http://stackoverflow.com/questions/21378977/compare-two-timestamps-in-python
+'''
+>>> z=datetime.datetime.strptime(a, "%Y-%m-%dT%H:%M:%SZ")
+>>> z
+datetime.datetime(2016, 11, 23, 13, 15, 46)
+>>> a
+u'2016-11-23T13:15:46Z'
+'''
