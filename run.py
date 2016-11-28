@@ -4,6 +4,7 @@ import ircbot.storage
 from ircbot.storage import save,load
 from ircbot.ircbot import bot
 from ircbot.sendemail import send_email
+from ircbot.highlights import get_time
 import ircbot.commands
 
 
@@ -13,7 +14,7 @@ def connect(*args):
 
 #Default connection is #admiralmatt
 
-connect('voxlunch')
+connect('moonmoon_ow')
 #'Ã©'=\xc3\xa9
 
 def update():

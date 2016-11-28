@@ -22,6 +22,8 @@ def url_open(url, data = None):
 def get_info(username = None, use_fallback = False):
     # Attempt to get the channel data from /streams/channelname
     # If this succeeds, it means the channel is currently live
+    if username is None:
+        username = ircbot.bot.show
     res = url_open("https://api.twitch.tv/kraken/streams/%s" % username)
     data = json.loads(res)
     channel_data = data.get('stream') and data['stream'].get('channel')
@@ -76,7 +78,6 @@ def get_game_playing(username = None):
     """
     if username is None:
         username = ircbot.bot.show
-
     
     channel_data = get_info(username, use_fallback=False)
     if not channel_data or not channel_data['live']:
