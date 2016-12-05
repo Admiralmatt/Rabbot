@@ -11,7 +11,7 @@ def get_current_video_id(channel, nick = None):
 
 def get_time():
     # Get time and generate link to VOD
-    current_time = datetime.datetime.now()
+    current_time = datetime.datetime.utcnow()
     channel_data = get_info()
     start_time = channel_data['stream_created_at']
     # u'2016-11-23T13:15:46Z'

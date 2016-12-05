@@ -17,7 +17,7 @@ def url_open(url, data = None):
     response = urllib2.urlopen(url)
     html = response.read()
     return html
-#Test String: https://api.twitch.tv/kraken/streams/desertbus?client_id=nigr9qrlruvvbymiitss8t7ozl4ejip
+#Test String: https://api.twitch.tv/kraken/streams/loadingreadyrun?client_id=nigr9qrlruvvbymiitss8t7ozl4ejip
 
 def get_info(username = None, use_fallback = False):
     # Attempt to get the channel data from /streams/channelname
