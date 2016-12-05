@@ -164,7 +164,7 @@ class ircbot():
    def is_command(self, nick, msg, msgcap):
       data = storage.data
       
-      if msg[0] == 'bot_shutdown':
+      if msg[0] == 'shutdown':
          commands.bot_shutdown(nick, msg)
          
       try:
