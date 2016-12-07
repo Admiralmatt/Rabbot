@@ -9,8 +9,8 @@ def get_current_video_id(channel, nick = None):
     video_id = res['videos'][0]['_id']
     return 'https://www.twitch.tv/%s/v/%s' %(channel, video_id)
 
-def get_time():
-    # Get time and generate link to VOD
+def get_uptime():
+    # Get uptime and generate link to VOD
     current_time = datetime.datetime.utcnow()
     channel_data = get_info()
     start_time = channel_data['stream_created_at']
@@ -20,11 +20,14 @@ def get_time():
     difference = current_time - start_time
     minutes, seconds = divmod(difference.seconds, 60)
     hours, minutes = divmod(minutes, 60)
+    return {'hours':hours, 'minutes':minutes, 'seconds':seconds}
 
+def highlight():
+    channel_data = get_info()
+    uptime = get_uptime()
     VOD_link = get_current_video_id(channel = channel_data['display_name'])
     #https://www.twitch.tv/loadingreadyrun/v/98781251?t=1h3m15s
-    highlight = VOD_link + '?t=%sh%sm%ss' %(hours, minutes, seconds)
-    print start_time
+    highlight = VOD_link + '?t=%sh%sm%ss' %(uptime['hours'], uptime['minutes'], uptime['seconds'])
     return highlight
     
 #z=datetime.strptime(a, "%Y-%m-%dT%H:%M:%SZ")

@@ -16,7 +16,7 @@ logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s', datefmt='%m/
 class ircbot():
    def __init__(self):
       # Some basic variables used to configure the bot
-      self.version = 1.30
+      self.version = 2.00
       self.password = load('twitch')
 
       self.currentgame = None
@@ -52,6 +52,7 @@ class ircbot():
       self.sendmsg('/mods')
       self.get_current_game(botnick)
       self.startupcheck = False
+      print 'Connected to channel: %s' %str(channel)
 
    def makesock(self):
       self.ircsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -131,10 +132,12 @@ class ircbot():
       if self.norespond != True:
          if nick is None:
             self.ircsock.send('PRIVMSG '+ self.channel +' :' + msg +'\n')
+            logging.info('Message: %s sent' % msg)
          else:
             self.ircsock.send('PRIVMSG '+ self.channel +' :' + nick + ': ' + msg +'\n')
+            logging.info('Message: %s sent' % msg)
       else:
-         logging.info('Message not sent, bot is muted.')
+         logging.info('Message: %s not sent, bot is muted.' % msg)
 
    def get_current_game(self, nick):
       #Returns the game currently being played, with caching to avoid hammering the Twitch server
@@ -205,6 +208,12 @@ class ircbot():
       elif msg[0] in ['ban','unban']:
          commands.botban(nick, msg, bot.channeldata)
 
+      elif msg[0] == 'uptime':
+         commands.uptime()
+
+      elif msg[0] == 'highlight':
+         commands.make_highlight(nick, msgcap.split(':!')[-1].split())
+         
       elif msg[0] == 'lockdown':
          commands.lockdown(nick, msg, bot.channeldata)
 

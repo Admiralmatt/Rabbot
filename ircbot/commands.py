@@ -1,12 +1,7 @@
-import random
-
-import ircbot
+import random, logging
+import ircbot, utils
 from sendemail import send_email
-import utils
-import twitch
-import vote
-import storage
-import logging
+import twitch, vote, storage, highlights
 
 @utils.admin_only
 def bot_shutdown(nick, msg): #Disconnect from server
@@ -284,3 +279,17 @@ def botban(nick, msg, data):
       data['banlist'].remove(' '.join(msg[1:]))
       logging.info('%s removed from ban list by %s' %(' '.join(msg[1:]),nick))
       ircbot.bot.sendmsg('%s removed from ban list by %s' %(' '.join(msg[1:]),nick))
+
+@utils.throttle(5)
+def make_highlight(nick, msg):
+   msg = ' '.join(msg[2:])
+   highlight = highlights.highlight()
+   print highlight
+   #add highlight to save
+   logging.info('Highlight Created by %s, tagged as %s' %(nick, msg))
+   ircbot.bot.sendmsg('Highlight Created')
+   
+def uptime():
+   uptime = highlights.get_uptime()
+   print uptime
+   ircbot.bot.sendmsg('The stream has been live for %s:%s:%s' %(uptime['hours'], uptime['minutes'], uptime['seconds']))
