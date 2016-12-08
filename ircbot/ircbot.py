@@ -25,7 +25,7 @@ class ircbot():
       self.pollchoices = None
       self.lockdown = False
       self.voting = False
-      self.norespond = True
+      self.norespond = False
       self.startupcheck = True
       self.spam_rules = []
       self.spammers = {}
@@ -88,7 +88,7 @@ class ircbot():
                print 'Socket error from twitch'
                send_email('No Data From Twitch') #send error report to bot email
                raise
-            #print(ircmsg) # Print what's coming from the server
+#            print(ircmsg) # Print what's coming from the server
             if ircmsg.find(' PRIVMSG ') != -1:
                nick = ircmsg.split('!')[0][1:]
                channel = ircmsg.split(' PRIVMSG ')[-1].split(' :')[0]
@@ -113,7 +113,7 @@ class ircbot():
             print type(e)
             print 'Thread error' #in case of error
             print e
-            logging.error('Thread Error\n%s' %e)
+            logging.error('Thread Error\n%s\nLast message sent:%s' %(e,ircmsg))
             send_email(str(e), ircmsg) #send error report to bot email
 
          
@@ -165,75 +165,78 @@ class ircbot():
 
    # Search for correct command to use
    def is_command(self, nick, msg, msgcap):
-      data = storage.data
-      
-      if msg[0] == 'shutdown':
-         commands.bot_shutdown(nick, msg)
-         
       try:
-         if nick in bot.channeldata['banlist']:
-            return
+         data = storage.data
+         if msg[0] == 'shutdown':
+            commands.bot_shutdown(nick, msg)
+            
+         try:
+            if nick in bot.channeldata['banlist']:
+               return
 
-         if msg[1] == 'new' and msg[0] not in bot.channeldata['showstats']:
-            stats.change(nick, msg[0], msg[1])
-            return
+            if msg[1] == 'new' and msg[0] not in bot.channeldata['showstats']:
+               stats.change(nick, msg[0], msg[1])
+               return
+         except IndexError:
+            pass
+         except KeyError:
+            pass
+
+         if msg[0] in bot.channeldata['showstats']:
+            if len(msg) is not 3:
+               msg.extend([None] * 3)
+            stats.change(nick, msg[0], msg[1], msg[2])
+
+         elif msg[0] == 'game':
+            commands.gamecheck(nick, msg, msgcap.split(':!')[-1].split())
+            
+         elif msg[0] == 'stats':
+            stats.statcheck(nick, bot.channeldata)
+
+         elif msg[0] == 'quote':
+            quote(nick, msgcap.split(':!')[-1].split(), bot.channeldata['quotes'])
+
+         elif msg[0] == 'vote':
+            commands.comm_vote(nick, msg, msgcap.split(':!')[-1].split())
+
+         elif msg[0] in ['request','gamerequest']:
+            commands.game_request(nick,' '.join(msg[1:]))
+
+         elif msg[0] == 'response':
+            commands.edit_response(nick, msg, msgcap.split(':!')[-1].split(), bot.channeldata['showresponse'])
+
+         elif msg[0] in ['ban','unban']:
+            commands.botban(nick, msg, bot.channeldata)
+
+         elif msg[0] == 'uptime':
+            commands.uptime()
+
+         elif msg[0] == 'highlight':
+            commands.make_highlight(nick, msgcap.split(':!')[-1].split())
+            
+         elif msg[0] == 'lockdown':
+            commands.lockdown(nick, msg, bot.channeldata)
+
+         #Mods only
+         elif msg[0] == 'norespond':
+            if nick in self.modlist:
+               try:
+                  if msg[1] == 'off':
+                     self.norespond = False
+                     logging.info('Bot unmuted by %s' %nick)
+               except IndexError:
+                  self.norespond = True
+                  logging.info('Bot muted by %s' %nick)
+                  
+         elif msg[0] in bot.channeldata['showresponse']:
+            commands.send_response(nick, msg[0], bot.channeldata['showresponse'][msg[0]])
+         
+         elif msg[0] in data['responses']:
+            commands.send_response(nick, msg[0], data['responses'][msg[0]])
+
       except IndexError:
          pass
-      except KeyError:
-         pass
-
-      if msg[0] in bot.channeldata['showstats']:
-         if len(msg) is not 3:
-            msg.extend([None] * 3)
-         stats.change(nick, msg[0], msg[1], msg[2])
-
-      elif msg[0] == 'game':
-         commands.gamecheck(nick, msg, msgcap.split(':!')[-1].split())
-         
-      elif msg[0] == 'stats':
-         stats.statcheck(nick, bot.channeldata)
-
-      elif msg[0] == 'quote':
-         quote(nick, msgcap.split(':!')[-1].split(), bot.channeldata['quotes'])
-
-      elif msg[0] == 'vote':
-         commands.comm_vote(nick, msg, msgcap.split(':!')[-1].split())
-
-      elif msg[0] in ['request','gamerequest']:
-         commands.game_request(nick,' '.join(msg[1:]))
-
-      elif msg[0] == 'response':
-         commands.edit_response(nick, msg, msgcap.split(':!')[-1].split(), bot.channeldata['showresponse'])
-
-      elif msg[0] in ['ban','unban']:
-         commands.botban(nick, msg, bot.channeldata)
-
-      elif msg[0] == 'uptime':
-         commands.uptime()
-
-      elif msg[0] == 'highlight':
-         commands.make_highlight(nick, msgcap.split(':!')[-1].split())
-         
-      elif msg[0] == 'lockdown':
-         commands.lockdown(nick, msg, bot.channeldata)
-
-      #Mods only
-      elif msg[0] == 'norespond':
-         if nick in self.modlist:
-            try:
-               if msg[1] == 'off':
-                  self.norespond = False
-                  logging.info('Bot unmuted by %s' %nick)
-            except IndexError:
-               self.norespond = True
-               logging.info('Bot muted by %s' %nick)
-               
-      elif msg[0] in bot.channeldata['showresponse']:
-         commands.send_response(nick, msg[0], bot.channeldata['showresponse'][msg[0]])
-      
-      elif msg[0] in data['responses']:
-         commands.send_response(nick, msg[0], data['responses'][msg[0]])
-         
+            
    # Decide if a command has been entered
    def command(self, nick, channel, message, msgcap):
       if message.find(':!') != -1 and self.lockdown == False:
