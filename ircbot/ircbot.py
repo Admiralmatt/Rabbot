@@ -1,14 +1,8 @@
 # Import some necessary libraries.
-import socket, threading,re
-
-import stats
-import storage
+import socket, threading, re, linecache, sys
+import stats, commands, storage, twitch,utils
 from sendemail import send_email, load
-import twitch
-import commands
-import utils
 from quote import quote
-
 
 import logging
 logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s', datefmt='%m/%d/%Y %H:%M:%S',
@@ -25,7 +19,7 @@ class ircbot():
       self.pollchoices = None
       self.lockdown = False
       self.voting = False
-      self.norespond = False
+      self.norespond = True
       self.startupcheck = True
       self.spam_rules = []
       self.spammers = {}
@@ -107,12 +101,16 @@ class ircbot():
             print error
             self.ircsock.close()
             storage.save()
+            printexception()
             quit()
             
          except Exception as e:
+            print nick
+            print channel
+            print ircmsg
+            print ircmsg.lower()
             print type(e)
-            print 'Thread error' #in case of error
-            print e
+            printexception()
             logging.error('Thread Error\n%s\nLast message sent:%s' %(e,ircmsg))
             send_email(str(e), ircmsg) #send error report to bot email
 
@@ -269,5 +267,14 @@ class ircbot():
                self.sendmsg('%s: Banned for persistent spam (%s). Please contact Admiralmatt if this is incorrect.' % (nick, desc))
                level = 3
             return True
+
+def printexception():
+    exc_type, exc_obj, tb = sys.exc_info()
+    f = tb.tb_frame
+    lineno = tb.tb_lineno
+    filename = f.f_code.co_filename
+    linecache.checkcache(filename)
+    line = linecache.getline(filename, lineno, f.f_globals)
+    print 'EXCEPTION IN ({}, LINE {} "{}"): {}'.format(filename, lineno, line.strip(), exc_obj)
             
 bot = ircbot()
