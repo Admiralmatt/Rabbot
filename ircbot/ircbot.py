@@ -237,6 +237,7 @@ class ircbot():
             
    # Decide if a command has been entered
    def command(self, nick, channel, message, msgcap):
+      self.get_current_game(self.botnick)
       if message.find(':!') != -1 and self.lockdown == False:
          self.is_command(nick, message.split(':!')[-1].split(), msgcap)
 
