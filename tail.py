@@ -22,7 +22,7 @@ def follow(thefile):
 # 
 
 if __name__ == '__main__':
-    logfile = open("botlogs.txt","r")
+    logfile = open("botlogs.log","r")
     loglines = follow(logfile)
     for line in loglines:
         print line,
