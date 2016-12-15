@@ -87,7 +87,8 @@ class ircbot():
                nick = ircmsg.split('!')[0][1:]
                channel = ircmsg.split(' PRIVMSG ')[-1].split(' :')[0]
                self.channel = channel
-               self.command(nick, channel, ircmsg.lower(), ircmsg) #ircmsg.lower = makes all commands lower-case
+               self.command(nick, channel, ircmsg.lower(), ircmsg)
+               #ircmsg.lower = makes all commands lower-case
 
             if ircmsg.find('PING :') != -1: # Responds to server ping
                self.ircsock.send('PONG :pingis\n')
@@ -105,10 +106,6 @@ class ircbot():
             quit()
             
          except Exception as e:
-            print nick
-            print channel
-            print ircmsg
-            print ircmsg.lower()
             print type(e)
             printexception()
             logging.error('Thread Error\n%s\nLast message sent:%s' %(e,ircmsg))
@@ -277,5 +274,6 @@ def printexception():
     linecache.checkcache(filename)
     line = linecache.getline(filename, lineno, f.f_globals)
     print 'EXCEPTION IN ({}, LINE {} "{}"): {}'.format(filename, lineno, line.strip(), exc_obj)
+    logging.error('EXCEPTION IN ({}, LINE {} "{}"): {}'.format(filename, lineno, line.strip(), exc_obj))
             
 bot = ircbot()
