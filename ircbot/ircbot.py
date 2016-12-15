@@ -1,18 +1,11 @@
 # Import some necessary libraries.
-import socket, threading, re, linecache, sys
-import stats, commands, storage, twitch,utils
-from sendemail import send_email, load
-from quote import quote
-
-import logging
+import socket, threading, re, linecache, sys, logging
 logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s', datefmt='%m/%d/%Y %H:%M:%S',
                     filename='botlogs.log',level=logging.DEBUG)
 class ircbot():
    def __init__(self):
       # Some basic variables used to configure the bot
-      self.version = 2.00
-      self.password = load('twitch')
-
+      self.version = 2.10
       self.currentgame = None
       self.game_override = None
       self.show_override = None
@@ -57,6 +50,7 @@ class ircbot():
 
    #connect to the irc server.
    def connect(self):
+      self.password = load('twitch')
       try:
           self.ircsock.connect((self.server, 6667)) # Connect to the server using the port 6667
       except Exception as e:
@@ -105,11 +99,11 @@ class ircbot():
             printexception()
             quit()
             
-         except Exception as e:
+         '''except Exception as e:
             print type(e)
             printexception()
             logging.error('Thread Error\n%s\nLast message sent:%s' %(e,ircmsg))
-            send_email(str(e), ircmsg) #send error report to bot email
+            send_email(str(e), ircmsg) #send error report to bot email'''
 
          
    def startthread(self):
@@ -277,3 +271,7 @@ def printexception():
     logging.error('EXCEPTION IN ({}, LINE {} "{}"): {}'.format(filename, lineno, line.strip(), exc_obj))
             
 bot = ircbot()
+#Import the rest of the program here
+import storage, stats, commands, twitch, utils
+from sendemail import send_email, load
+from quote import quote

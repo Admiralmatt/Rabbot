@@ -1,8 +1,6 @@
-import json
-
+import json, logging
 import drive
-import ircbot
-import logging
+from ircbot import bot
 
 def save(reason='Default'): #Save Data to File
     logging.info('Saved, Reason: %s' %reason)
@@ -18,18 +16,18 @@ def load(): #Load Data From File
 
 #returns (path) that navigates to games portion of records
 def getgamepath():
-    path = data.setdefault('shows', {}).setdefault(ircbot.bot.show, {'name': ircbot.bot.show}).setdefault('games', {})
+    path = data.setdefault('shows', {}).setdefault(bot.show, {'name': bot.show}).setdefault('games', {})
     return path
 
 #returns (path) that navigates to list of mods for channel
 def getmodlist():
-    modlist = data.setdefault('shows', {}).setdefault(ircbot.bot.show, {'name': ircbot.bot.show})
+    modlist = data.setdefault('shows', {}).setdefault(bot.show, {'name': bot.show})
     return modlist
 
 #returns (path) that navigates to the channels portion of records
 #set up defaults for channel
 def getchanneldata():
-    channeldata = data.setdefault('shows', {}).setdefault(ircbot.bot.show, {'name': ircbot.bot.show})
+    channeldata = data.setdefault('shows', {}).setdefault(bot.show, {'name': bot.show})
     channeldata.setdefault('showstats', ['death','tilt'])
     channeldata.setdefault('showresponse', {})
     channeldata.setdefault('request', {})

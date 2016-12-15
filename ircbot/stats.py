@@ -1,11 +1,11 @@
-import storage
-import ircbot
+from storage import save, getchanneldata
+from ircbot import bot
 import utils
 import logging
 
 #update stats
 def stat_update(nick, stat, n, set_=False):
-    game = ircbot.bot.get_current_game(nick)
+    game = bot.get_current_game(nick)
     if game is None:
         return None
     game.setdefault("stats", {}).setdefault(stat, 0)
@@ -39,7 +39,7 @@ def add(nick, stat, n = None, set_ = False):
     n = 1 if n is None else int(n)
     game = stat_update(nick, stat, n, set_)
     if game is None:
-        ircbot.bot.sendmsg("Not currently playing any game")
+        bot.sendmsg("Not currently playing any game")
         return
 
 @utils.throttle(notify = True, params = [0])
@@ -52,7 +52,7 @@ def remove(nick, stat, n = None):
     n = -1 if n is None else int(-n)
     game = stat_update(nick, stat, n)
     if game is None:
-        ircbot.bot.sendmsg("Not currently playing any game")
+        bot.sendmsg("Not currently playing any game")
         return
     
 @utils.mod_only
@@ -67,7 +67,7 @@ def multiremove(nick, stat, n = None):
     n = -1 if n is None else int(-n)
     game = stat_update(nick, stat, n)
     if game is None:
-        ircbot.bot.sendmsg("Not currently playing any game")
+        bot.sendmsg("Not currently playing any game")
         return
     
 @utils.mod_only
@@ -110,21 +110,21 @@ def stat_print(nick, stat):
 
         Auto called after stat update.
     """
-    game = ircbot.bot.get_current_game(nick)
+    game = bot.get_current_game(nick)
     if game is None:
-        ircbot.bot.sendmsg("Not currently playing any game")
+        bot.sendmsg("Not currently playing any game")
         return
     try:
         count = game['stats'][stat]
         if count > 1:
             stat += 's'
-        ircbot.bot.sendmsg('%d %s for %s' % (count, stat, game['name']))
+        bot.sendmsg('%d %s for %s' % (count, stat, game['name']))
     except KeyError:
         pass
 
 def statcheck(nick, channeldata):
     msg = ', '.join(channeldata['showstats'])
-    ircbot.bot.sendmsg('Stats currently being tracked are: ' + msg)
+    bot.sendmsg('Stats currently being tracked are: ' + msg)
     
 
 def change(nick, stat, command = None, amt = None):

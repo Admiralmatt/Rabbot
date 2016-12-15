@@ -1,8 +1,10 @@
 #!/usr/bin/env python 2.7
 import ircbot
+from ircbot.ircbot import bot
+
 import ircbot.storage
 from ircbot.storage import save,load
-from ircbot.ircbot import bot
+
 from ircbot.sendemail import send_email
 from ircbot.highlights import highlight
 import ircbot.commands
