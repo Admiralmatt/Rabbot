@@ -16,7 +16,7 @@ def connect(*args):
 
 #Default connection is #admiralmatt
 
-connect('sacriel')
+connect('loadingreadyrun')
 #'Ã©'=\xc3\xa9
 
 def update():
