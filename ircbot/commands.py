@@ -287,7 +287,7 @@ def make_highlight(nick, msg):
    highlight = highlights.highlight()
    print highlight
    #add highlight to save
-   logging.info('Highlight Created by %s, tagged as %s' %(nick, msg))
+   logging.info('Highlight Created by %s, tagged: %s' %(nick, msg))
    bot.sendmsg('Highlight Created')
    
 def uptime():
