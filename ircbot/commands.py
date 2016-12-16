@@ -1,8 +1,7 @@
-import random, logging
-import utils
+import random, logging, time
 from ircbot import bot
 from sendemail import send_email
-import twitch, vote, storage, highlights
+import twitch, vote, storage, highlights, utils
 
 @utils.admin_only
 def bot_shutdown(nick, msg): #Disconnect from server
@@ -283,13 +282,29 @@ def botban(nick, msg, data):
 
 @utils.throttle(5)
 def make_highlight(nick, msg):
-   msg = ' '.join(msg[2:])
-   highlight = highlights.highlight()
-   print highlight
-   #add highlight to save
-   logging.info('Highlight Created by %s, tagged: %s' %(nick, msg))
-   bot.sendmsg('Highlight Created')
-   
+   try:
+      msg = ' '.join(msg[1:])
+      highlight = highlights.highlight()
+      #Get path to game in data
+      game = bot.get_current_game(nick)
+      date = time.strftime("%m/%d/%Y")
+      #Confirms location to save highlight and set up if missing
+      game.setdefault('highlights', {}).setdefault(date, [])
+      #Save Highlight
+      game['highlights'][date].append({'link':highlight, 'tag':msg})
+
+      #For testing
+      print highlight
+      print msg
+      #send confirmation
+      logging.info('Highlight Created by %s, tagged: %s' %(nick, msg))
+      bot.sendmsg('Highlight Created')
+      storage.save('Highlight')
+   except TypeError as e:
+      print e
+      bot.sendmsg('Stream is not live')
+
+      
 def uptime():
    try:
       uptime = highlights.get_uptime()

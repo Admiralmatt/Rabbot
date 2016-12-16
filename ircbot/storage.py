@@ -28,7 +28,7 @@ def getmodlist():
 #set up defaults for channel
 def getchanneldata():
     channeldata = data.setdefault('shows', {}).setdefault(bot.show, {'name': bot.show})
-    channeldata.setdefault('showstats', ['death','tilt'])
+    channeldata.setdefault('showstats', data['default_stats'])
     channeldata.setdefault('showresponse', {})
     channeldata.setdefault('request', {})
     channeldata.setdefault('quotes', {})

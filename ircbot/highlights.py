@@ -25,15 +25,13 @@ def get_uptime():
     
 
 def highlight():
-    try:
-        channel_data = get_info()
-        uptime = get_uptime()
-        VOD_link = get_current_video_id(channel = channel_data['display_name'])
-        #https://www.twitch.tv/loadingreadyrun/v/98781251?t=1h3m15s
-        highlight = VOD_link + '?t=%sh%sm%ss' %(uptime['hours'], uptime['minutes'], uptime['seconds'])
-        return highlight
-    except TypeError as e:
-        bot.sendmsg('Stream is not live')
+    channel_data = get_info()
+    uptime = get_uptime()
+    VOD_link = get_current_video_id(channel = channel_data['display_name'])
+    #https://www.twitch.tv/loadingreadyrun/v/98781251?t=1h3m15s
+    highlight = VOD_link + '?t=%sh%sm%ss' %(uptime['hours'], uptime['minutes'], uptime['seconds'])
+    return highlight
+
     
         
 #z=datetime.strptime(a, "%Y-%m-%dT%H:%M:%SZ")
