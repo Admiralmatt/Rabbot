@@ -293,9 +293,6 @@ def make_highlight(nick, msg):
       #Save Highlight
       game['highlights'][date].append({'link':highlight, 'tag':msg})
 
-      #For testing
-      print highlight
-      print msg
       #send confirmation
       logging.info('Highlight Created by %s, tagged: %s' %(nick, msg))
       bot.sendmsg('Highlight Created')
@@ -308,7 +305,6 @@ def make_highlight(nick, msg):
 def uptime():
    try:
       uptime = highlights.get_uptime()
-      print uptime
       bot.sendmsg('The stream has been live for %s:%s:%s' %(uptime['hours'], uptime['minutes'], uptime['seconds']))
    except TypeError as e:
       bot.sendmsg('Stream is not live')

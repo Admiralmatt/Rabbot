@@ -99,11 +99,11 @@ class ircbot():
             printexception()
             quit()
             
-         '''except Exception as e:
+         except Exception as e:
             print type(e)
             printexception()
             logging.error('Thread Error\n%s\nLast message sent:%s' %(e,ircmsg))
-            send_email(str(e), ircmsg) #send error report to bot email'''
+            send_email(str(e), ircmsg) #send error report to bot email
 
          
    def startthread(self):

@@ -4,7 +4,7 @@ from ircbot import bot
 
 def save(reason='Default'): #Save Data to File
     logging.info('Saved, Reason: %s' %reason)
-    print 'Saving, Reason: %s' %reason
+    #print 'Saving, Reason: %s' %reason
     with open('data.json', 'w') as fp:
         json.dump(data, fp, indent=2, sort_keys=True)
     drive.drivesave()
