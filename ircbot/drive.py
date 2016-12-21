@@ -1,7 +1,6 @@
 import __init__
 from pydrive.auth import GoogleAuth
 from pydrive.drive import GoogleDrive
-import logging
 
 gauth = GoogleAuth()
 # Try to load saved client credentials
@@ -31,7 +30,7 @@ def drivesave():
     try:
         file1.Upload()
     except Exception as a:
-        pass
+        gauth.Refresh()
 
 def drivelogin():
     # Create GoogleDriveFile instance

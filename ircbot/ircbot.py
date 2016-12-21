@@ -75,7 +75,7 @@ class ircbot():
                logging.error('Socket error from twitch')
                print 'Socket error from twitch'
                send_email('No Data From Twitch') #send error report to bot email
-               raise
+               raise socket.error
 #            print(ircmsg) # Print what's coming from the server
             if ircmsg.find(' PRIVMSG ') != -1:
                nick = ircmsg.split('!')[0][1:]
@@ -94,9 +94,9 @@ class ircbot():
 
          except socket.error as error:
             print error
+            printexception()
             self.ircsock.close()
             storage.save()
-            printexception()
             quit()
             
          except Exception as e:
