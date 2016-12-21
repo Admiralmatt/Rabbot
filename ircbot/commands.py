@@ -305,6 +305,6 @@ def make_highlight(nick, msg):
 def uptime():
    try:
       uptime = highlights.get_uptime()
-      bot.sendmsg('The stream has been live for %s:%s:%s' %(uptime['hours'], uptime['minutes'], uptime['seconds']))
+      bot.sendmsg('The stream has been live for %i:%i:%i' %(uptime['hours'], uptime['minutes'], uptime['seconds']))
    except TypeError as e:
       bot.sendmsg('Stream is not live')
