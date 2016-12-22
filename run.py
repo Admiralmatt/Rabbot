@@ -2,7 +2,6 @@
 import ircbot
 from ircbot.ircbot import bot
 
-import ircbot.storage
 from ircbot.storage import save,load
 
 from ircbot.sendemail import send_email

@@ -2,12 +2,22 @@ import json, logging
 import drive
 from ircbot import bot
 
-def save(reason='Default'): #Save Data to File
-    logging.info('Saved, Reason: %s' %reason)
-    #print 'Saving, Reason: %s' %reason
+#Save Data to File
+
+savecount = 0
+def save(reason='Default'):
+    global savecount
     with open('data.json', 'w') as fp:
         json.dump(data, fp, indent=2, sort_keys=True)
-    drive.drivesave()
+    #print 'Saving, Reason: %s' %reason
+    logging.info('Saved, Reason: %s' %reason)
+    #Every 4 saves, upload to Google Drive
+    if savecount > 3:
+        drive.drivesave()
+        logging.info('Saving to Drive')
+        savecount = 0
+    else:
+        savecount += 1
 
 def load(): #Load Data From File
     global data
@@ -87,8 +97,12 @@ def findgame(game = None):
     save('New Game Added')
     return gamedata
 
-drive.driveload()
-load()
+try:
+    load()
+except Exception as e:
+    logging.error('File not found loading from drive')
+    drive.driveload()
+    load()
         
 '''
 data = {
