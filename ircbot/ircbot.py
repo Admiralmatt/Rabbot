@@ -12,7 +12,7 @@ class ircbot():
       self.pollchoices = None
       self.lockdown = False
       self.voting = False
-      self.norespond = True
+      self.norespond = False
       self.startupcheck = True
       self.spam_rules = []
       self.spammers = {}
@@ -267,8 +267,8 @@ def printexception():
     filename = f.f_code.co_filename
     linecache.checkcache(filename)
     line = linecache.getline(filename, lineno, f.f_globals)
-    print 'EXCEPTION IN ({}, LINE {} "{}"): {}'.format(filename, lineno, line.strip(), exc_obj)
-    logging.error('EXCEPTION IN ({}, LINE {} "{}"): {}'.format(filename, lineno, line.strip(), exc_obj))
+    print 'EXCEPTION IN ({}, LINE {} "{}"): {}\nLast message sent: %s'.format(filename, lineno, line.strip(), exc_obj)% bot.ircmsg
+    logging.error('EXCEPTION IN ({}, LINE {} "{}"): {}\nLast message sent: %s'.format(filename, lineno, line.strip(), exc_obj, bot.ircmsg))
             
 bot = ircbot()
 #Import the rest of the program here

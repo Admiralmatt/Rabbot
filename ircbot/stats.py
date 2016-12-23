@@ -16,7 +16,7 @@ def stat_update(nick, stat, n, set_=False):
         
     logging.info('Stat %s Updated by %s' %(stat, nick))
     stat_print(nick, stat)
-    storage.save('Stat Update')
+    save('Stat Update')
     return game
 
 
@@ -79,7 +79,7 @@ def newstat(nick, stat, amt = 1):
         
         Creates a new <STAT> counter that has not been used in any game so far.
     """
-    channeldata = storage.getchanneldata()
+    channeldata = getchanneldata()
     if stat not in channeldata['showstats']:
         channeldata['showstats'].append(stat)
     add(nick, stat, amt)

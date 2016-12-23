@@ -21,6 +21,7 @@ def get_info(username = None, use_fallback = False):
     # If this succeeds, it means the channel is currently live
     if username is None:
         username = bot.show
+    print "https://api.twitch.tv/kraken/streams/%s" % username
     res = url_open("https://api.twitch.tv/kraken/streams/%s" % username)
     data = json.loads(res)
     channel_data = data.get('stream') and data['stream'].get('channel')
@@ -78,10 +79,11 @@ def get_game_playing(username = None):
     
     channel_data = get_info(username, use_fallback=False)
     if not channel_data or not channel_data['live']:
-        return None
         channel_data = get_info(username, use_fallback=True)
-        
+    
 #might want to return None here
+    if not channel_data['live']:
+        return None
     if channel_data['game'] is not None:
         return get_game(name=channel_data['game'])
     return None
