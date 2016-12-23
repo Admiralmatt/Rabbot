@@ -1,24 +1,11 @@
 # Import some necessary libraries.
-import socket, threading,re
-
-import stats
-import storage
-from sendemail import send_email, load
-import twitch
-import commands
-import utils
-from quote import quote
-
-
-import logging
+import socket, threading, re, linecache, sys, logging
 logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s', datefmt='%m/%d/%Y %H:%M:%S',
                     filename='botlogs.log',level=logging.DEBUG)
 class ircbot():
    def __init__(self):
       # Some basic variables used to configure the bot
-      self.version = 1.10
-      self.password = load('twitch')
-
+      self.version = 2.20
       self.currentgame = None
       self.game_override = None
       self.show_override = None
@@ -52,6 +39,7 @@ class ircbot():
       self.sendmsg('/mods')
       self.get_current_game(botnick)
       self.startupcheck = False
+      print 'Connected to channel: %s' %str(channel)
 
    def makesock(self):
       self.ircsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -62,6 +50,7 @@ class ircbot():
 
    #connect to the irc server.
    def connect(self):
+      self.password = load('twitch')
       try:
           self.ircsock.connect((self.server, 6667)) # Connect to the server using the port 6667
       except Exception as e:
@@ -86,13 +75,14 @@ class ircbot():
                logging.error('Socket error from twitch')
                print 'Socket error from twitch'
                send_email('No Data From Twitch') #send error report to bot email
-               raise
-            print(ircmsg) # Print what's coming from the server
+               raise socket.error
+#            print(ircmsg) # Print what's coming from the server
             if ircmsg.find(' PRIVMSG ') != -1:
                nick = ircmsg.split('!')[0][1:]
                channel = ircmsg.split(' PRIVMSG ')[-1].split(' :')[0]
                self.channel = channel
-               self.command(nick, channel, ircmsg.lower(), ircmsg) #ircmsg.lower = makes all commands lower-case
+               self.command(nick, channel, ircmsg.lower(), ircmsg)
+               #ircmsg.lower = makes all commands lower-case
 
             if ircmsg.find('PING :') != -1: # Responds to server ping
                self.ircsock.send('PONG :pingis\n')
@@ -104,15 +94,15 @@ class ircbot():
 
          except socket.error as error:
             print error
+            printexception()
             self.ircsock.close()
             storage.save()
             quit()
             
          except Exception as e:
             print type(e)
-            print 'Thread error' #in case of error
-            print e
-            logging.error('Thread Error\n%s' %e)
+            printexception()
+            logging.error('Thread Error\n%s\nLast message sent:%s' %(e,ircmsg))
             send_email(str(e), ircmsg) #send error report to bot email
 
          
@@ -131,10 +121,12 @@ class ircbot():
       if self.norespond != True:
          if nick is None:
             self.ircsock.send('PRIVMSG '+ self.channel +' :' + msg +'\n')
+            logging.info('Message: %s sent' % msg)
          else:
             self.ircsock.send('PRIVMSG '+ self.channel +' :' + nick + ': ' + msg +'\n')
+            logging.info('Message: %s sent' % msg)
       else:
-         logging.info('Message not sent, bot is muted.')
+         logging.info('Message: %s not sent, bot is muted.' % msg)
 
    def get_current_game(self, nick):
       #Returns the game currently being played, with caching to avoid hammering the Twitch server
@@ -162,72 +154,82 @@ class ircbot():
 
    # Search for correct command to use
    def is_command(self, nick, msg, msgcap):
-      data = storage.data
-      
-      if msg[0] == 'bot_shutdown':
-         commands.bot_shutdown(nick, msg)
-         
       try:
-         if nick in bot.channeldata['banlist']:
-            return
+         data = storage.data
+         if msg[0] == 'shutdown':
+            commands.bot_shutdown(nick, msg)
+            
+         try:
+            if nick in bot.channeldata['banlist']:
+               return
 
-         if msg[1] == 'new' and msg[0] not in bot.channeldata['showstats']:
-            stats.change(nick, msg[0], msg[1])
-            return
+            if msg[1] == 'new' and msg[0] not in bot.channeldata['showstats']:
+               stats.change(nick, msg[0], msg[1])
+               return
+         except IndexError:
+            pass
+         except KeyError:
+            pass
+
+         if msg[0] in bot.channeldata['showstats']:
+            if len(msg) is not 3:
+               msg.extend([None] * 3)
+            stats.change(nick, msg[0], msg[1], msg[2])
+
+         elif msg[0] == 'game':
+            commands.gamecheck(nick, msg, msgcap.split(':!')[-1].split())
+            
+         elif msg[0] == 'stats':
+            stats.statcheck(nick, bot.channeldata)
+
+         elif msg[0] == 'quote':
+            quote(nick, msgcap.split(':!')[-1].split(), bot.channeldata['quotes'])
+
+         elif msg[0] == 'vote':
+            commands.comm_vote(nick, msg, msgcap.split(':!')[-1].split())
+
+         elif msg[0] in ['request','gamerequest']:
+            commands.game_request(nick,' '.join(msg[1:]))
+
+         elif msg[0] == 'response':
+            commands.edit_response(nick, msg, msgcap.split(':!')[-1].split(), bot.channeldata['showresponse'])
+
+         elif msg[0] in ['ban','unban']:
+            commands.botban(nick, msg, bot.channeldata)
+
+         elif msg[0] == 'uptime':
+            commands.uptime()
+
+         elif msg[0] == 'highlight':
+            commands.make_highlight(nick, msgcap.split(':!')[-1].split())
+            
+         elif msg[0] == 'lockdown':
+            commands.lockdown(nick, msg, bot.channeldata)
+
+         #Mods only
+         elif msg[0] == 'norespond':
+            if nick in self.modlist:
+               try:
+                  if msg[1] == 'off':
+                     self.norespond = False
+                     logging.info('Bot unmuted by %s' %nick)
+               except IndexError:
+                  self.norespond = True
+                  logging.info('Bot muted by %s' %nick)
+                  
+         elif msg[0] in bot.channeldata['showresponse']:
+            commands.send_response(nick, msg[0], bot.channeldata['showresponse'][msg[0]])
+         
+         elif msg[0] in data['responses']:
+            commands.send_response(nick, msg[0], data['responses'][msg[0]])
+
       except IndexError:
          pass
-      except KeyError:
-         pass
-
-      if msg[0] in bot.channeldata['showstats']:
-         if len(msg) is not 3:
-            msg.extend([None] * 3)
-         stats.change(nick, msg[0], msg[1], msg[2])
-
-      elif msg[0] == 'game':
-         commands.gamecheck(nick, msg, msgcap.split(':!')[-1].split())
-         
-      elif msg[0] == 'stats':
-         stats.statcheck(nick, bot.channeldata)
-
-      elif msg[0] == 'quote':
-         quote(nick, msgcap.split(':!')[-1].split(), bot.channeldata['quotes'])
-
-      elif msg[0] == 'vote':
-         commands.comm_vote(nick, msg, msgcap.split(':!')[-1].split())
-
-      elif msg[0] in ['request','gamerequest']:
-         commands.game_request(nick,' '.join(msg[1:]))
-
-      elif msg[0] == 'response':
-         commands.edit_response(nick, msg, msgcap.split(':!')[-1].split(), bot.channeldata['showresponse'])
-
-      elif msg[0] in ['ban','unban']:
-         commands.botban(nick, msg, bot.channeldata)
-
-      elif msg[0] == 'lockdown':
-         commands.lockdown(nick, msg, bot.channeldata)
-
-      #Mods only
-      elif msg[0] == 'norespond':
-         if nick in self.modlist:
-            try:
-               if msg[1] == 'off':
-                  self.norespond = False
-                  logging.info('Bot unmuted by %s' %nick)
-            except IndexError:
-               self.norespond = True
-               logging.info('Bot muted by %s' %nick)
-               
-      elif msg[0] in bot.channeldata['showresponse']:
-         commands.send_response(nick, msg[0], bot.channeldata['showresponse'][msg[0]])
-      
-      elif msg[0] in data['responses']:
-         commands.send_response(nick, msg[0], data['responses'][msg[0]])
-         
+            
    # Decide if a command has been entered
    def command(self, nick, channel, message, msgcap):
       if message.find(':!') != -1 and self.lockdown == False:
+         self.get_current_game(self.botnick)
          self.is_command(nick, message.split(':!')[-1].split(), msgcap)
 
       elif message.find(':!') != -1 and self.lockdown == True:
@@ -257,5 +259,19 @@ class ircbot():
                self.sendmsg('%s: Banned for persistent spam (%s). Please contact Admiralmatt if this is incorrect.' % (nick, desc))
                level = 3
             return True
+
+def printexception():
+    exc_type, exc_obj, tb = sys.exc_info()
+    f = tb.tb_frame
+    lineno = tb.tb_lineno
+    filename = f.f_code.co_filename
+    linecache.checkcache(filename)
+    line = linecache.getline(filename, lineno, f.f_globals)
+    print 'EXCEPTION IN ({}, LINE {} "{}"): {}\nLast message sent: %s'.format(filename, lineno, line.strip(), exc_obj)% bot.ircmsg
+    logging.error('EXCEPTION IN ({}, LINE {} "{}"): {}\nLast message sent: %s'.format(filename, lineno, line.strip(), exc_obj, bot.ircmsg))
             
 bot = ircbot()
+#Import the rest of the program here
+import storage, stats, commands, twitch, utils
+from sendemail import send_email, load
+from quote import quote

@@ -1,7 +1,7 @@
-import ircbot
 import logging, time, random
 import utils
-import storage
+from ircbot import bot
+from storage import save
 
 #data=channeldata['quote']
 def quote(nick, msg, data):
@@ -58,5 +58,5 @@ def choosequote(nick, data, id):
 
 def postquote(nick, id, msg, date, action):
     logging.info('Quote #%s%s "%s" -%s by %s' % (id, action, msg, date, nick))
-    ircbot.bot.sendmsg('Quote #%s%s "%s" -%s' % (id, action, msg, date))
-    storage.save('Quote%s' % action)
+    bot.sendmsg('Quote #%s%s "%s" -%s' % (id, action, msg, date))
+    save('Quote%s' % action)

@@ -9,7 +9,6 @@ Rabbot is a twitch chat bot
 
 If you want to contact me about Rabbot (bug reports, feedback, or if you want it in your channel) send me an email at <rabbotbot@gmail.com>.
 
-
 ##Game
 * **!game** Post the game currently being played.
 * **!game good/bad** Vote whether you believe this game is entertaining to watch on-stream.
@@ -33,6 +32,12 @@ If you want to contact me about Rabbot (bug reports, feedback, or if you want it
 * **!(STAT) new** Creates a new (STAT) counter if it has not been used in any game so far.
 * **!(STAT) set #** Sets (STAT) to #
  
+##Misc
+* **!uptime** Posts how long the stream has been live for.
+* **!help** Posts a link to this page.
+* **!help (COMMAND)** Posts a link to this page and scroll to section for (COMMAND).
+* **!advice** Rabbot will post some "useful" advice.
+
 ##Request
 * **!request (GAME NAME)** Will register (GAME) to a list of games for the streamer to play. 
 
@@ -44,7 +49,6 @@ If you want to contact me about Rabbot (bug reports, feedback, or if you want it
 * **!vote #** Vote on choice #. Each person can change their vote as many times while the poll is open, but they will only be counted once. 
 * **!vote result** Check what choice is currently winning in an open poll, **OR** What choice won in the last open poll.
 * **!vote view** Post the question and choices of the current open poll.
-
 
    **Mod-only commands**
 * **!vote close** Close the current open poll.
@@ -61,15 +65,9 @@ If you want to contact me about Rabbot (bug reports, feedback, or if you want it
 * **!quote remove #** Removes # quote from the database.
 * **!quote edit # QUOTE** Replaces text of quote # with QUOTE.
 
-
-##Misc
-* **!help** Posts a link to this page.
-* **!help (COMMAND)** Posts a link to this page and scroll to section for (COMMAND).
-* **!advice** Rabbot will post some "useful" advice.
-
  **Mod-only commands**
 * **!modcheck** Updates the mod list if a mod has been added or removed.
-* **!bot_shutdown** Remotely  Shuts down the bot. **(ADMIN ONLY)**
+* **!shutdown** Remotely  Shuts down the bot. **(ADMIN ONLY)**
 * **!ban/unban (USERNAME)** Prevents/Allows USERNAME from using the bot.
 * **!lockdown** Prevents all users other than mods from using the bot.
 * **!lockdown off** Deactivates lockdown mode.

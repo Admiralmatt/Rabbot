@@ -1,8 +1,6 @@
-import ircbot
+from ircbot import bot
 import utils
-
-import logging
-import time
+import logging, time
 from collections import Counter
 
 @utils.mod_only
@@ -14,18 +12,18 @@ def newpoll(nick, msg):
  
        Open a new poll. Question and all choices must be separated by ;
     """
-    ircbot.bot.voting = True
+    bot.voting = True
     # Create new poll. Will erase old one
     # Poll results will be available until new one is made
     global poll
     poll = {}
     
     msg = msg.split(';')
-    ircbot.bot.pollchoices = msg
+    bot.pollchoices = msg
     print 'Open poll'
     logging.info('Poll Opened by %s' %nick)
-    ircbot.bot.sendmsg('Poll Open!')
-    if ircbot.bot.ismod == False:
+    bot.sendmsg('Poll Open!')
+    if bot.ismod == False:
         time.sleep(2)
     reminder(nick)
 
@@ -37,20 +35,20 @@ def reminder(nick):
  
        Post the question and choices of the current open poll.
     """
-    if ircbot.bot.voting == True:
-        msg = ircbot.bot.pollchoices[:]
-        ircbot.bot.sendmsg(msg[0])
+    if bot.voting == True:
+        msg = bot.pollchoices[:]
+        bot.sendmsg(msg[0])
         msg.remove(msg[0])
         for x in range(len(msg)):
-            if ircbot.bot.ismod == False:
+            if bot.ismod == False:
                 time.sleep(2)
-            ircbot.bot.sendmsg('%d) %s' % (x+1, msg[x]))
+            bot.sendmsg('%d) %s' % (x+1, msg[x]))
 
-        if ircbot.bot.ismod == False:
+        if bot.ismod == False:
             time.sleep(2)
-        ircbot.bot.sendmsg('Use !vote # to cast your vote')
+        bot.sendmsg('Use !vote # to cast your vote')
         
-    elif ircbot.bot.voting == False: novote(nick)
+    elif bot.voting == False: novote(nick)
         
 @utils.mod_only
 def voteclose(nick):
@@ -63,9 +61,9 @@ def voteclose(nick):
     """
     # Close Poll and post results
     print 'Poll Closed'
-    ircbot.bot.voting = False
+    bot.voting = False
     logging.info('Poll Closed by %s' %nick)
-    ircbot.bot.sendmsg('Polls Are Closed!')
+    bot.sendmsg('Polls Are Closed!')
     results(nick)
 
 # Register votes
@@ -75,10 +73,10 @@ def vote(nick, msg):
   
        Vote on choice #.
     """
-    if ircbot.bot.voting == False: novote(nick)
+    if bot.voting == False: novote(nick)
     else:
         poll[nick] = int(msg)
-        ircbot.bot.sendmsg('Vote Registered By %s' %nick)
+        bot.sendmsg('Vote Registered By %s' %nick)
         logging.info('Vote registered by %s for %s' %(nick, msg))
 
 @utils.throttle(10)
@@ -93,24 +91,24 @@ def results(nick):
     winner = dict(count.most_common(1))
     winchoice = winner.keys()
     winamt = winner.get(winchoice[0])
-    question = ircbot.bot.pollchoices[0]
+    question = bot.pollchoices[0]
     # winmsg EX. = 2) Go Left (75%, 3/4 Votes)
-    winmsg = '%d) %s (%.0f%%, %d/%d Votes)' %(int(winchoice[0]), ircbot.bot.pollchoices[int(winchoice[0])], 100*winamt/total, winamt, total)
+    winmsg = '%d) %s (%.0f%%, %d/%d Votes)' %(int(winchoice[0]), bot.pollchoices[int(winchoice[0])], 100*winamt/total, winamt, total)
     
 
     # Set up Response for winner or currently winning
-    if ircbot.bot.voting == True:
+    if bot.voting == True:
         response = 'Current Leader is: %s' % (winmsg)
-    elif ircbot.bot.voting == False:
+    elif bot.voting == False:
         response = 'Winner is: %s' % (winmsg)
 
-    if ircbot.bot.ismod == False:
+    if bot.ismod == False:
         time.sleep(2)
-    ircbot.bot.sendmsg(question)
-    if ircbot.bot.ismod == False:
+    bot.sendmsg(question)
+    if bot.ismod == False:
         time.sleep(2)
-    ircbot.bot.sendmsg(response)
+    bot.sendmsg(response)
 
 @utils.throttle()
 def novote(nick):
-    ircbot.bot.sendmsg('No Poll Currently Open')
+    bot.sendmsg('No Poll Currently Open')
