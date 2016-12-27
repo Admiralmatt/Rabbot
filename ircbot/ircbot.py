@@ -12,7 +12,7 @@ class ircbot():
       self.pollchoices = None
       self.lockdown = False
       self.voting = False
-      self.norespond = False
+      self.mute = True
       self.startupcheck = True
       self.spam_rules = []
       self.spammers = {}
@@ -118,7 +118,7 @@ class ircbot():
          print e
 
    def sendmsg(self, msg, nick = None): # Send messages to the channel.
-      if self.norespond != True:
+      if self.mute != True:
          if nick is None:
             self.ircsock.send('PRIVMSG '+ self.channel +' :' + msg +'\n')
             logging.info('Message: %s sent' % msg)
@@ -156,6 +156,7 @@ class ircbot():
    def is_command(self, nick, msg, msgcap):
       try:
          data = storage.data
+         self.get_current_game(self.botnick)
          if msg[0] == 'shutdown':
             commands.bot_shutdown(nick, msg)
             
@@ -207,14 +208,14 @@ class ircbot():
             commands.lockdown(nick, msg, bot.channeldata)
 
          #Mods only
-         elif msg[0] == 'norespond':
+         elif msg[0] == 'mute':
             if nick in self.modlist:
                try:
                   if msg[1] == 'off':
-                     self.norespond = False
+                     self.mute = False
                      logging.info('Bot unmuted by %s' %nick)
                except IndexError:
-                  self.norespond = True
+                  self.mute = True
                   logging.info('Bot muted by %s' %nick)
                   
          elif msg[0] in bot.channeldata['showresponse']:
@@ -229,7 +230,6 @@ class ircbot():
    # Decide if a command has been entered
    def command(self, nick, channel, message, msgcap):
       if message.find(':!') != -1 and self.lockdown == False:
-         self.get_current_game(self.botnick)
          self.is_command(nick, message.split(':!')[-1].split(), msgcap)
 
       elif message.find(':!') != -1 and self.lockdown == True:

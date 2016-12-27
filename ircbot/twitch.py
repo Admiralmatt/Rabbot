@@ -21,7 +21,6 @@ def get_info(username = None, use_fallback = False):
     # If this succeeds, it means the channel is currently live
     if username is None:
         username = bot.show
-    print "https://api.twitch.tv/kraken/streams/%s" % username
     res = url_open("https://api.twitch.tv/kraken/streams/%s" % username)
     data = json.loads(res)
     channel_data = data.get('stream') and data['stream'].get('channel')
@@ -36,7 +35,8 @@ def get_info(username = None, use_fallback = False):
     
     # If that failed, it means the channel is offline
     # Get the channel data from here instead
-    logging.info('Using Fallback For Offline Channel')
+
+    #logging.info('Using Fallback For Offline Channel')
     res = url_open("https://api.twitch.tv/kraken/channels/%s" % username)
     channel_data = json.loads(res)
     channel_data['live'] = False
