@@ -15,7 +15,7 @@ def connect(*args):
 
 #Default connection is #admiralmatt
 
-connect('sageofsong')
+connect('loadingreadyrun')
 #'Ã©'=\xc3\xa9
 
 def update():

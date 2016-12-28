@@ -72,11 +72,4 @@ If you want to contact me about Rabbot (bug reports, feedback, or if you want it
 * **!lockdown** Prevents all users other than mods from using the bot.
 * **!lockdown off** Deactivates lockdown mode.
 
-   **Others**
-* **!(Depends)** Posts a static response to a command. Or random response from list.
-Each command can have different access levels.
-* **Admin** = Only usable by streamer or bot admin.
-* **Mod** = Only usable by mods on stream.
-* **All** = Usable by anyone.
-
- Feel free to contact me to add a command to this list.
+Feel free to contact me to add a command to this list.
