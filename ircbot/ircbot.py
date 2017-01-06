@@ -1,5 +1,5 @@
 # Import some necessary libraries.
-import socket, threading, re, linecache, sys, logging
+import socket, threading, re, linecache, sys, urllib2, logging
 logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s', datefmt='%m/%d/%Y %H:%M:%S',
                     filename='botlogs.log',level=logging.DEBUG)
 class ircbot():
@@ -98,6 +98,9 @@ class ircbot():
             self.ircsock.close()
             storage.save()
             quit()
+
+         except urllib2.HTTPError as e:
+            pass
             
          except Exception as e:
             print type(e)
