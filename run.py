@@ -6,7 +6,7 @@ from ircbot.storage import save,load
 
 from ircbot.sendemail import send_email
 from ircbot.highlights import highlight
-import ircbot.commands
+import ircbot.commands as commands
 
 
 #args = Channel, Nickname, Server
@@ -21,3 +21,6 @@ connect('loadingreadyrun')
 def update():
     load()
     save('Manual Update')
+
+def kill():
+    commands.bot_shutdown('admiralmatt', 'Command line shutdown')

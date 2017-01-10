@@ -1,11 +1,11 @@
 # Import some necessary libraries.
-import socket, threading, re, linecache, sys, logging
+import socket, threading, re, linecache, sys, urllib2, logging
 logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s', datefmt='%m/%d/%Y %H:%M:%S',
                     filename='botlogs.log',level=logging.DEBUG)
 class ircbot():
    def __init__(self):
       # Some basic variables used to configure the bot
-      self.version = 2.20
+      self.version = '2.0.1'
       self.currentgame = None
       self.game_override = None
       self.show_override = None
@@ -98,6 +98,9 @@ class ircbot():
             self.ircsock.close()
             storage.save()
             quit()
+
+         except urllib2.HTTPError as e:
+            pass
             
          except Exception as e:
             print type(e)
