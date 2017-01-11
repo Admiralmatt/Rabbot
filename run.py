@@ -14,7 +14,7 @@ def connect(*args):
     bot.startup(*args)
 
 #Default connection is #admiralmatt
-
+ 
 connect('loadingreadyrun')
 #'Ã©'=\xc3\xa9
 
