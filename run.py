@@ -1,4 +1,5 @@
 #!/usr/bin/env python2.7
+# -*- coding: utf-8 -*-
 import ircbot
 from ircbot.ircbot import bot
 
@@ -10,13 +11,16 @@ import ircbot.commands as commands
 
 #Starts the program in ircbot.py
 #args = Channel, Nickname, Server
+
 def connect(*args):
     bot.startup(*args)
+    while 1:
+        pass
 
 #Default connection is #admiralmatt
  
 connect('loadingreadyrun')
-#'Ã©'=\xc3\xa9
+#'ÃƒÂ©'=\xc3\xa9
 
 def update():
     load()
