@@ -3,6 +3,7 @@
 import ircbot
 from ircbot.ircbot import bot
 
+
 from ircbot.storage import save,load
 
 from ircbot.sendemail import send_email
@@ -14,8 +15,7 @@ import ircbot.commands as commands
 
 def connect(*args):
     bot.startup(*args)
-    while 1:
-        pass
+    ircbot.ircbot.thread.join()
 
 #Default connection is #admiralmatt
  
