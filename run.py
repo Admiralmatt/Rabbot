@@ -8,7 +8,7 @@ from ircbot.sendemail import send_email
 from ircbot.highlights import highlight
 import ircbot.commands as commands
 
-
+#Starts the program in ircbot.py
 #args = Channel, Nickname, Server
 def connect(*args):
     bot.startup(*args)
