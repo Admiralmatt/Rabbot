@@ -5,14 +5,14 @@ logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s', datefmt='%m/
 class ircbot():
    def __init__(self):
       # Some basic variables used to configure the bot
-      self.version = '2.0.1'
+      self.version = None
       self.currentgame = None
       self.game_override = None
       self.show_override = None
       self.pollchoices = None
       self.lockdown = False
       self.voting = False
-      self.mute = True
+      self.mute = None
       self.startupcheck = True
       self.spam_rules = []
       self.spammers = {}

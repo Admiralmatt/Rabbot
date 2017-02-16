@@ -2,18 +2,15 @@
 # -*- coding: utf-8 -*-
 import ircbot
 from ircbot.ircbot import bot
-
-
 from ircbot.storage import save,load
-
-from ircbot.sendemail import send_email
-from ircbot.highlights import highlight
 import ircbot.commands as commands
 
 #Starts the program in ircbot.py
 #args = Channel, Nickname, Server
 
 def connect(*args):
+    bot.version = '2.0.2'
+    bot.mute = True
     bot.startup(*args)
     ircbot.ircbot.thread.join()
 
