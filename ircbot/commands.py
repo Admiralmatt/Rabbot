@@ -296,11 +296,11 @@ def make_highlight(nick, msg):
       #send confirmation
       logging.info('Highlight Created by %s, tagged: %s' %(nick, msg))
       bot.sendmsg('Highlight Created')
+      print 'Highlight: %s - %s' %(msg, highlight)
       storage.save('Highlight')
    except TypeError as e:
       print e
       bot.sendmsg('Stream is not live')
-
       
 def uptime():
    try:

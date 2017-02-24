@@ -40,7 +40,6 @@ def highlight():
     return highlight
 
     
-        
 #z=datetime.strptime(a, "%Y-%m-%dT%H:%M:%SZ")
 '''
 >>> z=datetime.datetime.strptime(a, "%Y-%m-%dT%H:%M:%SZ")
